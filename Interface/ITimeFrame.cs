@@ -5,7 +5,7 @@ using System;
 namespace Flow
 {
 	/// <summary>
-	/// Information about a time step.
+	/// Stores information about a time step.
 	/// </summary>
 	public interface ITimeFrame
 	{

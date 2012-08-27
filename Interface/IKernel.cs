@@ -7,10 +7,7 @@ namespace Flow
 	/// <summary>
 	/// A Kernel contains a top-level root Node, and a local TimeFrame.
 	/// <para>
-	/// When the Kernel is Stepped, it Steps the top-level Root node.
-	/// </para>
-	/// <para>
-	/// After that, it calls Post on the top-level Root node.
+	/// When the Kernel is Stepped, it updates its Time property, Steps the top-level Root node, then calls Post on the top-level Root node.
 	/// </para>
 	/// </summary>
 	public interface IKernel : IGenerator

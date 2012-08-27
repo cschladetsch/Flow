@@ -92,13 +92,10 @@ namespace Flow
 				act(gen);
 		}
 
-		protected bool PerformPending()
+		protected void PerformPending()
 		{
 			PerformAdds();
-
 			PerformRemoves();
-
-			return true;
 		}
 
 		void PerformRemoves()

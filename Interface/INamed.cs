@@ -8,7 +8,7 @@ namespace Flow
 	public delegate void NamedHandler(INamed named, string newName, string oldName);
 
 	/// <summary>
-	/// An instance of INamed has a Name field, and fires its NewName event when its name is changed.
+	/// Fires its NewName event when its Name property is changed.
 	/// </summary>
 	public interface INamed
 	{

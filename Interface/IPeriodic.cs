@@ -7,7 +7,7 @@ namespace Flow
 {
 	/// <summary>
 	/// Periodic instances regularly fire their Elapsed event.
-	/// <para>NOTE that the timer will fire at most once per Kernel Step</para>
+	/// <para>NOTE the timer will fire at most once per Kernel Step</para>
 	/// </summary>
 	public interface IPeriodic : IGenerator
 	{

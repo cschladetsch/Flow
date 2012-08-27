@@ -31,7 +31,6 @@ namespace Flow
 				return;
 
 			Root.Step();
-
 			Root.Post();
 		}
 

@@ -188,8 +188,62 @@ namespace Flow
 		/// </typeparam>
 		ISubroutine<TR> NewSubroutine<TR, T0> (Func<IGenerator, T0, TR> fun, T0 t0);
 
+		/// <summary>
+		/// News the subroutine.
+		/// </summary>
+		/// <returns>
+		/// The subroutine.
+		/// </returns>
+		/// <param name='fun'>
+		/// Fun.
+		/// </param>
+		/// <param name='t0'>
+		/// T0.
+		/// </param>
+		/// <param name='t1'>
+		/// T1.
+		/// </param>
+		/// <typeparam name='TR'>
+		/// The 1st type parameter.
+		/// </typeparam>
+		/// <typeparam name='T0'>
+		/// The 2nd type parameter.
+		/// </typeparam>
+		/// <typeparam name='T1'>
+		/// The 3rd type parameter.
+		/// </typeparam>
 		ISubroutine<TR> NewSubroutine<TR, T0, T1> (Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1);
 
+		/// <summary>
+		/// News the subroutine.
+		/// </summary>
+		/// <returns>
+		/// The subroutine.
+		/// </returns>
+		/// <param name='fun'>
+		/// Fun.
+		/// </param>
+		/// <param name='t0'>
+		/// T0.
+		/// </param>
+		/// <param name='t1'>
+		/// T1.
+		/// </param>
+		/// <param name='t2'>
+		/// T2.
+		/// </param>
+		/// <typeparam name='TR'>
+		/// The 1st type parameter.
+		/// </typeparam>
+		/// <typeparam name='T0'>
+		/// The 2nd type parameter.
+		/// </typeparam>
+		/// <typeparam name='T1'>
+		/// The 3rd type parameter.
+		/// </typeparam>
+		/// <typeparam name='T2'>
+		/// The 4th type parameter.
+		/// </typeparam>
 		ISubroutine<TR> NewSubroutine<TR, T0, T1, T2> (Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2);
 
 		/// <summary>
