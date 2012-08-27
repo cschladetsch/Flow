@@ -31,8 +31,7 @@ namespace Flow
 					CannotStart();
 			}
 
-			var stepped = _enumerator.MoveNext();
-			if (!stepped)
+			if (!_enumerator.MoveNext())
 			{
 				Delete();
 				return;
