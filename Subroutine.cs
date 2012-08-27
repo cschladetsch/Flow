@@ -8,20 +8,20 @@ namespace Flow
 	internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>
 	{
 		/// <inheritdoc />
-		public override bool Step ()
+		public override void Step ()
 		{
 			if (!Exists || !Running)
-				return false;
+				return;
 
 			if (Sub == null) 
 			{
 				Delete();
-				return false;
+				return;
 			}
 
 			Value = Sub(this);
 
-			return base.Step();
+			base.Step();
 		}
 
 		internal Func<IGenerator, TR> Sub;

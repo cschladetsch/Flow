@@ -26,14 +26,12 @@ namespace Flow
 		public int StepNumber { get; private set; }
 
 		/// <inheritdoc />
-		public virtual bool Step()
+		public virtual void Step()
 		{
 			++StepNumber;
 
 			if (Stepped != null)
 				Stepped(this);
-
-			return true;
 		}
 
 		/// <inheritdoc />

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Flow
 {
 	/// <summary>
-	/// A flow group contains a collection of other transients, and fires events when the contents of the group changes.
+	/// A flow Group contains a collection of other Transients, and fires events when the contents of the group changes.
 	/// </summary>
 	internal class Group : Generator<bool>, IGroup
 	{
@@ -35,26 +35,23 @@ namespace Flow
 
 		internal Group()
 		{
-			Deleted += tr => Clear();
-			Suspended += tr => ForEachGenerator(g => g.Suspend());
 			Resumed += tr => ForEachGenerator(g => g.Resume());
+			Suspended += tr => ForEachGenerator(g => g.Suspend());
+			Deleted += tr => Clear();
 		}
 
 		/// <inheritdoc />
 		public void Clear()
 		{
-			_pendingAdds.Clear();
+			// all pending adds are aborted
+			_adds.Clear();
 
+			// add all contents as pending deletions
 			foreach (var tr in Contents)
-				_pendingRemoves.Add(tr);
+				_dels.Add(tr);
 
-			PerformPending();
-		}
-
-		/// <inheritdoc />
-		public override bool Step()
-		{
-			return true;
+			// remove all contents
+			PerformRemoves();
 		}
 
 		/// <inheritdoc />
@@ -64,27 +61,29 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public void Add(ITransient trans)
+		public void Add(ITransient other)
 		{
-			if (trans == null || !trans.Exists)
+			if (Transient.IsNullOrEmpty(other))
 				return;
 
-			if (Contents.ContainsRef(trans) || _pendingAdds.ContainsRef(trans))
+			if (Contents.ContainsRef(other) || _adds.ContainsRef(other))
 				return;
 
-			_pendingAdds.Add(trans);
+			_dels.RemoveRef(other);
+			_adds.Add(other);
 		}
 
 		/// <inheritdoc />
-		public void Remove(ITransient trans)
+		public void Remove(ITransient other)
 		{
-			if (trans == null)
+			if (other == null)
 				return;
 
-			if (!Contents.ContainsRef(trans) || _pendingRemoves.ContainsRef(trans))
+			if (!Contents.ContainsRef(other) || _dels.ContainsRef(other))
 				return;
 
-			_pendingRemoves.Add(trans);
+			_adds.RemoveRef(other);
+			_dels.Add(other);
 		}
 
 		void ForEachGenerator(Action<IGenerator> act)
@@ -104,7 +103,7 @@ namespace Flow
 
 		void PerformRemoves()
 		{
-			foreach (var tr in _pendingRemoves) 
+			foreach (var tr in _dels) 
 			{
 				_contents.RemoveRef(tr);
 				tr.Deleted -= Remove;
@@ -112,12 +111,12 @@ namespace Flow
 					Removed(this, tr);
 			}
 
-			_pendingRemoves.Clear();
+			_dels.Clear();
 		}
 
 		void PerformAdds()
 		{
-			foreach (var tr in _pendingAdds) 
+			foreach (var tr in _adds) 
 			{
 				_contents.Add(tr);
 				tr.Deleted += Remove;
@@ -125,12 +124,12 @@ namespace Flow
 					Added(this, tr);
 			}
 
-			_pendingAdds.Clear();
+			_adds.Clear();
 		}
 
-		protected readonly List<ITransient> _pendingAdds = new List<ITransient>();
+		protected readonly List<ITransient> _adds = new List<ITransient>();
 		
-		protected readonly List<ITransient> _pendingRemoves = new List<ITransient>();
+		protected readonly List<ITransient> _dels = new List<ITransient>();
 
 		private readonly List<ITransient> _contents = new List<ITransient>();
 	}

@@ -23,18 +23,16 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public override bool Step()
+		public override void Step()
 		{
 			StepTime();
 
 			if (Transient.IsNullOrEmpty(Root))
-				return false;
+				return;
 
-			var result = Root.Step();
+			Root.Step();
 
 			Root.Post();
-
-			return result;
 		}
 
 		void StepTime()

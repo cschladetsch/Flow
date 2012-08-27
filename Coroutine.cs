@@ -22,10 +22,10 @@ namespace Flow
 		/// <summary>
 		/// Execute the coroutine until it yields or ends.
 		/// </summary>
-		public override bool Step ()
+		public override void Step ()
 		{
 			if (!Running || !Exists)
-				return false;
+				return;
 
 			if (_enumerator == null) 
 			{
@@ -42,12 +42,12 @@ namespace Flow
 			if (!stepped)
 			{
 				Delete();
-				return false;
+				return;
 			}
 
 			Value = _enumerator.Current;
 
-			return base.Step();
+			base.Step();
 		}
 
 		void CannotStart ()

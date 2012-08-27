@@ -11,22 +11,19 @@ namespace Flow
 	internal class Node : Group, INode
 	{
 		/// <inheritdoc />
-		public override bool Step()
+		public override void Step()
 		{
 			if (_stepping)
 				throw new ReentrancyException();
 
 			_stepping = true;
 
-			if (!base.Step())
-				return false;
+			base.Step();
 
 			foreach (var gen in Generators)
 				gen.Step();
 
 			_stepping = false;
-
-			return true;
 		}
 
 		/// <inheritdoc />
