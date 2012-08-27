@@ -152,6 +152,8 @@ namespace Flow
 		/// </typeparam>
 		ICoroutine<TR> NewCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1);
 
+		ICoroutine<TR> NewCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2);
+
 		/// <summary>
 		/// News the subroutine.
 		/// </summary>
@@ -185,6 +187,10 @@ namespace Flow
 		/// The 2nd type parameter.
 		/// </typeparam>
 		ISubroutine<TR> NewSubroutine<TR, T0> (Func<IGenerator, T0, TR> fun, T0 t0);
+
+		ISubroutine<TR> NewSubroutine<TR, T0, T1> (Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1);
+
+		ISubroutine<TR> NewSubroutine<TR, T0, T1, T2> (Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2);
 
 		/// <summary>
 		/// News the channel.

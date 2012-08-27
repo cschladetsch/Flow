@@ -38,6 +38,7 @@
     <Compile Include="Test.cs" />
     <Compile Include="TestTimers.cs" />
     <Compile Include="TestChannel.cs" />
+    <Compile Include="TestEventStream.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

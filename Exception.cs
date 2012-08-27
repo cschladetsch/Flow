@@ -33,5 +33,10 @@ namespace Flow
 		{
 		}
 	}
+
+	public class EventStream<A0>
+	{
+		//public EventStream(Action<
+	}
 }
 
