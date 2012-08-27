@@ -10,7 +10,7 @@ namespace Flow
 	public delegate void GeneratorHandler(IGenerator generator);
 
 	/// <summary>
-	/// An instance of IGenerator does some work every time it's Step method is called, unless it is Suspended or Deleted.
+	/// A Generator does some work every time its Step method is called, unless it is Suspended or Deleted.
 	/// <para>All Generators are Resumed when they are first created by a Factory</para>
 	/// </summary>
 	public interface IGenerator : ITransient
@@ -52,7 +52,7 @@ namespace Flow
 		void Resume();
 
 		/// <summary>
-		/// Step this instance.
+		/// Step this Generator
 		/// </summary>
 		void Step();
 

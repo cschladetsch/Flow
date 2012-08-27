@@ -5,23 +5,16 @@ using System.Collections.Generic;
 
 namespace Flow
 {
-	/// <summary>
-	/// Coroutine.
-	/// </summary>
+	/// <inheritdoc />
 	internal class Coroutine<TR> : Generator<TR>, ICoroutine<TR>
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Flow.Coroutine`1"/> class.
-		/// </summary>
-		public Coroutine()
+		internal Coroutine()
 		{
 			// ensure that we transition through suspended state before deleting
 			Deleted += tr => { if (Running) Suspend(); };
 		}
 
-		/// <summary>
-		/// Execute the coroutine until it yields or ends.
-		/// </summary>
+		/// <inheritdoc />
 		public override void Step ()
 		{
 			if (!Running || !Exists)

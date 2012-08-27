@@ -82,8 +82,10 @@ namespace TestFlow
 		public void TestFuture()
 		{
 			var kernel = Global.NewKernel();
-			var future = kernel.Factory.NewFuture<int>();
-			var coro = kernel.Factory.NewCoroutine(Coro2, future);
+			var spawn = kernel.Factory;
+
+			var future = spawn.NewFuture<int>();
+			var coro = spawn.NewCoroutine(Coro2, future);
 
 			_futureSet = false;
 

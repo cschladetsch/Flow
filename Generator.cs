@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Flow
 {
-	internal class Generator<TR> : Transient, ITypedGenerator<TR>
+	internal abstract class Generator<TR> : Transient, ITypedGenerator<TR>
 	{
 		/// <inheritdoc />
 		public TR Value { get; protected set; }
