@@ -7,48 +7,65 @@ namespace TestFlow
 	[TestFixture()]
 	public class TestTimers
 	{
-		[Test()]
-		public void TestOneShot()
+		[TestCase(0.4f, 0.5f, true)]
+		[TestCase(0.4f, 0.2f, false)]
+		public void TestOneShot (float span, float runTime, bool deleted)
 		{
 			var kernel = Global.NewKernel();
-			var timer = kernel.Factory.NewTimer(TimeSpan.FromSeconds(0.4f));
+			var timer = kernel.Factory.NewTimer(TimeSpan.FromSeconds(span));
 
 			var elapsed = false;
 			DateTime when;
 
-			timer.Elapsed += (sender) => { elapsed = true; when = timer.Kernel.Time.Now; };
+			timer.Elapsed += (sender) => 
+			{
+				elapsed = true;
+				when = timer.Kernel.Time.Now; 
+			};
 
-			var start = RunKernel(kernel, TimeSpan.FromSeconds(0.5f));
+			var start = RunKernel(kernel, TimeSpan.FromSeconds(runTime));
 
-			Assert.IsTrue(!timer.Exists);
-			Assert.IsTrue(elapsed);
-			Assert.IsTrue(when > start);
+			if (deleted) 
+			{
+				Assert.IsTrue(!timer.Exists);
+				Assert.IsTrue(elapsed);
+				Assert.IsTrue(when > start);
+			} 
+			else 
+			{
+				Assert.IsFalse(!timer.Exists);
+				Assert.IsFalse(elapsed);
+			}
 		}
 
-		[Test()]
-		public void TestPeriodic()
+		[TestCase(0.1f, 0.25f, 2)]
+		[TestCase(0.1f, 0.45f, 4)]
+		[TestCase(0.1f, 0.0f, 0)]
+		public void TestPeriodic(float interval, float runTime, int numElapsed)
 		{
 			var kernel = Global.NewKernel();
-			var timer = kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(0.1f));
+			var timer = kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(interval));
 
 			int elapsed = 0;
 			timer.Elapsed += (sender) => ++elapsed;
  
-			RunKernel(kernel, TimeSpan.FromSeconds(0.35f));
+			RunKernel(kernel, TimeSpan.FromSeconds(runTime));
 
-			Assert.AreEqual(3, elapsed);
+			Assert.AreEqual(numElapsed, elapsed);
 		}
 
-		[Test()]
-		public void TestTimedFuture()
+		[TestCase(0.1f, 0.2f, true)]
+		[TestCase(0.2f, 0.1f, false)]
+		public void TestTimedFuture(float span, float runTime, bool result)
 		{
 			var kernel = Global.NewKernel();
-			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(0.1f));
+			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(span));
 
-			RunKernel(kernel, TimeSpan.FromSeconds(0.25f));
-
-			Assert.IsTrue(future.HasTimedOut);
 			Assert.IsFalse(future.Available);
+
+			RunKernel(kernel, TimeSpan.FromSeconds(runTime));
+
+			Assert.AreEqual(result, future.HasTimedOut);
 		}
 
 		DateTime RunKernel(IKernel kernel, TimeSpan span)
