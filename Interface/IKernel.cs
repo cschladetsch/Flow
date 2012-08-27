@@ -1,0 +1,34 @@
+
+using System;
+
+namespace Flow
+{
+	/// <summary>
+	/// An instance of IKernel contains a top-level root node, which contains all the transients in the IKernel.
+	/// <para>
+	/// When the Kernel is stepped, it Steps the top-level root node.
+	/// </para>
+	/// <para>
+	/// After that, it calls Post on the top-level root node.
+	/// </para>
+	/// </summary>
+    public interface IKernel : IGenerator
+    {
+		/// <summary>
+		/// Gets or sets the root of the kernel. When the Kernel is stepped, it will first Step() every generator reachable from Root, 
+		/// then call Stepped() on all nodes reachable from the Root.
+		/// </summary>
+		/// <value>
+		/// The root group.
+		/// </value>
+        INode Root { get; set; }
+
+		/// <summary>
+		/// Gets the time to use for this update.
+		/// </summary>
+		/// <value>
+		/// The time to use for this udpate
+		/// </value>
+		ITimeFrame Time { get; }
+    }
+}

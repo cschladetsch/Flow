@@ -1,0 +1,19 @@
+using System;
+using System.Collections.Generic;
+
+namespace Flow
+{
+	/// <summary>
+	/// A one-shot timer that will fire its Elapsed event then Delete itself after a fixed interval of time.
+	/// </summary>
+	public interface ITimer : IPeriodicTimer
+	{
+		/// <summary>
+		/// Gets the time that the timer will elapse and subsequently delete itself.
+		/// </summary>
+		/// <value>
+		/// The soonest time that the timer will elapse
+		/// </value>
+		DateTime TimeEnds { get; }
+	}
+}
