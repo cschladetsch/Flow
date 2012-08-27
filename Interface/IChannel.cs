@@ -12,15 +12,7 @@ namespace Flow
 	public interface IChannel<TR> : ITransient
 	{
 		/// <summary>
-		/// Gets the next future value from the channel
-		/// </summary>
-		/// <value>
-		/// A future output of the channel
-		/// </value>
-		IFuture<TR> Extract();
-
-		/// <summary>
-		/// Insert the specified value into the channel
+		/// Insert a value into the channel
 		/// </summary>
 		/// <param name='val'>
 		/// The value to insert into the channel
@@ -28,7 +20,15 @@ namespace Flow
 		void Insert(TR val);
 
 		/// <summary>
-		/// Service as many pending read requests as possible
+		/// Gets the next future value from the channel
+		/// </summary>
+		/// <returns>
+		/// A future output of the channel
+		/// </returns>
+		IFuture<TR> Extract();
+
+		/// <summary>
+		/// Service as many pending read (extraction) requests as possible
 		/// </summary>
 		void Flush();
 	}

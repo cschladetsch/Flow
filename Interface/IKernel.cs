@@ -7,10 +7,10 @@ namespace Flow
 	/// <summary>
 	/// An instance of IKernel contains a top-level root node, which contains all the transients in the IKernel.
 	/// <para>
-	/// When the Kernel is stepped, it Steps the top-level root node.
+	/// When the Kernel is Stepped, it Steps the top-level Root node.
 	/// </para>
 	/// <para>
-	/// After that, it calls Post on the top-level root node.
+	/// After that, it calls Post on the top-level Root node.
 	/// </para>
 	/// </summary>
 	public interface IKernel : IGenerator

@@ -39,7 +39,7 @@ namespace Flow
 		bool Running { get; }
 
 		/// <summary>
-		/// Gets the step number.
+		/// Gets the step number; this increments each time a Generator is Stepped.
 		/// </summary>
 		/// <value>
 		/// The step number.

@@ -8,7 +8,7 @@ namespace Flow
 	public delegate void TriggerHandler(ITrigger trigger, ITransient reason);
 
 	/// <summary>
-	/// A trigger Deletes itself when any of the objects in it are deleted
+	/// A Trigger Deletes itself when any of the objects in it are Deleted
 	/// </summary>
 	public interface ITrigger : IGroup
 	{

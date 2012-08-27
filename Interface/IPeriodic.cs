@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Flow
 {
 	/// <summary>
-	/// Instances of this interface regularly fire their Elapsed event.
+	/// Periodic instances regularly fire their Elapsed event.
 	/// <para>NOTE that the timer will fire at most once per Kernel Step</para>
 	/// </summary>
 	public interface IPeriodic : IGenerator

@@ -10,7 +10,7 @@ namespace Flow
 	public delegate void TransientHandler(ITransient sender);
 
 	/// <summary>
-	/// A transient object notifies observers when it has been Deleted. Note that this is 
+	/// A Transient object notifies observers when it has been Deleted. Note that this is 
 	/// distinct from the notion of garbage collection in .Net: Specifically, the object can still exist
 	/// and be accessed in the runtime after it has had its Delete() method called. Delete is purely used for 
 	/// flow-control.

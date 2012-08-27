@@ -6,9 +6,7 @@ using System.Collections.Generic;
 namespace Flow
 {
 	/// <summary>
-	/// Instances of this interface are used to create Flow-based objects that reside within an IKernel.
-	/// 
-	/// TODO: Add NewTimedCoroutine(...) and NewTimedSubroutine(...) methods
+	/// Creates Flow instances that reside within an Kernel.
 	/// </summary>
 	public interface IFactory
 	{

@@ -10,7 +10,7 @@ namespace Flow
 	public delegate void GroupHandler(IGroup node, ITransient child);
 
 	/// <summary>
-	/// A flow group contains a collection of other transients, and fires events when the contents of the group changes.
+	/// A flow Group contains a collection of other Transients, and fires events when the contents of the group changes.
 	/// <para>When a Group is suspended, all child generators are also suspended. When a Group is resumed, all child generators are also resumed</para>
 	/// </summary>
 	public interface IGroup : IGenerator

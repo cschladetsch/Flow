@@ -3,7 +3,7 @@
 namespace Flow
 {
 	/// <summary>
-	/// An instance of ITypedGenerator is-an IGenerator that has a typed Value property that is the result of the last successful Step.
+	/// A TypedGenerator is a Generator that has a typed Value property that is the result of the last successful Step.
 	/// </summary>
 	public interface ITypedGenerator<TR> : IGenerator
 	{

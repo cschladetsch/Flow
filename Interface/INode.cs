@@ -3,7 +3,7 @@
 namespace Flow
 {
 	/// <summary>
-	/// A flow node is-a group that steps all its generators when it itself is stepped
+	/// A flow Node is a Group that steps all referenced Generators when it itself is Stepped
 	/// </summary>
 	public interface INode : IGroup
 	{

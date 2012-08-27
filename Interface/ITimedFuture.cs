@@ -13,7 +13,7 @@ namespace Flow
 	}
 
 	/// <summary>
-	/// A timed future.
+	/// A timed Barrier.
 	/// </summary>
 	public interface ITimedBarrier : IBarrier, ITimesOut
 	{
