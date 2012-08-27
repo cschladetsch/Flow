@@ -7,18 +7,25 @@ namespace Flow
 {
 	internal class Generator<TR> : Transient, ITypedGenerator<TR>
 	{
+		/// <inheritdoc />
 		public TR Value { get; protected set; }
 
+		/// <inheritdoc />
 		public event GeneratorHandler Suspended;
 
+		/// <inheritdoc />
 		public event GeneratorHandler Resumed;
 
+		/// <inheritdoc />
 		public event GeneratorHandler Stepped;
 
+		/// <inheritdoc />
 		public bool Running { get; private set; }
 
+		/// <inheritdoc />
 		public int StepNumber { get; private set; }
 
+		/// <inheritdoc />
 		public virtual bool Step()
 		{
 			++StepNumber;
@@ -29,10 +36,12 @@ namespace Flow
 			return true;
 		}
 
+		/// <inheritdoc />
 		public virtual void Post()
 		{
 		}
 
+		/// <inheritdoc />
 		public void Suspend()
 		{
 			if (!Running || !Exists)
@@ -44,6 +53,7 @@ namespace Flow
 				Suspended(this);
 		}
 
+		/// <inheritdoc />
 		public void Resume()
 		{
 			if (Running || !Exists)
@@ -55,6 +65,7 @@ namespace Flow
 				Resumed(this);
 		}
 
+		/// <inheritdoc />
 		public void SuspendAfter(ITransient transient)
 		{
 			Resume();
@@ -62,6 +73,7 @@ namespace Flow
 			transient.Deleted += tr => Suspend();
 		}
 
+		/// <inheritdoc />
 		public bool ResumeAfter(ITransient transient)
 		{
 			if (transient == null || !transient.Exists) 
@@ -77,6 +89,7 @@ namespace Flow
 			return true;
 		}
 
+		/// <inheritdoc />
 		public bool ResumeAfter(TimeSpan span)
 		{
 			if (!Exists)
@@ -87,6 +100,7 @@ namespace Flow
 			return true;
 		}
 
+		/// <inheritdoc />
 		public bool SuspendAfter(TimeSpan span)
 		{
 			if (!Exists)
@@ -97,6 +111,7 @@ namespace Flow
 			return true;
 		}
 		
+		/// <inheritdoc />
 		public IFuture<TR2> GetNext<TR2>(ITypedGenerator<TR2> gen)
 		{
 			var future = Kernel.Factory.NewFuture<TR2>();

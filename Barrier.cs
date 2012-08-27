@@ -2,14 +2,10 @@
 
 namespace Flow
 {
-	/// <summary>
-	/// A barrier is a group that deletes itself when all added elements have been removed from it.
-	/// <para>
-	/// This is useful to block execution until one of several external events or conditions change.
-	/// </para>
-	/// </summary>
+	/// <inheritdoc />
 	internal class Barrier : Group, IBarrier
 	{
+		/// <inheritdoc />
 		public override void Post()
 		{
 			base.Post();

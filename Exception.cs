@@ -4,6 +4,9 @@ using System;
 
 namespace Flow
 {
+	/// <summary>
+	/// Future not set exception.
+	/// </summary>
 	public class FutureNotSetException : System.Exception
 	{
 		public FutureNotSetException () : base("Future value not arrived yet")
@@ -11,13 +14,19 @@ namespace Flow
 		}
 	}
 
+	/// <summary>
+	/// Future already set exception.
+	/// </summary>
 	public class FutureAlreadySetException : System.Exception
 	{
 		public FutureAlreadySetException () : base("Future already set")
 		{
 		}
 	}
-	
+
+	/// <summary>
+	/// Reentrancy exception.
+	/// </summary>
 	public class ReentrancyException : Exception
 	{
 		public ReentrancyException ()  : base("Method is not re-entrant")

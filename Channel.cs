@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Flow
 {
+	/// <inheritdoc />
 	internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
 	{
 		public ITypedGenerator<TR> Generator { get; private set; }

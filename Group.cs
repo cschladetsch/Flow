@@ -9,12 +9,16 @@ namespace Flow
 	/// </summary>
 	internal class Group : Generator<bool>, IGroup
 	{
+		/// <inheritdoc />
 		public event GroupHandler Added;
 
+		/// <inheritdoc />
 		public event GroupHandler Removed;
 		
+		/// <inheritdoc />
 		public IEnumerable<ITransient> Contents { get { return _contents; } }
 		
+		/// <inheritdoc />
 		public IEnumerable<IGenerator> Generators 
 		{
 			get 
@@ -42,6 +46,7 @@ namespace Flow
 				act(gen);
 		}
 
+		/// <inheritdoc />
 		public void Clear()
 		{
 			_pendingAdds.Clear();
@@ -52,16 +57,19 @@ namespace Flow
 			PerformPending();
 		}
 
+		/// <inheritdoc />
 		public override bool Step()
 		{
 			return true;
 		}
 
+		/// <inheritdoc />
 		public override void Post()
 		{
 			PerformPending();
 		}
 
+		/// <inheritdoc />
 		public void Add(ITransient trans)
 		{
 			if (trans == null || !trans.Exists)
@@ -73,6 +81,7 @@ namespace Flow
 			_pendingAdds.Add(trans);
 		}
 
+		/// <inheritdoc />
 		public void Remove(ITransient trans)
 		{
 			if (trans == null || !trans.Exists)

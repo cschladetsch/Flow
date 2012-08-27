@@ -7,6 +7,7 @@ namespace Flow
 {
 	internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>
 	{
+		/// <inheritdoc />
 		public override bool Step ()
 		{
 			if (!Exists || !Running)

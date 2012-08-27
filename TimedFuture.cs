@@ -7,6 +7,7 @@ namespace Flow
 {
 	internal class TimedFuture<T> : Future<T>, ITimedFuture<T>
 	{
+		/// <inheritdoc />
 		public event TimedOutHandler TimedOut;
 
 		internal TimedFuture(IKernel kernel, TimeSpan span)

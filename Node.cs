@@ -6,10 +6,11 @@ using System;
 namespace Flow
 {
 	/// <summary>
-	/// A flow Node contains a collection of other transients. When the node is stepped, it steps all referenced generators.
+	/// A flow Node contains a collection of other Transients. When the Node is stepped, it steps all referenced Generators.
 	/// </summary>
 	internal class Node : Group, INode
 	{
+		/// <inheritdoc />
 		public override bool Step()
 		{
 			if (_stepping)
@@ -28,6 +29,7 @@ namespace Flow
 			return true;
 		}
 
+		/// <inheritdoc />
 		public override void Post()
 		{
 			base.Post();

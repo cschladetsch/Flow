@@ -7,10 +7,13 @@ namespace Flow
 	/// </summary>
 	internal class TimeFrame : ITimeFrame
 	{
+		/// <inheritdoc />
 		public System.DateTime Last { get; internal set; }
 
+		/// <inheritdoc />
 		public System.DateTime Now { get; internal set; }
 
+		/// <inheritdoc />
 		public System.TimeSpan Delta { get; internal set; }
 	}
 }

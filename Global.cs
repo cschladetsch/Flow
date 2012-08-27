@@ -8,7 +8,7 @@ namespace Flow
 	public static class Global
 	{
 		/// <summary>
-		/// News the kernel.
+		/// Create a new Kernel and Factory
 		/// </summary>
 		/// <returns>
 		/// The kernel.
@@ -19,7 +19,7 @@ namespace Flow
 		}
 
 		/// <summary>
-		/// News the factory.
+		/// Create a new Kernel and Factory
 		/// </summary>
 		/// <returns>
 		/// The factory.

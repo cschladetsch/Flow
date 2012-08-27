@@ -2,13 +2,12 @@
 
 namespace Flow
 {
-	/// <summary>
-	/// A transient can be Delete()'d, after which its Exists property will always return false.
-	/// </summary>
 	internal class Transient : ITransient
 	{
+		/// <inheritdoc />
 		public event TransientHandler Deleted;
 
+		/// <inheritdoc />
 		public string Name 
 		{ 
 			get 
@@ -26,19 +25,24 @@ namespace Flow
 			}
 		}
 		
+		/// <inheritdoc />
 		public IKernel Kernel { get; /*internal*/ set; }
 
+		/// <inheritdoc />
 		public IFactory Factory  { get { return Kernel.Factory; } }
 
+		/// <inheritdoc />
 		public event NamedHandler NewName;
 
+		/// <inheritdoc />
 		public bool Exists { get; private set; }
 
-		public Transient()
+		internal Transient()
 		{
 			Exists = true;
 		}
 
+		/// <inheritdoc />
 		public void Delete()
 		{
 			if (!Exists)
@@ -50,6 +54,7 @@ namespace Flow
 			Exists = false;
 		}
 
+		/// <inheritdoc />
 		public void DeleteAfter(ITransient other)
 		{
 			if (!Exists)

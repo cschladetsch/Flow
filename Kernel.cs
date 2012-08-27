@@ -6,10 +6,13 @@ namespace Flow
 {
 	internal class Kernel : Generator<bool>, IKernel
 	{
+		/// <inheritdoc />
 		public INode Root { get; set; }
 
+		/// <inheritdoc />
 		public new IFactory Factory { get; internal set; }
 
+		/// <inheritdoc />
 		public ITimeFrame Time { get { return _time; } }
 
 		internal Kernel()
@@ -19,6 +22,7 @@ namespace Flow
 			_time.Delta = TimeSpan.FromSeconds(0);
 		}
 
+		/// <inheritdoc />
 		public override bool Step()
 		{
 			StepTime();

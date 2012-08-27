@@ -7,6 +7,7 @@ namespace Flow
 	/// </summary>
 	internal class Trigger : Group, ITrigger
 	{
+		/// <inheritdoc />
 		public event TriggerHandler Tripped;
 
 		internal Trigger()
