@@ -12,15 +12,6 @@ namespace Flow
 	public interface IChannel<TR> : ITransient
 	{
 		/// <summary>
-		/// Gets a generator used to insert values into the stream. Only valid if the channel was created using IFactory.NewChannel(ITypedGenerator).
-		/// <para>When the generator is stepped, its new value is inserted into this channel</para>
-		/// </summary>
-		/// <value>
-		/// The generator.
-		/// </value>
-		ITypedGenerator<TR> Generator { get; }
-
-		/// <summary>
 		/// Gets the next future value from the channel
 		/// </summary>
 		/// <value>

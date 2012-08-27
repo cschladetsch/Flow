@@ -9,9 +9,6 @@ namespace Flow
 	internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
 	{
 		/// <inheritdoc />
-		public ITypedGenerator<TR> Generator { get; private set; }
-
-		/// <inheritdoc />
 		public IFuture<TR> Extract 
 		{
 			get 
@@ -46,15 +43,8 @@ namespace Flow
 		internal Channel(IKernel kernel, ITypedGenerator<TR> gen)
 			: this(kernel)
 		{
-			Generator = gen;
-			Generator.Stepped += GenStepped;
-
-			DeleteAfter(Generator);
-		}
-
-		void GenStepped(IGenerator gen)
-		{
-			Insert(Generator.Value);
+			gen.Stepped += g => Insert(gen.Value);
+			DeleteAfter(gen);
 		}
 
 		bool StepChannel(IGenerator self)
