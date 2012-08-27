@@ -37,6 +37,20 @@ namespace Flow
 		/// <inheritdoc />
 		public bool Exists { get; private set; }
 
+		/// <summary>
+		/// Return true if the given other transient is either null or does not exist
+		/// </summary>
+		/// <returns>
+		/// True if the given other transient is either null or does not exist
+		/// </returns>
+		/// <param name='other'>
+		/// The transient to consider
+		/// </param>
+		public static bool IsNullOrEmpty (ITransient other)
+		{
+			return other == null || !other.Exists;
+		}
+
 		internal Transient()
 		{
 			Exists = true;

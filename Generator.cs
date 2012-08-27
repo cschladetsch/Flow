@@ -66,8 +66,14 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public void SuspendAfter(ITransient transient)
+		public void SuspendAfter (ITransient transient)
 		{
+			if (Transient.IsNullOrEmpty(transient))
+			{
+				Suspend();
+				return;
+			}
+
 			Resume();
 
 			transient.Deleted += tr => Suspend();
@@ -76,7 +82,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool ResumeAfter(ITransient transient)
 		{
-			if (transient == null || !transient.Exists) 
+			if (Transient.IsNullOrEmpty(transient))
 			{
 				Resume();
 				return true;
