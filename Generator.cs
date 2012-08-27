@@ -5,21 +5,21 @@ using System.Text;
 
 namespace Flow
 {
-    internal class Generator<TR> : Transient, ITypedGenerator<TR>
-    {
-        public TR Value { get; protected set; }
+	internal class Generator<TR> : Transient, ITypedGenerator<TR>
+	{
+		public TR Value { get; protected set; }
 
-        public event GeneratorHandler Suspended;
+		public event GeneratorHandler Suspended;
 
-        public event GeneratorHandler Resumed;
+		public event GeneratorHandler Resumed;
 
-        public event GeneratorHandler Stepped;
+		public event GeneratorHandler Stepped;
 
-        public bool Running { get; private set; }
+		public bool Running { get; private set; }
 
 		public int StepNumber { get; private set; }
 
-        public virtual bool Step()
+		public virtual bool Step()
 		{
 			++StepNumber;
 
@@ -33,36 +33,36 @@ namespace Flow
 		{
 		}
 
-        public void Suspend()
-        {
-            if (!Running || !Exists)
-                return;
-            
-            Running = false;
-            
-            if (Suspended != null)
-                Suspended(this);
-        }
+		public void Suspend()
+		{
+			if (!Running || !Exists)
+				return;
+			
+			Running = false;
+			
+			if (Suspended != null)
+				Suspended(this);
+		}
 
-        public void Resume()
-        {
-            if (Running || !Exists)
-                return;
-            
-            Running = true;
+		public void Resume()
+		{
+			if (Running || !Exists)
+				return;
+			
+			Running = true;
 
-            if (Resumed != null)
-                Resumed(this);
-        }
+			if (Resumed != null)
+				Resumed(this);
+		}
 
-        public void SuspendAfter(ITransient transient)
-        {
-            Resume();
+		public void SuspendAfter(ITransient transient)
+		{
+			Resume();
 
-            transient.Deleted += tr => Suspend();
-        }
+			transient.Deleted += tr => Suspend();
+		}
 
-        public bool ResumeAfter(ITransient transient)
+		public bool ResumeAfter(ITransient transient)
 		{
 			if (transient == null || !transient.Exists) 
 			{
@@ -72,10 +72,10 @@ namespace Flow
 
 			Suspend();
 
-            transient.Deleted += tr => Resume();
+			transient.Deleted += tr => Resume();
 
 			return true;
-        }
+		}
 
 		public bool ResumeAfter(TimeSpan span)
 		{
@@ -111,5 +111,5 @@ namespace Flow
 			gen.Stepped -= del;
 			future.Value = gen.Value;
 		}
-    }
+	}
 }

@@ -10,8 +10,8 @@ namespace Flow
 	/// <summary>
 	/// An instance of INamed has a Name field, and fires its NewName event when its name is changed.
 	/// </summary>
-    public interface INamed
-    {
+	public interface INamed
+	{
 		/// <summary>
 		/// Occurs when this instance is given a new name.
 		/// </summary>
@@ -23,6 +23,6 @@ namespace Flow
 		/// <value>
 		/// The name of this instance.
 		/// </value>
-        string Name { get; set; }
-    }
+		string Name { get; set; }
+	}
 }

@@ -10,15 +10,15 @@ namespace Flow
 	/// 
 	/// TODO: Add NewTimedCoroutine(...) and NewTimedSubroutine(...) methods
 	/// </summary>
-    public interface IFactory
-    {
+	public interface IFactory
+	{
 		/// <summary>
 		/// Gets the kernel.
 		/// </summary>
 		/// <value>
 		/// The kernel.
 		/// </value>
-        IKernel Kernel { get; }
+		IKernel Kernel { get; }
 
 		/// <summary>
 		/// News the timer.
@@ -106,8 +106,8 @@ namespace Flow
 		/// <typeparam name='TR'>
 		/// The 1st type parameter.
 		/// </typeparam>
-        ICoroutine<TR> NewCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun);
-        
+		ICoroutine<TR> NewCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun);
+		
 		/// <summary>
 		/// News the coroutine.
 		/// </summary>
@@ -126,7 +126,7 @@ namespace Flow
 		/// <typeparam name='T0'>
 		/// The 2nd type parameter.
 		/// </typeparam>
-        ICoroutine<TR> NewCoroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0);
+		ICoroutine<TR> NewCoroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0);
 
 		/// <summary>
 		/// News the coroutine.
@@ -152,7 +152,7 @@ namespace Flow
 		/// <typeparam name='T1'>
 		/// The 3rd type parameter.
 		/// </typeparam>
-        ICoroutine<TR> NewCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1);
+		ICoroutine<TR> NewCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1);
 
 		/// <summary>
 		/// News the subroutine.
@@ -221,5 +221,5 @@ namespace Flow
 		/// The 1st type parameter.
 		/// </typeparam>
 		T Prepare<T>(T obj) where T : ITransient;
-    }
+	}
 }

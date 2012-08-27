@@ -18,25 +18,25 @@ namespace Flow
 		/// <summary>
 		/// Occurs when resumed.
 		/// </summary>
-        event GeneratorHandler Resumed;
+		event GeneratorHandler Resumed;
 
 		/// <summary>
 		/// Occurs when stepped.
 		/// </summary>
-        event GeneratorHandler Stepped;
+		event GeneratorHandler Stepped;
 
 		/// <summary>
 		/// Occurs when suspended.
 		/// </summary>
 		event GeneratorHandler Suspended;
-        
+		
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="Flow.IGenerator"/> is running.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if running; otherwise, <c>false</c>.
 		/// </value>
-        bool Running { get; }
+		bool Running { get; }
 
 		/// <summary>
 		/// Gets the step number.
@@ -49,12 +49,12 @@ namespace Flow
 		/// <summary>
 		/// Resume this instance.
 		/// </summary>
-        void Resume();
+		void Resume();
 
 		/// <summary>
 		/// Step this instance. TODO: return type should be void.
 		/// </summary>
-        bool Step();
+		bool Step();
 
 		/// <summary>
 		/// Called in a Step of the Kernel after all other generators have been Step'd by the Kernel.
@@ -64,16 +64,16 @@ namespace Flow
 		/// <summary>
 		/// Suspend this instance. After this, Step() does nothing.
 		/// </summary>
-        void Suspend();
-        
+		void Suspend();
+		
 		/// <summary>
 		/// Suspends this instance after another transient has been deleted
 		/// </summary>
 		/// <param name='other'>
 		/// When the given transient is deleted, this instance will be suspended
 		/// </param>
-        void SuspendAfter(ITransient other);
-        
+		void SuspendAfter(ITransient other);
+		
 		/// <summary>
 		/// Resumes this instance after another transient has been deleted.
 		/// </summary>
@@ -83,7 +83,7 @@ namespace Flow
 		/// <param name='other'>
 		/// When the given transient is deleted, this instance will be resumed.
 		/// </param>
-        bool ResumeAfter(ITransient other);
+		bool ResumeAfter(ITransient other);
 
 		/// <summary>
 		/// Suspends this generator, and resumes it after a period of time.

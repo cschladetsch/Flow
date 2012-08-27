@@ -21,11 +21,11 @@ namespace Flow
 				return false;
 
 			foreach (var gen in Generators)
-                gen.Step();
+				gen.Step();
 
 			_stepping = false;
 
-            return true;
+			return true;
 		}
 
 		public override void Post()

@@ -4,7 +4,7 @@ using System;
 
 namespace Flow
 {
-    class PeriodicTimer : Subroutine<bool>, IPeriodicTimer
+	class PeriodicTimer : Subroutine<bool>, IPeriodicTimer
 	{
 		public event TransientHandler Elapsed;
 
@@ -33,6 +33,6 @@ namespace Flow
 			return true;
 		}
 
-	    DateTime _expires;
+		DateTime _expires;
 	}
 }

@@ -8,13 +8,13 @@ namespace Flow
 	/// A flow group contains a collection of other transients, and fires events when the contents of the group changes.
 	/// </summary>
 	internal class Group : Generator<bool>, IGroup
-    {
+	{
 		public event GroupHandler Added;
 
 		public event GroupHandler Removed;
-        
+		
 		public IEnumerable<ITransient> Contents { get { return _contents; } }
-        
+		
 		public IEnumerable<IGenerator> Generators 
 		{
 			get 
@@ -30,11 +30,11 @@ namespace Flow
 		}
 
 		internal Group()
-        {
-            Deleted += tr => Clear();
+		{
+			Deleted += tr => Clear();
 			Suspended += tr => ForEachGenerator(g => g.Suspend());
 			Resumed += tr => ForEachGenerator(g => g.Resume());
-        }
+		}
 
 		void ForEachGenerator(Action<IGenerator> act)
 		{
@@ -42,47 +42,47 @@ namespace Flow
 				act(gen);
 		}
 
-        public void Clear()
-        {
+		public void Clear()
+		{
 			_pendingAdds.Clear();
 
 			foreach (var tr in Contents)
 				_pendingRemoves.Add(tr);
 
 			PerformPending();
-        }
+		}
 
-        public override bool Step()
-        {
+		public override bool Step()
+		{
 			return true;
-        }
+		}
 
 		public override void Post()
 		{
 			PerformPending();
 		}
 
-        public void Add(ITransient trans)
-        {
+		public void Add(ITransient trans)
+		{
 			if (trans == null || !trans.Exists)
 				return;
 
-            if (Contents.ContainsRef(trans) || _pendingAdds.ContainsRef(trans))
-                return;
+			if (Contents.ContainsRef(trans) || _pendingAdds.ContainsRef(trans))
+				return;
 
-            _pendingAdds.Add(trans);
-        }
+			_pendingAdds.Add(trans);
+		}
 
-        public void Remove(ITransient trans)
-        {
+		public void Remove(ITransient trans)
+		{
 			if (trans == null || !trans.Exists)
 				return;
 
 			if (!Contents.ContainsRef(trans) || _pendingRemoves.ContainsRef(trans))
-                return;
+				return;
 
-            _pendingRemoves.Add(trans);
-        }
+			_pendingRemoves.Add(trans);
+		}
 
 		protected bool PerformPending()
 		{
@@ -119,10 +119,10 @@ namespace Flow
 			_pendingAdds.Clear();
 		}
 
-        private readonly List<ITransient> _contents = new List<ITransient>();
+		private readonly List<ITransient> _contents = new List<ITransient>();
 
-        protected readonly List<ITransient> _pendingAdds = new List<ITransient>();
-        
+		protected readonly List<ITransient> _pendingAdds = new List<ITransient>();
+		
 		protected readonly List<ITransient> _pendingRemoves = new List<ITransient>();
-    }
+	}
 }

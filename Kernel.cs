@@ -4,9 +4,9 @@ using System;
 
 namespace Flow
 {
-    internal class Kernel : Generator<bool>, IKernel
-    {
-        public INode Root { get; set; }
+	internal class Kernel : Generator<bool>, IKernel
+	{
+		public INode Root { get; set; }
 
 		public new IFactory Factory { get; internal set; }
 
@@ -19,8 +19,8 @@ namespace Flow
 			_time.Delta = TimeSpan.FromSeconds(0);
 		}
 
-        public override bool Step()
-        {
+		public override bool Step()
+		{
 			StepTime();
 
 			if (Root == null)
@@ -31,7 +31,7 @@ namespace Flow
 			Root.Post();
 
 			return result;
-        }
+		}
 
 		void StepTime()
 		{
@@ -43,5 +43,5 @@ namespace Flow
 		}
 
 		private readonly TimeFrame _time = new TimeFrame();
-    }
+	}
 }

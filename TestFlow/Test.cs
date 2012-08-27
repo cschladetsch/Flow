@@ -12,35 +12,35 @@ namespace TestFlow
 	public class TestKernel
 	{
 		[Test()]
-        public void TestCoroutine()
-        {
-            var kernel = Global.NewKernel();
+		public void TestCoroutine()
+		{
+			var kernel = Global.NewKernel();
 
-            var coro = kernel.Factory.NewCoroutine(Coro1);
+			var coro = kernel.Factory.NewCoroutine(Coro1);
 
-            Assert.IsTrue(coro.Exists);
-            Assert.IsTrue(coro.Running);
+			Assert.IsTrue(coro.Exists);
+			Assert.IsTrue(coro.Running);
 
 			// first coroutine is added after first step
 			Assert.AreEqual(0, kernel.Root.Contents.Count());
-            kernel.Step();
+			kernel.Step();
 			Assert.AreEqual(1, kernel.Root.Contents.Count());
 
-            kernel.Step();
-            Assert.AreEqual(1, coro.Value);
-            
-            kernel.Step();
-            Assert.AreEqual(2, coro.Value);
+			kernel.Step();
+			Assert.AreEqual(1, coro.Value);
+			
+			kernel.Step();
+			Assert.AreEqual(2, coro.Value);
 
-            kernel.Step();
-            Assert.AreEqual(3, coro.Value);
-            
-            kernel.Step();
-            Assert.AreEqual(3, coro.Value);
+			kernel.Step();
+			Assert.AreEqual(3, coro.Value);
+			
+			kernel.Step();
+			Assert.AreEqual(3, coro.Value);
 
-            Assert.IsFalse(coro.Exists);
-            Assert.IsFalse(coro.Running);
-        }
+			Assert.IsFalse(coro.Exists);
+			Assert.IsFalse(coro.Running);
+		}
 
 		[Test()]
 		public void TestSubroutine()
@@ -49,21 +49,21 @@ namespace TestFlow
 
 			var sub = kernel.Factory.NewSubroutine(Sub1, 2);
 			Assert.IsTrue(sub.Exists);
-            Assert.IsTrue(sub.Running);
+			Assert.IsTrue(sub.Running);
 
 			// first subroutine is added after first step
 			Assert.AreEqual(0, kernel.Root.Contents.Count());		
-            kernel.Step();
-			Assert.AreEqual(1, kernel.Root.Contents.Count());
-            
 			kernel.Step();
-            Assert.AreEqual("0", sub.Value);
-            
-            kernel.Step();
-            Assert.AreEqual("2", sub.Value);
+			Assert.AreEqual(1, kernel.Root.Contents.Count());
+			
+			kernel.Step();
+			Assert.AreEqual("0", sub.Value);
+			
+			kernel.Step();
+			Assert.AreEqual("2", sub.Value);
 
 			kernel.Step();
-            Assert.AreEqual("4", sub.Value);
+			Assert.AreEqual("4", sub.Value);
 		}
 
 		string Sub1(IGenerator self, int num)
@@ -71,12 +71,12 @@ namespace TestFlow
 			return (num*self.StepNumber).ToString();
 		}
 
-        IEnumerator<int> Coro1(IGenerator self)
-        {
-            yield return 1;
-            yield return 2;
-            yield return 3;
-        }	
+		IEnumerator<int> Coro1(IGenerator self)
+		{
+			yield return 1;
+			yield return 2;
+			yield return 3;
+		}	
 
 		[Test()]
 		public void TestFuture()

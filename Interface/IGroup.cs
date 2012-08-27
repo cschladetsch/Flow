@@ -13,8 +13,8 @@ namespace Flow
 	/// A flow group contains a collection of other transients, and fires events when the contents of the group changes.
 	/// <para>When a Group is suspended, all child generators are also suspended. When a Group is resumed, all child generators are also resumed</para>
 	/// </summary>
-    public interface IGroup : IGenerator
-    {
+	public interface IGroup : IGenerator
+	{
 		/// <summary>
 		/// Occurs when a transient is added to this group.
 		/// </summary>
@@ -24,7 +24,7 @@ namespace Flow
 		/// Occurs when a transient is removed from this group.
 		/// </summary>
 		event GroupHandler Removed;
-     
+	 
 		/// <summary>
 		/// Gets the contents of this group.
 		/// </summary>
@@ -40,13 +40,13 @@ namespace Flow
 		/// The transient to add to this group
 		/// </param>
 		void Add(ITransient trans);
-        
+		
 		/// <summary>
 		/// Remove the specified transient from this group.
 		/// </summary>
 		/// <param name='trans'>
 		/// The transient to remove from this group
 		/// </param>
-        void Remove(ITransient trans);
-    }
+		void Remove(ITransient trans);
+	}
 }
