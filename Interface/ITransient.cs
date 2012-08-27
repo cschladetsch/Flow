@@ -58,5 +58,13 @@ namespace Flow
 		/// Another transient that is stopping this transient from being Delete()'d.
 		/// </param>
 		void DeleteAfter(ITransient other);
+
+		/// <summary>
+		/// Deletes this Transient after a period of time
+		/// </summary>
+		/// <param name='span'>
+		/// The time to wait before deleting this Transient.
+		/// </param>
+		void DeleteAfter(TimeSpan span);
 	}
 }

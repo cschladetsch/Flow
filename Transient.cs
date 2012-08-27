@@ -1,5 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+using System;
+
 namespace Flow
 {
 	internal class Transient : ITransient
@@ -84,6 +86,11 @@ namespace Flow
 			}
 
 			other.Deleted += tr => Delete();
+		}
+
+		public void DeleteAfter (TimeSpan span)
+		{
+			DeleteAfter(Factory.NewTimer(span));
 		}
 
 		private string _name;
