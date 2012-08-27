@@ -5,22 +5,18 @@ using System.Collections.Generic;
 
 namespace Flow
 {
-	/// <inheritdoc />
 	internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
 	{
 		/// <inheritdoc />
-		public IFuture<TR> Extract 
+		public IFuture<TR> Extract()
 		{
-			get 
-			{
-				var future = Factory.NewFuture<TR>();
-				_requests.Enqueue(future);
-				return future;
-			}
+			var future = Factory.NewFuture<TR>();
+			_requests.Enqueue(future);
+			return future;
 		}
 
 		/// <inheritdoc />
-		public void Insert(TR val)	
+		public void Insert(TR val)
 		{
 			_values.Enqueue(val);
 		}

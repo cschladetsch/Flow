@@ -18,9 +18,9 @@ namespace TestFlow
 			chan.Insert(2);
 			chan.Insert(3);
 
-			var f0 = chan.Extract;
-			var f1 = chan.Extract;
-			var f2 = chan.Extract;
+			var f0 = chan.Extract();
+			var f1 = chan.Extract();
+			var f2 = chan.Extract();
 
 			StepKernel(kernel, 5);
 
@@ -35,9 +35,9 @@ namespace TestFlow
 			var kernel = Global.NewKernel();
 			var chan = kernel.Factory.NewChannel<int>();
 
-			var f0 = chan.Extract;
-			var f1 = chan.Extract;
-			var f2 = chan.Extract;
+			var f0 = chan.Extract();
+			var f1 = chan.Extract();
+			var f2 = chan.Extract();
 
 			chan.Insert(1);
 			chan.Insert(2);
@@ -127,7 +127,7 @@ namespace TestFlow
 
 			while (true) 
 			{
-				var next = channel.Extract;
+				var next = channel.Extract();
 				yield return self.ResumeAfter(next);
 				if (!next.Available)
 					yield break;

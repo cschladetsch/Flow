@@ -17,7 +17,7 @@ namespace Flow
 		/// <value>
 		/// A future output of the channel
 		/// </value>
-		IFuture<TR> Extract { get; }
+		IFuture<TR> Extract();
 
 		/// <summary>
 		/// Insert the specified value into the channel
