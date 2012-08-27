@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Flow
 {
+	/// <summary>
+	/// Coroutine.
+	/// </summary>
 	internal class Coroutine<TR> : Generator<TR>, ICoroutine<TR>
 	{
 		/// <summary>

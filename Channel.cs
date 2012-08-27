@@ -8,8 +8,10 @@ namespace Flow
 	/// <inheritdoc />
 	internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
 	{
+		/// <inheritdoc />
 		public ITypedGenerator<TR> Generator { get; private set; }
 
+		/// <inheritdoc />
 		public IFuture<TR> Extract 
 		{
 			get 
@@ -17,6 +19,21 @@ namespace Flow
 				var future = Factory.NewFuture<TR>();
 				_requests.Enqueue(future);
 				return future;
+			}
+		}
+
+		/// <inheritdoc />
+		public void Insert(TR val)	
+		{
+			_values.Enqueue(val);
+		}
+
+		/// <inheritdoc />
+		public void Flush()
+		{
+			while (_values.Count > 0 && _requests.Count > 0)
+			{
+				_requests.Dequeue().Value = _values.Dequeue();
 			}
 		}
 
@@ -33,19 +50,6 @@ namespace Flow
 			Generator.Stepped += GenStepped;
 
 			DeleteAfter(Generator);
-		}
-
-		public void Insert(TR val)
-		{
-			_values.Enqueue(val);
-		}
-
-		public void Flush()
-		{
-			while (_values.Count > 0 && _requests.Count > 0)
-			{
-				_requests.Dequeue().Value = _values.Dequeue();
-			}
 		}
 
 		void GenStepped(IGenerator gen)

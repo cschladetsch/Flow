@@ -128,10 +128,10 @@ namespace Flow
 			_pendingAdds.Clear();
 		}
 
-		private readonly List<ITransient> _contents = new List<ITransient>();
-
 		protected readonly List<ITransient> _pendingAdds = new List<ITransient>();
 		
 		protected readonly List<ITransient> _pendingRemoves = new List<ITransient>();
+
+		private readonly List<ITransient> _contents = new List<ITransient>();
 	}
 }
