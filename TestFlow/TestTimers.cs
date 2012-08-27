@@ -11,7 +11,7 @@ namespace TestFlow
 		[TestCase(0.4f, 0.2f, false)]
 		public void TestOneShot(float span, float runTime, bool shouldBeDeleted)
 		{
-			var kernel = Boot.NewKernel();
+			var kernel = Create.NewKernel();
 			var timer = kernel.Factory.NewTimer(TimeSpan.FromSeconds(span));
 
 			var elapsed = false;
@@ -43,7 +43,7 @@ namespace TestFlow
 		[TestCase(0.1f, 0.0f, 0)]
 		public void TestPeriodic(float interval, float runTime, int numElapsed)
 		{
-			var kernel = Boot.NewKernel();
+			var kernel = Create.NewKernel();
 			var timer = kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(interval));
 
 			int elapsed = 0;
@@ -58,7 +58,7 @@ namespace TestFlow
 		[TestCase(0.2f, 0.1f, false)]
 		public void TestTimedFuture(float span, float runTime, bool result)
 		{
-			var kernel = Boot.NewKernel();
+			var kernel = Create.NewKernel();
 			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(span));
 
 			Assert.IsFalse(future.Available);
