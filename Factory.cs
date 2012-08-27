@@ -73,6 +73,7 @@ namespace Flow
 			return Prepare(sub);
 		}
 
+		/// <inheritdoc />
 		public ISubroutine<TR> NewSubroutine<TR, T0, T1> (Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1)
 		{
 			var sub = new Subroutine<TR>();
@@ -80,6 +81,7 @@ namespace Flow
 			return Prepare(sub);
 		}
 
+		/// <inheritdoc />
 		public ISubroutine<TR> NewSubroutine<TR, T0, T1, T2> (Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2)
 		{
 			var sub = new Subroutine<TR>();
@@ -119,13 +121,13 @@ namespace Flow
 			return Prepare(coro);
 		}
 
+		/// <inheritdoc />
 		public ICoroutine<TR> NewCoroutine<TR, T0, T1, T2, T3>(Func<IGenerator, T0, T1, T2, T3, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2, T3 t3)
 		{
 			var coro = new Coroutine<TR>();
 			coro.Start = () => fun(coro, t0, t1, t2, t3);
 			return Prepare(coro);
 		}
-
 
 		/// <inheritdoc />
 		public IChannel<TR> NewChannel<TR>(ITypedGenerator<TR> gen)

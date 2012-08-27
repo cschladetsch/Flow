@@ -10,9 +10,9 @@ namespace TestFlow
 		[Test()]
 		public void TestCase ()
 		{
-			var kernel = Global.NewKernel();
+			//var kernel = Global.NewKernel();
 
-			var f = kernel.Factory.NewFuture<int>();
+			//var f = kernel.Factory.NewFuture<int>();
 
 			//var ev = f.NewEventStream(f.Arrived);
 
