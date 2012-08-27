@@ -66,9 +66,9 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public void SuspendAfter (ITransient transient)
+		public void SuspendAfter (ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(transient))
+			if (Transient.IsNullOrEmpty(other))
 			{
 				Suspend();
 				return;
@@ -76,13 +76,13 @@ namespace Flow
 
 			Resume();
 
-			transient.Deleted += tr => Suspend();
+			other.Deleted += tr => Suspend();
 		}
 
 		/// <inheritdoc />
-		public bool ResumeAfter(ITransient transient)
+		public bool ResumeAfter(ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(transient))
+			if (Transient.IsNullOrEmpty(other))
 			{
 				Resume();
 				return true;
@@ -90,7 +90,7 @@ namespace Flow
 
 			Suspend();
 
-			transient.Deleted += tr => Resume();
+			other.Deleted += tr => Resume();
 
 			return true;
 		}
