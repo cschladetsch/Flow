@@ -10,7 +10,12 @@ namespace Flow
 	public delegate void TimedOutHandler(ITimesOut timed);
 
 	/// <summary>
-	/// Common interface for all instances that have a time-out
+	/// After a period of time, an instance of ITimesOut will 'time-out' if not already Deleted. In this case, it will:
+	/// <list>
+	/// <item>fire its TimedOut event</item>
+	/// <item>set its HasTimedOut property to true, and then</item>
+	/// <item>Delete itself</item>
+	/// </list>
 	/// </summary>
 	public interface ITimesOut : ITransient
 	{

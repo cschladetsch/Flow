@@ -3,7 +3,7 @@
 namespace Flow
 {
 	/// <summary>
-	/// A Coroutine is a continuation that can Resume after a yield.
+	/// A Coroutine can continue after a yield.
 	/// </summary>
 	public interface ICoroutine<TR> : ITypedGenerator<TR>
 	{

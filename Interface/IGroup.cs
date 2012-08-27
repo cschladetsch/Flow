@@ -5,13 +5,14 @@ using System.Collections.Generic;
 namespace Flow
 {
 	/// <summary>
-	/// Group handler.
+	/// Delegate for events related to a group and a child of the group.
 	/// </summary>
 	public delegate void GroupHandler(IGroup node, ITransient child);
 
 	/// <summary>
-	/// A flow Group contains a collection of other Transients, and fires events when the contents of the group changes.
-	/// <para>When a Group is suspended, all child generators are also suspended. When a Group is resumed, all child generators are also resumed</para>
+	/// A Group contains a collection of other Transients, and fires events when the contents of the group changes.
+	/// <para>When a Group is suspended, all child generators are also suspended.</para> 
+	/// <para>When a Group is resumed, all child generators are also resumed</para>
 	/// </summary>
 	public interface IGroup : IGenerator
 	{

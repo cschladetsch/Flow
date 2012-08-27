@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Flow
 {
 	/// <summary>
-	/// Delegate for events that deal with futures.
+	/// Delegate for events that deal with Future values.
 	/// </summary>
 	public delegate void FutureHandler<T>(IFuture<T> future);
 

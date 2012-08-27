@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Flow
 {
 	/// <summary>
-	/// A one-shot Timer that will fire its Elapsed event then Delete itself after a fixed interval of time.
+	/// A one-shot Timer that will fire its Elapsed event, and then Delete itself after a fixed time Interval.
 	/// </summary>
 	public interface ITimer : IPeriodic
 	{

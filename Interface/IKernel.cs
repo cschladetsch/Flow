@@ -5,7 +5,7 @@ using System;
 namespace Flow
 {
 	/// <summary>
-	/// An instance of IKernel contains a top-level root node, which contains all the transients in the IKernel.
+	/// A Kernel contains a top-level root Node, and a local TimeFrame.
 	/// <para>
 	/// When the Kernel is Stepped, it Steps the top-level Root node.
 	/// </para>

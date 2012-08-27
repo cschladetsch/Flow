@@ -3,7 +3,7 @@
 namespace Flow
 {
 	/// <summary>
-	/// A Generator that is implemented as a method call.
+	/// A Subroutine is a Generator, implemented as a direct method call.
 	/// </summary>
 	public interface ISubroutine<TR> : ITypedGenerator<TR>
 	{
