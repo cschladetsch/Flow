@@ -14,7 +14,7 @@ namespace TestFlow
 		[Test()]
 		public void TestCoroutine()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 
 			var coro = kernel.Factory.NewCoroutine(Coro1);
 
@@ -45,7 +45,7 @@ namespace TestFlow
 		[Test()]
 		public void TestSubroutine()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 
 			var sub = kernel.Factory.NewSubroutine(Sub1, 2);
 			Assert.IsTrue(sub.Exists);
@@ -81,7 +81,7 @@ namespace TestFlow
 		[Test()]
 		public void TestFuture()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var spawn = kernel.Factory;
 
 			var future = spawn.NewFuture<int>();
@@ -129,7 +129,7 @@ namespace TestFlow
 		[Test()]
 		public void TestBarrier()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var factory = kernel.Factory;
 
 			var barrier = factory.NewBarrier();
@@ -174,7 +174,7 @@ namespace TestFlow
 		//[Test()]
 		public void TestTrigger()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var factory = kernel.Factory;
 
 			var trigger = factory.NewTrigger();

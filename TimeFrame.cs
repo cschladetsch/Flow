@@ -3,7 +3,7 @@
 namespace Flow
 {
 	/// <summary>
-	/// TODO
+	/// TODO: delta-capping, pausing, introduction of zulu/sim time differences
 	/// </summary>
 	internal class TimeFrame : ITimeFrame
 	{

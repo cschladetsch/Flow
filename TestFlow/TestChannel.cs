@@ -11,7 +11,7 @@ namespace TestFlow
 		[Test()]
 		public void TestInsertExtract()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var chan = kernel.Factory.NewChannel<int>();
 
 			chan.Insert(1);
@@ -32,7 +32,7 @@ namespace TestFlow
 		[Test()]
 		public void TestExtractInsert()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var chan = kernel.Factory.NewChannel<int>();
 
 			var f0 = chan.Extract();
@@ -62,7 +62,7 @@ namespace TestFlow
 		[Test()]
 		public void TestProducerConsumer ()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var channel = kernel.Factory.NewChannel<int>();
 			var con = new Consumer(kernel, channel);
 
@@ -89,7 +89,7 @@ namespace TestFlow
 		[Test()]
 		public void TestCoroProducerMultipleConsumer()
 		{
-			var kernel = Global.NewKernel();
+			var kernel = Boot.NewKernel();
 			var prod = kernel.Factory.NewCoroutine(Producer);
 			var channel = kernel.Factory.NewChannel(prod);
 

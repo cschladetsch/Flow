@@ -5,28 +5,28 @@ using System;
 namespace Flow
 {
 	/// <summary>
-	/// Information about a time step
+	/// Information about a time step.
 	/// </summary>
 	public interface ITimeFrame
 	{
 		/// <summary>
-		/// Gets the time of the last update.
+		/// Gets the caonical time of the last update.
 		/// </summary>
 		/// <value>
-		/// The time at the last update
+		/// The canonical time that the last update was executed at.
 		/// </value>
 		DateTime Last { get; }
 
 		/// <summary>
-		/// Gets the time at the start of this update
+		/// Gets the canonical time of the current update. This does not change as the update is being performed.
 		/// </summary>
 		/// <value>
-		/// The current.
+		/// The canonical time of the current update. This does not change as the update is being performed.
 		/// </value>
 		DateTime Now { get; }
 
 		/// <summary>
-		/// Gets the delta time to use for this update. Note that (Current - Last) may not always be equal to Delta
+		/// Gets the delta time to use for this update. Note that (Now - Last) may not always be equal to Delta
 		/// </summary>
 		/// <value>
 		/// The delta time to use for this update.

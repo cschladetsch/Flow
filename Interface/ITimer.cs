@@ -11,7 +11,7 @@ namespace Flow
 	public interface ITimer : IPeriodic
 	{
 		/// <summary>
-		/// Gets the time that the timer will elapse and subsequently delete itself.
+		/// Gets the game time that the timer will elapse and subsequently delete itself.
 		/// </summary>
 		/// <value>
 		/// The soonest time that the timer will elapse

@@ -5,7 +5,7 @@ namespace Flow
 	/// <summary>
 	/// Bootstrapper for the flow library using default implementations
 	/// </summary>
-	public static class Global
+	public static class Boot
 	{
 		/// <summary>
 		/// Create a new Kernel and Factory
