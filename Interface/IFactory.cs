@@ -40,7 +40,7 @@ namespace Flow
 		/// <param name='interval'>
 		/// Interval.
 		/// </param>
-		IPeriodicTimer NewPeriodicTimer(TimeSpan interval);
+		IPeriodic NewPeriodicTimer(TimeSpan interval);
 
 		/// <summary>
 		/// News the barrier.

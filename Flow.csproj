@@ -50,7 +50,6 @@
     <Compile Include="Node.cs" />
     <Compile Include="Future.cs" />
     <Compile Include="Exception.cs" />
-    <Compile Include="PeriodicTimer.cs" />
     <Compile Include="TimeFrame.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Channel.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="Interface\IKernel.cs" />
     <Compile Include="Interface\INamed.cs" />
     <Compile Include="Interface\INode.cs" />
-    <Compile Include="Interface\IPeriodicTimer.cs" />
     <Compile Include="Interface\ISubroutine.cs" />
     <Compile Include="Interface\ITimeFrame.cs" />
     <Compile Include="Interface\ITimer.cs" />
@@ -75,6 +73,8 @@
     <Compile Include="Interface\ITimedFuture.cs" />
     <Compile Include="TimedFuture.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Periodic.cs" />
+    <Compile Include="Interface\IPeriodic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,7 +8,7 @@ namespace Flow
 	/// <summary>
 	/// A one-shot timer that will fire its Elapsed event then Delete itself after a fixed interval of time.
 	/// </summary>
-	public interface ITimer : IPeriodicTimer
+	public interface ITimer : IPeriodic
 	{
 		/// <summary>
 		/// Gets the time that the timer will elapse and subsequently delete itself.

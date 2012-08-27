@@ -40,12 +40,6 @@ namespace Flow
 			Resumed += tr => ForEachGenerator(g => g.Resume());
 		}
 
-		void ForEachGenerator(Action<IGenerator> act)
-		{
-			foreach (var gen in Generators) 
-				act(gen);
-		}
-
 		/// <inheritdoc />
 		public void Clear()
 		{
@@ -84,13 +78,19 @@ namespace Flow
 		/// <inheritdoc />
 		public void Remove(ITransient trans)
 		{
-			if (trans == null || !trans.Exists)
+			if (trans == null)
 				return;
 
 			if (!Contents.ContainsRef(trans) || _pendingRemoves.ContainsRef(trans))
 				return;
 
 			_pendingRemoves.Add(trans);
+		}
+
+		void ForEachGenerator(Action<IGenerator> act)
+		{
+			foreach (var gen in Generators) 
+				act(gen);
 		}
 
 		protected bool PerformPending()

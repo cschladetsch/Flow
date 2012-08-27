@@ -5,7 +5,7 @@ using System;
 namespace Flow
 {
 	/// <inheritdoc />
-	class PeriodicTimer : Subroutine<bool>, IPeriodicTimer
+	class Periodic : Subroutine<bool>, IPeriodic
 	{
 		/// <inheritdoc />
 		public event TransientHandler Elapsed;
@@ -16,7 +16,7 @@ namespace Flow
 		/// <inheritdoc />
 		public TimeSpan Interval { get; set; }
 
-		internal PeriodicTimer(IKernel kernel, TimeSpan interval)
+		internal Periodic(IKernel kernel, TimeSpan interval)
 		{
 			Interval = interval;
 			TimeStarted = kernel.Time.Now;

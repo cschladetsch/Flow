@@ -9,7 +9,7 @@ namespace Flow
 	/// Instances of this interface regularly fire their Elapsed event.
 	/// <para>NOTE that the timer will fire at most once per Kernel Step</para>
 	/// </summary>
-	public interface IPeriodicTimer : IGenerator
+	public interface IPeriodic : IGenerator
 	{
 		/// <summary>
 		/// Periodically occurs when the timer has elapsed. Fired at most once per Kernel Step

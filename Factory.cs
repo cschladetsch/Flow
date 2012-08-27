@@ -21,9 +21,9 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public IPeriodicTimer NewPeriodicTimer (TimeSpan interval)
+		public IPeriodic NewPeriodicTimer (TimeSpan interval)
 		{
-			var timer = new PeriodicTimer(Kernel, interval);
+			var timer = new Periodic(Kernel, interval);
 			return Prepare(timer);
 		}
 
