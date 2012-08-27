@@ -21,6 +21,9 @@ namespace Flow
 			if (!Exists)
 				return;
 
+			if (TimedOut != null)
+				TimedOut(this);
+
 			HasTimedOut = true;
 
 			Delete();
