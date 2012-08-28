@@ -122,9 +122,6 @@ namespace TestFlow
 
 		public IEnumerator<bool> Step (IGenerator self, IChannel<int> channel)
 		{
-			self.DeleteAfter(channel);
-			Sum = 0;
-
 			while (true) 
 			{
 				var next = channel.Extract();

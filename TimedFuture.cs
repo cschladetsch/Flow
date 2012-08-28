@@ -10,6 +10,12 @@ namespace Flow
 		/// <inheritdoc />
 		public event TimedOutHandler TimedOut;
 
+		/// <inheritdoc />
+		public ITimer Timer { get; internal set; }
+
+		/// <inheritdoc />
+		public bool HasTimedOut { get; protected set; }
+
 		internal TimedFuture(IKernel kernel, TimeSpan span)
 		{
 			Timer = kernel.Factory.NewTimer(span);

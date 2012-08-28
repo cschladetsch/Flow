@@ -18,12 +18,12 @@ namespace Flow
 	public interface ITransient : INamed
 	{
 		/// <summary>
-		/// Occurs when the Delete() method is first called. Successive calls to Delete() will do nothing.
+		/// Occurs when the Delete method is first called. Successive calls to Delete will do nothing.
 		/// </summary>
 		event TransientHandler Deleted;
 
 		/// <summary>
-		/// Gets the kernel that stores this generator.
+		/// Gets the kernel that stores this Transient.
 		/// </summary>
 		/// <value>
 		/// The kernel.
@@ -31,7 +31,7 @@ namespace Flow
 		IKernel Kernel { get; /*internal*/ set; }
 
 		/// <summary>
-		/// Gets the factory.
+		/// Gets the factory that made this Transient
 		/// </summary>
 		/// <value>
 		/// The factory.

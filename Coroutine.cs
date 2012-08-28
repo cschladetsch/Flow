@@ -24,9 +24,7 @@ namespace Flow
 			{
 				if (Start == null)
 					CannotStart();
-			
 				_enumerator = Start();
-
 				if (_enumerator == null)
 					CannotStart();
 			}
@@ -38,7 +36,6 @@ namespace Flow
 			}
 
 			Value = _enumerator.Current;
-
 			base.Step();
 		}
 
@@ -48,7 +45,6 @@ namespace Flow
 		}
 
 		private IEnumerator<TR> _enumerator;
-
 		internal Func<IEnumerator<TR>> Start;
 	}
 }

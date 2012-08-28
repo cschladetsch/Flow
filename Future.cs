@@ -11,13 +11,7 @@ namespace Flow
 		public event FutureHandler<T> Arrived;
 
 		/// <inheritdoc />
-		public ITimer Timer { get; internal set; }
-
-		/// <inheritdoc />
 		public bool Available { get; private set; }
-
-		/// <inheritdoc />
-		public bool HasTimedOut { get; protected set; }
 
 		/// <inheritdoc />
 		public T Value 

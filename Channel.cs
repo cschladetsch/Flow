@@ -33,7 +33,15 @@ namespace Flow
 		internal Channel(IKernel kernel)
 		{
 			Sub = StepChannel;
-			Deleted += (tr) => Flush();
+			Deleted += (tr) => Close();
+		}
+
+		internal void Close()
+		{
+			Flush();
+
+			foreach (var f in _requests)
+				f.Delete();
 		}
 
 		internal Channel(IKernel kernel, ITypedGenerator<TR> gen)

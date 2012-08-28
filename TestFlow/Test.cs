@@ -41,6 +41,13 @@ namespace TestFlow
 			Assert.IsFalse(coro.Exists);
 			Assert.IsFalse(coro.Running);
 		}
+		
+		IEnumerator<int> Coro1(IGenerator self)
+		{
+			yield return 1;
+			yield return 2;
+			yield return 3;
+		}
 
 		[Test()]
 		public void TestSubroutine()
@@ -57,26 +64,19 @@ namespace TestFlow
 			Assert.AreEqual(1, kernel.Root.Contents.Count());
 			
 			kernel.Step();
-			Assert.AreEqual("0", sub.Value);
+			Assert.AreEqual(0, sub.Value);
 			
 			kernel.Step();
-			Assert.AreEqual("2", sub.Value);
+			Assert.AreEqual(2, sub.Value);
 
 			kernel.Step();
-			Assert.AreEqual("4", sub.Value);
+			Assert.AreEqual(4, sub.Value);
 		}
 
-		string Sub1(IGenerator self, int num)
+		int Sub1(IGenerator self, int num)
 		{
-			return (num*self.StepNumber).ToString();
+			return num*self.StepNumber;
 		}
-
-		IEnumerator<int> Coro1(IGenerator self)
-		{
-			yield return 1;
-			yield return 2;
-			yield return 3;
-		}	
 
 		[Test()]
 		public void TestFuture()
