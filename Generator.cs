@@ -42,7 +42,7 @@ namespace Flow
 		/// <inheritdoc />
 		public void Suspend()
 		{
-			if (!Running || !Exists)
+			if (!Running || !Active)
 				return;
 			
 			Running = false;
@@ -54,7 +54,7 @@ namespace Flow
 		/// <inheritdoc />
 		public void Resume()
 		{
-			if (Running || !Exists)
+			if (Running || !Active)
 				return;
 			
 			Running = true;
@@ -74,7 +74,7 @@ namespace Flow
 
 			Resume();
 
-			other.Deleted += tr => Suspend();
+			other.Completed += tr => Suspend();
 		}
 
 		/// <inheritdoc />
@@ -88,7 +88,7 @@ namespace Flow
 
 			Suspend();
 
-			other.Deleted += tr => Resume();
+			other.Completed += tr => Resume();
 
 			return true;
 		}
@@ -96,7 +96,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool ResumeAfter(TimeSpan span)
 		{
-			if (!Exists)
+			if (!Active)
 				return false;
 
 			ResumeAfter(Factory.NewTimer(span));
@@ -107,7 +107,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool SuspendAfter(TimeSpan span)
 		{
-			if (!Exists)
+			if (!Active)
 				return false;
 
 			SuspendAfter(Factory.NewTimer(span));

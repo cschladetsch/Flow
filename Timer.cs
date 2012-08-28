@@ -13,7 +13,7 @@ namespace Flow
 			: base(kernel, span)
 		{
 			TimeEnds = kernel.Time.Now + span;
-			Elapsed += (self) => Delete();
+			Elapsed += (self) => Complete();
 		}
 	}
 }

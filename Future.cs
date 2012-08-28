@@ -30,7 +30,7 @@ namespace Flow
 				Available = true;
 				if (Arrived != null)
 					Arrived(this);
-				Delete();
+				Complete();
 			}
 		}
 

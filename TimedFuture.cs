@@ -24,7 +24,7 @@ namespace Flow
 
 		void HandleElapsed(ITransient sender)
 		{
-			if (!Exists)
+			if (!Active)
 				return;
 
 			if (TimedOut != null)
@@ -32,7 +32,7 @@ namespace Flow
 
 			HasTimedOut = true;
 
-			Delete();
+			Complete();
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace Flow
 
 			// if there is nothing pending to add, we are done
 			if (_adds.Count == 0)
-				Delete();
+				Complete();
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace TestFlow
 
 			var coro = kernel.Factory.NewCoroutine(Coro1);
 
-			Assert.IsTrue(coro.Exists);
+			Assert.IsTrue(coro.Active);
 			Assert.IsTrue(coro.Running);
 
 			// first coroutine is added after first step
@@ -38,7 +38,7 @@ namespace TestFlow
 			kernel.Step();
 			Assert.AreEqual(3, coro.Value);
 
-			Assert.IsFalse(coro.Exists);
+			Assert.IsFalse(coro.Active);
 			Assert.IsFalse(coro.Running);
 		}
 		
@@ -55,7 +55,7 @@ namespace TestFlow
 			var kernel = Create.NewKernel();
 
 			var sub = kernel.Factory.NewSubroutine(Sub1, 2);
-			Assert.IsTrue(sub.Exists);
+			Assert.IsTrue(sub.Active);
 			Assert.IsTrue(sub.Running);
 
 			// first subroutine is added after first step
@@ -109,7 +109,7 @@ namespace TestFlow
 
 		IEnumerator<bool> Coro2(IGenerator self, IFuture<int> future)
 		{
-			Assert.IsFalse(!future.Exists);
+			Assert.IsFalse(!future.Active);
 
 			Assert.IsFalse(future.Available);
 
@@ -117,7 +117,7 @@ namespace TestFlow
 
 			_futureSet = true;
 
-			Assert.IsTrue(!future.Exists);
+			Assert.IsTrue(!future.Active);
 
 			Assert.IsTrue(future.Available);
 
@@ -144,9 +144,9 @@ namespace TestFlow
 
 			Assert.AreEqual(3, kernel.Root.Contents.Count());
 
-			Assert.IsTrue(barrier.Exists);
-			Assert.IsTrue(future1.Exists);
-			Assert.IsTrue(future2.Exists);
+			Assert.IsTrue(barrier.Active);
+			Assert.IsTrue(future1.Active);
+			Assert.IsTrue(future2.Active);
 
 			kernel.Step();
 
@@ -154,17 +154,17 @@ namespace TestFlow
 
 			kernel.Step();
 
-			Assert.IsTrue(barrier.Exists);
-			Assert.IsFalse(future1.Exists);
-			Assert.IsTrue(future2.Exists);
+			Assert.IsTrue(barrier.Active);
+			Assert.IsFalse(future1.Active);
+			Assert.IsTrue(future2.Active);
 
 			future2.Value = 456;
 
 			kernel.Step();
 
-			Assert.IsFalse(barrier.Exists);
-			Assert.IsFalse(future1.Exists);
-			Assert.IsFalse(future2.Exists);
+			Assert.IsFalse(barrier.Active);
+			Assert.IsFalse(future1.Active);
+			Assert.IsFalse(future2.Active);
 
 			Assert.AreEqual(123, future1.Value);
 			Assert.AreEqual(456, future2.Value);
@@ -187,9 +187,9 @@ namespace TestFlow
 			kernel.Step();
 			kernel.Step();
 
-			Assert.IsTrue(trigger.Exists);
-			Assert.IsTrue(future1.Exists);
-			Assert.IsTrue(future2.Exists);
+			Assert.IsTrue(trigger.Active);
+			Assert.IsTrue(future1.Active);
+			Assert.IsTrue(future2.Active);
 
 			kernel.Step();
 
@@ -197,9 +197,9 @@ namespace TestFlow
 
 			kernel.Step();
 
-			Assert.IsFalse(trigger.Exists);
-			Assert.IsFalse(future1.Exists);
-			Assert.IsTrue(future2.Exists);
+			Assert.IsFalse(trigger.Active);
+			Assert.IsFalse(future1.Active);
+			Assert.IsTrue(future2.Active);
 		}
 	}
 }

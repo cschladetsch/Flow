@@ -20,7 +20,7 @@ namespace Flow
  			if (Tripped != null)
 				Tripped(this, other);
 
-			Delete();
+			Complete();
 		}
 	}
 }

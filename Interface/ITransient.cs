@@ -10,17 +10,16 @@ namespace Flow
 	public delegate void TransientHandler(ITransient sender);
 
 	/// <summary>
-	/// A Transient object notifies observers when it has been Deleted. Note that this is 
-	/// distinct from the notion of garbage collection in .Net: Specifically, the object can still exist
-	/// and be accessed in the runtime after it has had its Delete() method called. Delete is purely used for 
+	/// A Transient object notifies observers when it has been Completed. When a Transient is Completed,
+	/// it has no more work to do and its internal state will not change without external influence.
 	/// flow-control.
 	/// </summary>
 	public interface ITransient : INamed
 	{
 		/// <summary>
-		/// Occurs when the Delete method is first called. Successive calls to Delete will do nothing.
+		/// Occurs when the Complete method is first called. Successive calls to Complete will do nothing.
 		/// </summary>
-		event TransientHandler Deleted;
+		event TransientHandler Completed;
 
 		/// <summary>
 		/// Gets the kernel that stores this Transient.
@@ -39,32 +38,32 @@ namespace Flow
 		IFactory Factory { get; }
 
 		/// <summary>
-		/// Gets a value indicating whether this <see cref="Flow.ITransient"/> exists.
+		/// Gets a value indicating whether this <see cref="Flow.ITransient"/> is still active and has not been Completed.
 		/// </summary>
 		/// <value>
-		/// True if this ITransient instance has not been Delete()'d.
+		/// True if this ITransient instance has not been Complete()'d.
 		/// </value>
-		bool Exists { get; }
+		bool Active { get; }
 
 		/// <summary>
-		/// Delete this instance iand fire the Deleted event iff it has not already been Delete()'d.
+		/// Complete this instance and fire the Completed event iff it has not already been Completed.
 		/// </summary>
-		void Delete();
+		void Complete();
 
 		/// <summary>
-		/// Ensure that this instance is Delete()'d after the given other transient is Delete()'d.
+		/// Ensure that this instance is Complete()'d after the given other transient is Completed.
 		/// </summary>
 		/// <param name='other'>
-		/// Another transient that is stopping this transient from being Delete()'d.
+		/// Another transient that is stopping this transient from being Complete()'d.
 		/// </param>
-		void DeleteAfter(ITransient other);
+		void CompleteAfter(ITransient other);
 
 		/// <summary>
-		/// Deletes this Transient after a period of time
+		/// Completes this Transient after a period of time
 		/// </summary>
 		/// <param name='span'>
 		/// The time to wait before deleting this Transient.
 		/// </param>
-		void DeleteAfter(TimeSpan span);
+		void CompleteAfter(TimeSpan span);
 	}
 }

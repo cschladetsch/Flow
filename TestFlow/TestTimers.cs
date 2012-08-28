@@ -9,7 +9,7 @@ namespace TestFlow
 	{
 		[TestCase(0.4f, 0.5f, true)]
 		[TestCase(0.4f, 0.2f, false)]
-		public void TestOneShot(float span, float runTime, bool shouldBeDeleted)
+		public void TestOneShot(float span, float runTime, bool shouldBeCompleted)
 		{
 			var kernel = Create.NewKernel();
 			var timer = kernel.Factory.NewTimer(TimeSpan.FromSeconds(span));
@@ -25,15 +25,15 @@ namespace TestFlow
 
 			var start = RunKernel(kernel, TimeSpan.FromSeconds(runTime));
 
-			if (shouldBeDeleted) 
+			if (shouldBeCompleted) 
 			{
-				Assert.IsTrue(!timer.Exists);
+				Assert.IsTrue(!timer.Active);
 				Assert.IsTrue(elapsed);
 				Assert.IsTrue(when > start);
 			} 
 			else 
 			{
-				Assert.IsFalse(!timer.Exists);
+				Assert.IsFalse(!timer.Active);
 				Assert.IsFalse(elapsed);
 			}
 		}

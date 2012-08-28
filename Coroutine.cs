@@ -8,16 +8,10 @@ namespace Flow
 	/// <inheritdoc />
 	internal class Coroutine<TR> : Generator<TR>, ICoroutine<TR>
 	{
-		internal Coroutine()
-		{
-			// ensure that we transition through suspended state before deleting
-			Deleted += tr => { if (Running) Suspend(); };
-		}
-
 		/// <inheritdoc />
 		public override void Step ()
 		{
-			if (!Running || !Exists)
+			if (!Running || !Active)
 				return;
 
 			if (_enumerator == null) 
@@ -31,7 +25,7 @@ namespace Flow
 
 			if (!_enumerator.MoveNext())
 			{
-				Delete();
+				Complete();
 				return;
 			}
 

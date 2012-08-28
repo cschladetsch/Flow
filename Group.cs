@@ -37,7 +37,7 @@ namespace Flow
 		{
 			Resumed += tr => ForEachGenerator(g => g.Resume());
 			Suspended += tr => ForEachGenerator(g => g.Suspend());
-			Deleted += tr => Clear();
+			Completed += tr => Clear();
 		}
 
 		/// <inheritdoc />
@@ -103,7 +103,7 @@ namespace Flow
 			foreach (var tr in _dels) 
 			{
 				_contents.RemoveRef(tr);
-				tr.Deleted -= Remove;
+				tr.Completed -= Remove;
 				if (Removed != null)
 					Removed(this, tr);
 			}
@@ -116,7 +116,7 @@ namespace Flow
 			foreach (var tr in _adds) 
 			{
 				_contents.Add(tr);
-				tr.Deleted += Remove;
+				tr.Completed += Remove;
 				if (Added != null)
 					Added(this, tr);
 			}

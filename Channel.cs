@@ -33,7 +33,7 @@ namespace Flow
 		internal Channel(IKernel kernel)
 		{
 			Sub = StepChannel;
-			Deleted += (tr) => Close();
+			Completed += (tr) => Close();
 		}
 
 		internal void Close()
@@ -41,14 +41,14 @@ namespace Flow
 			Flush();
 
 			foreach (var f in _requests)
-				f.Delete();
+				f.Complete();
 		}
 
 		internal Channel(IKernel kernel, ITypedGenerator<TR> gen)
 			: this(kernel)
 		{
 			gen.Stepped += g => Insert(gen.Value);
-			DeleteAfter(gen);
+			CompleteAfter(gen);
 		}
 
 		bool StepChannel(IGenerator self)

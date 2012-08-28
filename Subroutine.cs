@@ -10,12 +10,12 @@ namespace Flow
 		/// <inheritdoc />
 		public override void Step ()
 		{
-			if (!Exists || !Running)
+			if (!Active || !Running)
 				return;
 
 			if (Sub == null) 
 			{
-				Delete();
+				Complete();
 				return;
 			}
 

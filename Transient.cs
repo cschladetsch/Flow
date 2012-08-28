@@ -7,7 +7,7 @@ namespace Flow
 	internal class Transient : ITransient
 	{
 		/// <inheritdoc />
-		public event TransientHandler Deleted;
+		public event TransientHandler Completed;
 
 		/// <inheritdoc />
 		public string Name 
@@ -37,7 +37,7 @@ namespace Flow
 		public event NamedHandler NewName;
 
 		/// <inheritdoc />
-		public bool Exists { get; private set; }
+		public bool Active { get; private set; }
 
 		/// <summary>
 		/// Return true if the given other transient is either null or does not exist
@@ -50,47 +50,47 @@ namespace Flow
 		/// </param>
 		public static bool IsNullOrEmpty (ITransient other)
 		{
-			return other == null || !other.Exists;
+			return other == null || !other.Active;
 		}
 
 		internal Transient()
 		{
-			Exists = true;
+			Active = true;
 		}
 
 		/// <inheritdoc />
-		public void Delete()
+		public void Complete()
 		{
-			if (!Exists)
+			if (!Active)
 				return;
 
-			if (Deleted != null)
-				Deleted(this);
+			if (Completed != null)
+				Completed(this);
 
-			Exists = false;
+			Active = false;
 		}
 
 		/// <inheritdoc />
-		public void DeleteAfter(ITransient other)
+		public void CompleteAfter(ITransient other)
 		{
-			if (!Exists)
+			if (!Active)
 				return;
 
 			if (other == null)
 				return;
 
-			if (!other.Exists) 
+			if (!other.Active) 
 			{
-				Delete();
+				Complete();
 				return;
 			}
 
-			other.Deleted += tr => Delete();
+			other.Completed += tr => Complete();
 		}
 
-		public void DeleteAfter (TimeSpan span)
+		public void CompleteAfter (TimeSpan span)
 		{
-			DeleteAfter(Factory.NewTimer(span));
+			CompleteAfter(Factory.NewTimer(span));
 		}
 
 		private string _name;
