@@ -74,7 +74,7 @@
     <Compile Include="TimedFuture.cs" />
     <Compile Include="Periodic.cs" />
     <Compile Include="Interface\IPeriodic.cs" />
-    <Compile Include="Boot.cs" />
+    <Compile Include="Create.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
