@@ -53,6 +53,11 @@ namespace Flow
 
 		bool StepChannel(IGenerator self)
 		{
+			base.Step();
+
+			if (Completed)
+				return;
+
 			Flush();
 			return true;
 		}
