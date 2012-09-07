@@ -10,6 +10,11 @@ namespace Flow
 	public delegate void TransientHandler(ITransient sender);
 
 	/// <summary>
+	/// Transient handler reason.
+	/// </summary>
+	public delegate void TransientHandlerReason(ITransient sender, ITransient reason);
+
+	/// <summary>
 	/// A Transient object notifies observers when it has been Completed. When a Transient is Completed,
 	/// it has no more work to do and its internal state will not change without external influence.
 	/// flow-control.
@@ -20,6 +25,11 @@ namespace Flow
 		/// Occurs when the Complete method is first called. Successive calls to Complete will do nothing.
 		/// </summary>
 		event TransientHandler Completed;
+
+		/// <summary>
+		/// Occurs when completed, with a reason why.
+		/// </summary>
+		event TransientHandlerReason WhyCompleted;
 
 		/// <summary>
 		/// Gets the kernel that stores this Transient.

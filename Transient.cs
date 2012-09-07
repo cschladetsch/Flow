@@ -9,6 +9,11 @@ namespace Flow
 		/// <inheritdoc />
 		public event TransientHandler Completed;
 
+		/// <summary>
+		///  Occurs when completed, with a reason why. 
+		/// </summary>
+		public event TransientHandlerReason WhyCompleted;
+
 		/// <inheritdoc />
 		public string Name 
 		{ 
@@ -85,10 +90,22 @@ namespace Flow
 				return;
 			}
 
-			other.Completed += tr => Complete();
+			other.Completed += tr => CompletedBecause(other);
 		}
 
-		public void CompleteAfter (TimeSpan span)
+		void CompletedBecause(ITransient other)
+		{
+			if (!Active)
+				return;
+
+			if (WhyCompleted != null)
+				WhyCompleted(this, other);
+
+			Complete();
+		}
+
+		/// <inheritdoc />
+		public void CompleteAfter(TimeSpan span)
 		{
 			CompleteAfter(Factory.NewTimer(span));
 		}

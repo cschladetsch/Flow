@@ -14,22 +14,23 @@ namespace Flow
 			if (!Running || !Active)
 				return;
 
-			if (_enumerator == null) 
+			if (_state == null) 
 			{
 				if (Start == null)
 					CannotStart();
-				_enumerator = Start();
-				if (_enumerator == null)
+
+				_state = Start();
+				if (_state == null)
 					CannotStart();
 			}
 
-			if (!_enumerator.MoveNext())
+			if (!_state.MoveNext())
 			{
 				Complete();
 				return;
 			}
 
-			Value = _enumerator.Current;
+			Value = _state.Current;
 			base.Step();
 		}
 
@@ -38,7 +39,8 @@ namespace Flow
 			throw new Exception("Coroutine cannot start");
 		}
 
-		private IEnumerator<TR> _enumerator;
+		private IEnumerator<TR> _state;
+
 		internal Func<IEnumerator<TR>> Start;
 	}
 }

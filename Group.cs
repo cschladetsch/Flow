@@ -46,6 +46,7 @@ namespace Flow
 			// all pending adds are aborted
 			_adds.Clear();
 
+
 			// add all contents as pending deletions
 			foreach (var tr in Contents)
 				_dels.Add(tr);

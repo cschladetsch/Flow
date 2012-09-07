@@ -125,6 +125,11 @@ namespace Flow
 			return future;
 		}
 
+		internal Generator()
+		{
+			Completed += tr => Suspend();
+		}
+
 		void GenStepped<TR2>(ITypedGenerator<TR2> gen, IFuture<TR2> future, GeneratorHandler del)
 		{
 			gen.Stepped -= del;

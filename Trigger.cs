@@ -10,6 +10,9 @@ namespace Flow
 		/// <inheritdoc />
 		public event TriggerHandler Tripped;
 
+		/// <inheritdoc />
+		public ITransient Reason { get; private set; }
+
 		internal Trigger()
 		{
 			Removed += Trip;
@@ -17,6 +20,8 @@ namespace Flow
 
 		void Trip(IGroup self, ITransient other)
 		{
+			Reason = other;
+
  			if (Tripped != null)
 				Tripped(this, other);
 

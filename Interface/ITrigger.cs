@@ -16,5 +16,13 @@ namespace Flow
 		/// Occurs when any of the objects added to the trigger are deleted.
 		/// </summary>
 		event TriggerHandler Tripped;
+
+		/// <summary>
+		/// Gets the Transient that triggered this instance.
+		/// </summary>
+		/// <value>
+		/// The reason why this trigger was tripped (and hence Completed).
+		/// </value>
+		ITransient Reason { get; }
 	}
 }
