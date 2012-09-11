@@ -5,13 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E37D02D4-100C-4E22-AAC6-681FA15C3161}</ProjectGuid>
+    <ProjectGuid>{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Flow</RootNamespace>
     <AssemblyName>Flow</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,27 +32,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generator.cs" />
-    <Compile Include="Coroutine.cs" />
-    <Compile Include="Factory.cs" />
-    <Compile Include="Kernel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transient.cs" />
-    <Compile Include="Subroutine.cs" />
     <Compile Include="Barrier.cs" />
-    <Compile Include="Extension.cs" />
-    <Compile Include="Trigger.cs" />
-    <Compile Include="Group.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Future.cs" />
-    <Compile Include="Exception.cs" />
-    <Compile Include="TimeFrame.cs" />
-    <Compile Include="Timer.cs" />
     <Compile Include="Channel.cs" />
+    <Compile Include="Coroutine.cs" />
+    <Compile Include="Create.cs" />
+    <Compile Include="Exception.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Factory.cs" />
+    <Compile Include="Future.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="Interface\IBarrier.cs" />
     <Compile Include="Interface\IChannel.cs" />
     <Compile Include="Interface\ICoroutine.cs" />
@@ -63,18 +60,25 @@
     <Compile Include="Interface\IKernel.cs" />
     <Compile Include="Interface\INamed.cs" />
     <Compile Include="Interface\INode.cs" />
+    <Compile Include="Interface\IPeriodic.cs" />
     <Compile Include="Interface\ISubroutine.cs" />
+    <Compile Include="Interface\ITimedFuture.cs" />
     <Compile Include="Interface\ITimeFrame.cs" />
     <Compile Include="Interface\ITimer.cs" />
     <Compile Include="Interface\ITimesOut.cs" />
     <Compile Include="Interface\ITransient.cs" />
     <Compile Include="Interface\ITrigger.cs" />
     <Compile Include="Interface\ITypedGenerator.cs" />
-    <Compile Include="Interface\ITimedFuture.cs" />
-    <Compile Include="TimedFuture.cs" />
+    <Compile Include="Kernel.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="Periodic.cs" />
-    <Compile Include="Interface\IPeriodic.cs" />
-    <Compile Include="Create.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subroutine.cs" />
+    <Compile Include="TimedFuture.cs" />
+    <Compile Include="TimeFrame.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="Transient.cs" />
+    <Compile Include="Trigger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -84,7 +88,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Interface\" />
-  </ItemGroup>
 </Project>

@@ -1,16 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flow", "Flow.csproj", "{E37D02D4-100C-4E22-AAC6-681FA15C3161}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flow", "Flow.csproj", "{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{636B9E37-084E-4869-826A-9FB05E7EEB69}"
-	ProjectSection(SolutionItems) = preProject
-		Flow.vsmdi = Flow.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFlow", "TestFlow\TestFlow.csproj", "{172F1CFC-04F3-4A57-BA52-CA477BFC19C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFlow", "TestFlow\TestFlow.csproj", "{358AA530-E4D3-48EC-9978-D2FCB5881552}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,22 +11,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{172F1CFC-04F3-4A57-BA52-CA477BFC19C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{172F1CFC-04F3-4A57-BA52-CA477BFC19C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{172F1CFC-04F3-4A57-BA52-CA477BFC19C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{172F1CFC-04F3-4A57-BA52-CA477BFC19C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E37D02D4-100C-4E22-AAC6-681FA15C3161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E37D02D4-100C-4E22-AAC6-681FA15C3161}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E37D02D4-100C-4E22-AAC6-681FA15C3161}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E37D02D4-100C-4E22-AAC6-681FA15C3161}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TestFlow\TestFlow.csproj
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Flow.vsmdi
+		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358AA530-E4D3-48EC-9978-D2FCB5881552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358AA530-E4D3-48EC-9978-D2FCB5881552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358AA530-E4D3-48EC-9978-D2FCB5881552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358AA530-E4D3-48EC-9978-D2FCB5881552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -114,26 +114,10 @@ namespace Flow
 
 			return true;
 		}
-		
-		/// <inheritdoc />
-		public IFuture<TR2> GetNext<TR2>(ITypedGenerator<TR2> gen)
-		{
-			var future = Kernel.Factory.NewFuture<TR2>();
-			GeneratorHandler del;
-			del = delegate(IGenerator tr) { GenStepped<TR2>(gen, future, del); };
-			gen.Stepped += del;
-			return future;
-		}
 
 		internal Generator()
 		{
 			Completed += tr => Suspend();
-		}
-
-		void GenStepped<TR2>(ITypedGenerator<TR2> gen, IFuture<TR2> future, GeneratorHandler del)
-		{
-			gen.Stepped -= del;
-			future.Value = gen.Value;
 		}
 	}
 }
