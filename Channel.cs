@@ -55,10 +55,11 @@ namespace Flow
 		{
 			base.Step();
 
-			if (Completed)
-				return;
+			if (!Active)
+				return true;
 
 			Flush();
+
 			return true;
 		}
 
