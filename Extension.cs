@@ -22,17 +22,11 @@ namespace Flow
 		/// <typeparam name='T'>
 		/// The 1st type parameter.
 		/// </typeparam>
-		public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
-		{
-			foreach (var elem in list)
-			{
-				if (object.ReferenceEquals(elem, obj))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
+		//public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
+		//{
+		//	//return list.Any(elem => ReferenceEquals(elem, obj));
+		//	//foreach (var )
+		//}
 
 		/// <summary>
 		/// Removes a reference from the list
@@ -46,17 +40,17 @@ namespace Flow
 		/// <typeparam name='T'>
 		/// The 1st type parameter.
 		/// </typeparam>
-		public static void RemoveRef<T>(this IList<T> list, T obj)
-		{
-			for (var n = 0; n < list.Count; ++n)
-			{
-				if (object.ReferenceEquals(list[n], obj))
-				{
-					list.RemoveAt(n);
-					return;
-				}
-			}
-		}
+		//public static void RemoveRef<T>(this IList<T> list, T obj)
+		//{
+		//	for (var n = 0; n < list.Count; ++n)
+		//	{
+		//		if (!ReferenceEquals(list[n], obj)) 
+		//			continue;
+
+		//		list.RemoveAt(n);
+		//		return;
+		//	}
+		//}
 	}
 
 	public delegate RT Func<RT>();

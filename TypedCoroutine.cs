@@ -1,12 +1,14 @@
+// (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
+
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Flow
 {
-	internal class Coroutine : Generator, ICoroutine
+	/// <inheritdoc />
+	internal class TypedCoroutine<TR> : TypedGenerator<TR>, ITypedCoroutine<TR>
 	{
-		public object Value { get; private set; }
-
+		/// <inheritdoc />
 		public override void Step ()
 		{
 			if (!Running || !Active)
@@ -37,8 +39,8 @@ namespace Flow
 			throw new Exception("TypedCoroutine cannot start");
 		}
 
-		private IEnumerator _state;
+		private IEnumerator<TR> _state;
 
-		internal Func<IEnumerator> Start;
+		internal Func<IEnumerator<TR>> Start;
 	}
 }

@@ -10,13 +10,10 @@ namespace Flow
 		{
 			base.Post();
 
-			// do nothing if we have any contents
-			foreach (var elem in Contents) 
-				return;
-
 			// if there is nothing pending to add, we are done
-			if (_adds.Count == 0)
-				Complete();
+			if (Additions.Count == 0 && _contents.Count == 0)
+				Complete(); 
+			
 		}
 	}
 }

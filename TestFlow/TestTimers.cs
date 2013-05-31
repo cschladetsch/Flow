@@ -14,6 +14,7 @@ namespace TestFlow
 			var kernel = Create.NewKernel();
 			var timer = kernel.Factory.NewTimer(TimeSpan.FromSeconds(span));
 
+			kernel.Root.Add(timer);
 			var elapsed = false;
 			DateTime when = DateTime.Now;
 
@@ -49,23 +50,39 @@ namespace TestFlow
 			int elapsed = 0;
 			timer.Elapsed += (sender) => ++elapsed;
  
+			kernel.Root.Add(timer);
 			RunKernel(kernel, TimeSpan.FromSeconds(runTime));
 
 			Assert.AreEqual(numElapsed, elapsed);
 		}
 
-		[TestCase(0.1f, 0.2f, true)]
-		[TestCase(0.2f, 0.1f, false)]
-		public void TestTimedFuture(float span, float runTime, bool result)
+		[TestCase(1f, 2f, true)]
+		[TestCase(2f, 1f, false)]
+		public void TestTimedFuture(float wait, float runTime, bool result)
 		{
 			var kernel = Create.NewKernel();
-			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(span));
+			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(wait));
 
 			Assert.IsFalse(future.Available);
-
-			RunKernel(kernel, TimeSpan.FromSeconds(runTime));
+			kernel.Root.Add(future);
+			RunKernel(kernel, TimeSpan.FromSeconds(runTime*2));
 
 			Assert.AreEqual(result, future.HasTimedOut);
+		}
+
+		[TestCase]
+		public void TestTimedFuture2()
+		{
+			var wait = 2;
+			var runTime = 1;
+			var kernel = Create.NewKernel();
+			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(wait));
+
+			Assert.IsFalse(future.Available);
+			kernel.Root.Add(future);
+			RunKernel(kernel, TimeSpan.FromSeconds(runTime * 1.5f));
+
+			Assert.AreEqual(false, future.HasTimedOut);
 		}
 
 		DateTime RunKernel(IKernel kernel, TimeSpan span)

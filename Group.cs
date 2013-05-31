@@ -1,13 +1,18 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
 using System.Collections.Generic;
+//using System.Linq;
 
 namespace Flow
 {
 	/// <summary>
-	/// A flow Group contains a collection of other Transients, and fires events when the contents of the group changes.
+	/// A flow Group contains a collection of other Transients, and fires events when the contents 
+	/// of the group changes.
+	/// 
+	/// Suspending a Group suspends all contained Generators, and Resuming a Group
+	/// Resumes all contained Generators.
 	/// </summary>
-	internal class Group : Generator<bool>, IGroup
+	internal class Group : TypedGenerator<bool>, IGroup
 	{
 		/// <inheritdoc />
 		public event GroupHandler Added;
@@ -23,12 +28,12 @@ namespace Flow
 		{
 			get 
 			{
-				foreach (var elem in Contents) 
+				//return Contents.OfType<IGenerator>();
+				foreach (var g in Contents)
 				{
-					var gen = elem as IGenerator;
-					if (gen == null)
-						continue;
-					yield return gen;
+					var h = g as IGenerator;
+					if (h != null)
+						yield return h;
 				}
 			}
 		}
@@ -44,12 +49,11 @@ namespace Flow
 		public void Clear()
 		{
 			// all pending adds are aborted
-			_adds.Clear();
-
+			Additions.Clear();
 
 			// add all contents as pending deletions
 			foreach (var tr in Contents)
-				_dels.Add(tr);
+				Deletions.Add(tr);
 
 			// remove all contents
 			PerformRemoves();
@@ -64,14 +68,14 @@ namespace Flow
 		/// <inheritdoc />
 		public void Add(ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(other))
+			if (IsNullOrEmpty(other))
 				return;
 
-			if (Contents.ContainsRef(other) || _adds.ContainsRef(other))
+			if (_contents.Contains(other) || Additions.Contains(other))
 				return;
 
-			_dels.RemoveRef(other);
-			_adds.Add(other);
+			Deletions.Remove(other);
+			Additions.Add(other);
 		}
 
 		/// <inheritdoc />
@@ -80,11 +84,11 @@ namespace Flow
 			if (other == null)
 				return;
 
-			if (!Contents.ContainsRef(other) || _dels.ContainsRef(other))
+			if (!_contents.Contains(other) || Deletions.Contains(other))
 				return;
 
-			_adds.RemoveRef(other);
-			_dels.Add(other);
+			Additions.Remove(other);
+			Deletions.Add(other);
 		}
 
 		void ForEachGenerator(Action<IGenerator> act)
@@ -97,24 +101,32 @@ namespace Flow
 		{
 			PerformAdds();
 			PerformRemoves();
+
+			foreach (var child in Contents)
+			{
+				var g = child as Group;
+				if (g == null)
+					continue;
+				g.PerformPending();
+			}
 		}
 
 		void PerformRemoves()
 		{
-			foreach (var tr in _dels) 
+			foreach (var tr in Deletions) 
 			{
-				_contents.RemoveRef(tr);
+				_contents.Remove(tr);
 				tr.Completed -= Remove;
 				if (Removed != null)
 					Removed(this, tr);
 			}
 
-			_dels.Clear();
+			Deletions.Clear();
 		}
 
 		void PerformAdds()
 		{
-			foreach (var tr in _adds) 
+			foreach (var tr in Additions) 
 			{
 				_contents.Add(tr);
 				tr.Completed += Remove;
@@ -122,13 +134,13 @@ namespace Flow
 					Added(this, tr);
 			}
 
-			_adds.Clear();
+			Additions.Clear();
 		}
 
-		protected readonly List<ITransient> _adds = new List<ITransient>();
+		protected readonly List<ITransient> Additions = new List<ITransient>();
 		
-		protected readonly List<ITransient> _dels = new List<ITransient>();
+		protected readonly List<ITransient> Deletions = new List<ITransient>();
 
-		private readonly List<ITransient> _contents = new List<ITransient>();
+		protected readonly List<ITransient> _contents = new List<ITransient>();
 	}
 }

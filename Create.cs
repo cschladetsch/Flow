@@ -1,11 +1,11 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
-using System;
+#pragma warning disable 1685
 
 namespace Flow
 {
 	/// <summary>
-	/// Bootstrapper for the flow library using default implementations
+	/// Boot-strapper for the flow library using default implementations
 	/// </summary>
 	public static class Create
 	{
@@ -39,11 +39,11 @@ namespace Flow
 			return factory;
 		}
 	}
-
-
 }
 
+#if REQUIRE_EXTENSION_ATTRIBUTE
 namespace System.Runtime.CompilerServices
 {
-    public class ExtensionAttribute : Attribute { }
+	public class ExtensionAttribute : Attribute { }
 }
+#endif

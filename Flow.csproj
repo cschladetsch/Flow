@@ -38,7 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barrier.cs" />
+    <Compile Include="BlockingChannel.cs" />
     <Compile Include="Channel.cs" />
+    <Compile Include="ConcurrentQueue.cs" />
     <Compile Include="Coroutine.cs" />
     <Compile Include="Create.cs" />
     <Compile Include="Exception.cs" />
@@ -65,21 +67,27 @@
     <Compile Include="Interface\ITimesOut.cs" />
     <Compile Include="Interface\ITransient.cs" />
     <Compile Include="Interface\ITrigger.cs" />
+    <Compile Include="Interface\ITypedCoroutine.cs" />
     <Compile Include="Interface\ITypedGenerator.cs" />
     <Compile Include="Kernel.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Periodic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpinWait.cs" />
     <Compile Include="Subroutine.cs" />
     <Compile Include="TimedFuture.cs" />
     <Compile Include="TimeFrame.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Transient.cs" />
     <Compile Include="Trigger.cs" />
+    <Compile Include="TypedCoroutine.cs" />
+    <Compile Include="TypedGenerator.cs" />
+    <Compile Include="VolatileBool.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y C:\GitHub\Flow\bin\Debug\Flow.dll c:\Project\Unity\Flock\Assets\Assembly</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

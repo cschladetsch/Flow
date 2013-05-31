@@ -28,7 +28,7 @@ namespace Flow
 		/// Gets the timer, if any, associated with this instance.
 		/// </summary>
 		/// <value>
-		/// The timer assocaited with this future.
+		/// The timer associated with this future.
 		/// </value>
 		ITimer Timer { get; }
 

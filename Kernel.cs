@@ -4,7 +4,7 @@ using System;
 
 namespace Flow
 {
-	internal class Kernel : Generator<bool>, IKernel
+	internal class Kernel : TypedGenerator<bool>, IKernel
 	{
 		/// <inheritdoc />
 		public INode Root { get; set; }
@@ -27,7 +27,7 @@ namespace Flow
 		{
 			StepTime();
 
-			if (Transient.IsNullOrEmpty(Root))
+			if (IsNullOrEmpty(Root))
 				return;
 
 			Root.Step();

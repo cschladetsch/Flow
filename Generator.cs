@@ -1,15 +1,9 @@
-﻿// (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
-
 using System;
-using System.Text;
 
 namespace Flow
 {
-	internal abstract class Generator<TR> : Transient, ITypedGenerator<TR>
+	internal abstract class Generator : Transient, IGenerator
 	{
-		/// <inheritdoc />
-		public TR Value { get; protected set; }
-
 		/// <inheritdoc />
 		public event GeneratorHandler Suspended;
 
@@ -23,7 +17,7 @@ namespace Flow
 		public bool Running { get; private set; }
 
 		/// <inheritdoc />
-		public int StepNumber { get; private set; }
+		public int StepNumber { get; protected set; }
 
 		/// <inheritdoc />
 		public virtual void Step()
@@ -64,9 +58,9 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public void SuspendAfter (ITransient other)
+		public void SuspendAfter(ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(other))
+			if (IsNullOrEmpty(other))
 			{
 				Suspend();
 				return;
@@ -80,7 +74,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool ResumeAfter(ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(other))
+			if (IsNullOrEmpty(other))
 			{
 				Resume();
 				return true;
