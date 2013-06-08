@@ -168,8 +168,7 @@ namespace TestFlow
 			Assert.AreEqual(456, future2.Value);
 		}
 
-		// TODO: this gives a 'Unix transport error' with MonoDevelop 3.0.3.5
-		[Test()]
+		[Test]
 		public void TestTrigger()
 		{
 			var kernel = Create.NewKernel();

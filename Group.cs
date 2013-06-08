@@ -101,7 +101,8 @@ namespace Flow
 
 		void PerformRemoves()
 		{
-			foreach (var tr in _dels) 
+			var dels = _dels.ToArray();
+			foreach (var tr in dels) 
 			{
 				_contents.RemoveRef(tr);
 				tr.Completed -= Remove;
