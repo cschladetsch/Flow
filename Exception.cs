@@ -25,7 +25,7 @@ namespace Flow
 	}
 
 	/// <summary>
-	/// Re-entrancy exception.
+	/// Reentrancy exception.
 	/// </summary>
 	public class ReentrancyException : Exception
 	{

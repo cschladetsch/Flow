@@ -1,7 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
 using System.Collections.Generic;
-//using System.Linq;
+using System;
 
 namespace Flow
 {
@@ -13,30 +13,17 @@ namespace Flow
 		/// <inheritdoc />
 		public override void Step()
 		{
-			try
-			{
-				if (_stepping)
-				{
-					//Log.Error("Node.Step: Name={0}", Name);
-					throw new ReentrancyException();
-				}
+			if (_stepping)
+				throw new ReentrancyException();
 
-				_stepping = true;
+			_stepping = true;
 
-				base.Step();
+			base.Step();
 
-				foreach (var gen in Generators)
-				{
-					if (!gen.Active)
-						Remove(gen);
-					else
-						gen.Step();
-				}
-			}
-			finally
-			{
-				_stepping = false;
-			}
+			foreach (var gen in Generators)
+				gen.Step();
+
+			_stepping = false;
 		}
 
 		/// <inheritdoc />
@@ -44,19 +31,14 @@ namespace Flow
 		{
 			base.Post();
 
-			//// make a copy so that contents can be changed during iteration
-			//var list = Generators.Clone();
-
-			//// do post for all contained generators
-			//foreach (var gen in list)
-			//	gen.Post();
-
+			// make a copy so that contents can be changed during iteration
 			var list = new List<IGenerator>();
-			foreach (var g in Generators)
-				list.Add(g);
+			foreach (var gen in Generators)
+				list.Add(gen);
 
-			foreach (var ge in list)
-				ge.Post();
+			// do post for all contained generators
+			foreach (var gen in list)
+				gen.Post();
 		}
 
 		bool _stepping;

@@ -28,7 +28,6 @@ namespace Flow
 
 				if (NewName != null)
 					NewName(this, _name, value);
-
 				_name = value;
 			}
 		}

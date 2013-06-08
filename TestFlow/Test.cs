@@ -23,22 +23,20 @@ namespace TestFlow
 
 			// first coroutine is added after first step
 			Assert.AreEqual(0, kernel.Root.Contents.Count());
-
-			kernel.Root.Add(coro);
 			kernel.Step();
 			Assert.AreEqual(1, kernel.Root.Contents.Count());
 
 			kernel.Step();
-			//Assert.AreEqual(1, coro.Value);
+			Assert.AreEqual(1, coro.Value);
+			
+			kernel.Step();
+			Assert.AreEqual(2, coro.Value);
 
 			kernel.Step();
-			//Assert.AreEqual(2, coro.Value);
-
+			Assert.AreEqual(3, coro.Value);
+			
 			kernel.Step();
-			//Assert.AreEqual(3, coro.Value);
-
-			kernel.Step();
-			//Assert.AreEqual(3, coro.Value);
+			Assert.AreEqual(3, coro.Value);
 
 			Assert.IsFalse(coro.Active);
 			Assert.IsFalse(coro.Running);
@@ -57,8 +55,6 @@ namespace TestFlow
 			var kernel = Create.NewKernel();
 
 			var sub = kernel.Factory.NewSubroutine(Sub1, 2);
-			kernel.Root.Add(sub);
-
 			Assert.IsTrue(sub.Active);
 			Assert.IsTrue(sub.Running);
 
@@ -93,7 +89,6 @@ namespace TestFlow
 
 			_futureSet = false;
 
-			kernel.Root.Add(coro);
 			kernel.Step();
 			kernel.Step();
 
@@ -106,7 +101,7 @@ namespace TestFlow
 			
 			kernel.Step();
 
-			//Assert.IsFalse(coro.Value);
+			Assert.IsFalse(coro.Value);
 			Assert.IsTrue(_futureSet);
 		}
 
@@ -144,11 +139,10 @@ namespace TestFlow
 			barrier.Add(future1);
 			barrier.Add(future2);
 
-			kernel.Root.Add(barrier);
 			kernel.Step();
 			kernel.Step();
 
-			//Assert.AreEqual(3, kernel.Root.Contents.Count());
+			Assert.AreEqual(3, kernel.Root.Contents.Count());
 
 			Assert.IsTrue(barrier.Active);
 			Assert.IsTrue(future1.Active);

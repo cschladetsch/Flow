@@ -1,5 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+using System;
+
 namespace Flow
 {
 	/// <summary>
@@ -23,7 +25,7 @@ namespace Flow
 		/// Gets the time to use for this update.
 		/// </summary>
 		/// <value>
-		/// The time to use for this update
+		/// The time to use for this udpate
 		/// </value>
 		ITimeFrame Time { get; }
 	}

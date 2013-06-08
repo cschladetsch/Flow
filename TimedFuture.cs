@@ -1,6 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
 using System;
+using System.Collections.Generic;
 
 namespace Flow
 {
@@ -15,10 +16,9 @@ namespace Flow
 		/// <inheritdoc />
 		public bool HasTimedOut { get; protected set; }
 
-		internal TimedFuture(ITransient parent, TimeSpan span)
+		internal TimedFuture(IKernel kernel, TimeSpan span)
 		{
-			Timer = parent.Factory.NewTimer(span);
-			parent.Factory.Kernel.Root.Add(Timer);
+			Timer = kernel.Factory.NewTimer(span);
 			Timer.Elapsed += HandleElapsed;
 		}
 

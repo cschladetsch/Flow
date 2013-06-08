@@ -1,5 +1,8 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+using System;
+using System.Collections.Generic;
+
 namespace Flow
 {
 	/// <summary>
@@ -18,7 +21,7 @@ namespace Flow
 		event FutureHandler<T> Arrived;
 
 		/// <summary>
-		/// Gets a value indicating whether this Future is available.
+		/// Gets a value indicating whether this <see cref="Flow.IFuture`1"/> is available.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if available; otherwise, <c>false</c>.

@@ -22,7 +22,7 @@ namespace Flow
 		{
 			Reason = other;
 
-			if (Tripped != null)
+ 			if (Tripped != null)
 				Tripped(this, other);
 
 			Complete();
