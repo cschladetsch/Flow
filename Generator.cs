@@ -66,7 +66,7 @@ namespace Flow
 		/// <inheritdoc />
 		public void SuspendAfter (ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(other))
+			if (IsNullOrEmpty(other))
 			{
 				Suspend();
 				return;
@@ -80,7 +80,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool ResumeAfter(ITransient other)
 		{
-			if (Transient.IsNullOrEmpty(other))
+			if (IsNullOrEmpty(other))
 			{
 				Resume();
 				return true;

@@ -27,7 +27,7 @@ namespace Flow
 		{
 			StepTime();
 
-			if (Transient.IsNullOrEmpty(Root))
+			if (IsNullOrEmpty(Root))
 				return;
 
 			Root.Step();

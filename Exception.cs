@@ -7,7 +7,7 @@ namespace Flow
 	/// <summary>
 	/// Future not set exception.
 	/// </summary>
-	public class FutureNotSetException : System.Exception
+	public class FutureNotSetException : Exception
 	{
 		public FutureNotSetException () : base("Future value not arrived yet")
 		{
@@ -17,7 +17,7 @@ namespace Flow
 	/// <summary>
 	/// Future already set exception.
 	/// </summary>
-	public class FutureAlreadySetException : System.Exception
+	public class FutureAlreadySetException : Exception
 	{
 		public FutureAlreadySetException () : base("Future already set")
 		{
@@ -32,11 +32,6 @@ namespace Flow
 		public ReentrancyException ()  : base("Method is not re-entrant")
 		{
 		}
-	}
-
-	public class EventStream<A0>
-	{
-		//public EventStream(Action<
 	}
 }
 

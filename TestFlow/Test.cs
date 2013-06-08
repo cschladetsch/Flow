@@ -1,17 +1,15 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
 using NUnit.Framework;
 
 using Flow;
 
 namespace TestFlow
 {
-	[TestFixture()]
+	[TestFixture]
 	public class TestKernel
 	{
-		[Test()]
+		[Test]
 		public void TestCoroutine()
 		{
 			var kernel = Create.NewKernel();
@@ -49,7 +47,7 @@ namespace TestFlow
 			yield return 3;
 		}
 
-		[Test()]
+		[Test]
 		public void TestSubroutine()
 		{
 			var kernel = Create.NewKernel();
@@ -171,7 +169,7 @@ namespace TestFlow
 		}
 
 		// TODO: this gives a 'Unix transport error' with MonoDevelop 3.0.3.5
-		//[Test()]
+		[Test()]
 		public void TestTrigger()
 		{
 			var kernel = Create.NewKernel();

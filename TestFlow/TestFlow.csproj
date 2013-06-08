@@ -31,12 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.core">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v7.0\Bin\nunit.core.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.core.interfaces">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v7.0\Bin\nunit.core.interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v7.0\Bin\nunit.framework.dll</HintPath>
     </Reference>

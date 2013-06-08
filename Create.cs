@@ -39,9 +39,11 @@ namespace Flow
 			return factory;
 		}
 	}
-
-
 }
+
+// Christian: This was added to support Unity 3.x I believe. It produces a warning but I don't want to remove it yet.
+
+#pragma warning disable 1685
 
 namespace System.Runtime.CompilerServices
 {
