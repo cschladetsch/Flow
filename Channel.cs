@@ -53,8 +53,6 @@ namespace Flow
 
 		bool StepChannel(IGenerator self)
 		{
-			base.Step();
-
 			if (!Active)
 				return true;
 
