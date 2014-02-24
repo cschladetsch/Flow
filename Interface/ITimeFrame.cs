@@ -10,7 +10,7 @@ namespace Flow
 	public interface ITimeFrame
 	{
 		/// <summary>
-		/// Gets the caonical time of the last update.
+		/// Gets the canonical time of the last update.
 		/// </summary>
 		/// <value>
 		/// The canonical time that the last update was executed at.

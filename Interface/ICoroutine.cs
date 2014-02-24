@@ -2,10 +2,7 @@
 
 namespace Flow
 {
-	/// <summary>
-	/// A Coroutine may continue after a yield.
-	/// </summary>
-	public interface ICoroutine<TR> : ITypedGenerator<TR>
+	public interface ICoroutine : IGenerator
 	{
 	}
 }

@@ -1,5 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+using System.Linq;
+
 namespace Flow
 {
 	/// <inheritdoc />
@@ -10,13 +12,11 @@ namespace Flow
 		{
 			base.Post();
 
-			// do nothing if we have any contents
-			foreach (var elem in Contents) 
-				return;
+		    if (Contents.Any(t => t.Active))
+		        return;
 
-			// if there is nothing pending to add, we are done
-			if (_adds.Count == 0)
-				Complete();
+            if (Additions.Count == 0)
+                Complete();
 		}
 	}
 }

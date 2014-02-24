@@ -4,7 +4,7 @@ using System;
 
 namespace Flow
 {
-	internal class Transient : ITransient
+	public class Transient : ITransient
 	{
 		/// <inheritdoc />
 		public event TransientHandler Completed;
@@ -28,6 +28,7 @@ namespace Flow
 
 				if (NewName != null)
 					NewName(this, _name, value);
+
 				_name = value;
 			}
 		}
@@ -58,10 +59,12 @@ namespace Flow
 			return other == null || !other.Active;
 		}
 
-		internal Transient()
+	    public Transient()
 		{
 			Active = true;
 		}
+
+		public static bool DebugTrace;
 
 		/// <inheritdoc />
 		public void Complete()

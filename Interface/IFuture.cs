@@ -18,7 +18,7 @@ namespace Flow
 		event FutureHandler<T> Arrived;
 
 		/// <summary>
-		/// Gets a value indicating whether this future is available.
+		/// Gets a value indicating whether this Future is available.
 		/// </summary>
 		/// <value>
 		/// <c>true</c> if available; otherwise, <c>false</c>.

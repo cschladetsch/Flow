@@ -1,6 +1,4 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
-
-using System;
 using System.Collections.Generic;
 
 namespace Flow
@@ -22,10 +20,14 @@ namespace Flow
 		/// <summary>
 		/// Gets the next future value from the channel
 		/// </summary>
-		/// <returns>
-		/// A future output of the channel
-		/// </returns>
+		/// <returns>A future output of the channel</returns>
 		IFuture<TR> Extract();
+
+		/// <summary>
+		/// Get everything that is in the channel, after honouring all pending extract requests
+		/// </summary>
+		/// <returns></returns>
+		List<TR> ExtractAll();
 
 		/// <summary>
 		/// Service as many pending read (extraction) requests as possible

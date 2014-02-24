@@ -1,7 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
-using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Flow
 {
@@ -13,6 +13,22 @@ namespace Flow
 			var future = Factory.NewFuture<TR>();
 			_requests.Enqueue(future);
 			return future;
+		}
+
+		/// <inheritdoc />
+		public List<TR> ExtractAll()
+		{
+			// honour all pending requests
+			Flush();
+
+			// feed everything remaining into the result
+			var list = new List<TR>();
+			while (_values.Count > 0)
+			{
+				list.Add(_values.Dequeue());
+			}
+
+			return list;			
 		}
 
 		/// <inheritdoc />
@@ -33,7 +49,7 @@ namespace Flow
 		internal Channel(IKernel kernel)
 		{
 			Sub = StepChannel;
-			Completed += (tr) => Close();
+			Completed += tr => Close();
 		}
 
 		internal void Close()
@@ -53,9 +69,6 @@ namespace Flow
 
 		bool StepChannel(IGenerator self)
 		{
-			if (!Active)
-				return true;
-
 			Flush();
 
 			return true;

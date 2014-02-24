@@ -2,10 +2,10 @@
 
 namespace Flow
 {
-	internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>
+	internal class Subroutine<TR> : TypedGenerator<TR>, ISubroutine<TR>
 	{
 		/// <inheritdoc />
-		public override void Step ()
+		public override void Step()
 		{
 			if (!Active || !Running)
 				return;

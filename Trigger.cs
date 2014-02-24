@@ -15,7 +15,6 @@ namespace Flow
 
 		internal Trigger()
 		{
-			// when an element is removed from this trigger, it fires
 			Removed += Trip;
 		}
 
@@ -23,10 +22,8 @@ namespace Flow
 		{
 			Reason = other;
 
- 			if (Tripped != null)
+			if (Tripped != null)
 				Tripped(this, other);
-
-			Removed -= Trip;
 
 			Complete();
 		}

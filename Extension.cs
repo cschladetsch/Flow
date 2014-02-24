@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Flow
 {
@@ -24,14 +25,7 @@ namespace Flow
 		/// </typeparam>
 		public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
 		{
-			foreach (var elem in list)
-			{
-				if (object.ReferenceEquals(elem, obj))
-				{
-					return true;
-				}
-			}
-			return false;
+			return list.Any(elem => ReferenceEquals(elem, obj));
 		}
 
 		/// <summary>
@@ -50,11 +44,11 @@ namespace Flow
 		{
 			for (var n = 0; n < list.Count; ++n)
 			{
-				if (object.ReferenceEquals(list[n], obj))
-				{
-					list.RemoveAt(n);
-					return;
-				}
+				if (!ReferenceEquals(list[n], obj)) 
+					continue;
+
+				list.RemoveAt(n);
+				return;
 			}
 		}
 	}

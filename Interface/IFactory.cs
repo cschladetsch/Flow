@@ -1,12 +1,13 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Flow
 {
 	/// <summary>
-	/// Creates Flow instances that reside within an Kernel.
+	/// Creates Flow instances that reside within a Kernel.
 	/// </summary>
 	public interface IFactory
 	{
@@ -47,6 +48,14 @@ namespace Flow
 		/// The barrier.
 		/// </returns>
 		IBarrier NewBarrier();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+		IBarrier NewBarrier(string name, params ITransient[] args);
 
 		/// <summary>
 		/// Make a new trigger.
@@ -104,8 +113,8 @@ namespace Flow
 		/// <typeparam name='TR'>
 		/// The 1st type parameter.
 		/// </typeparam>
-		ICoroutine<TR> NewCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun);
-		
+		ITypedCoroutine<TR> NewTypedCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun);
+
 		/// <summary>
 		/// News the coroutine.
 		/// </summary>
@@ -124,7 +133,7 @@ namespace Flow
 		/// <typeparam name='T0'>
 		/// The 2nd type parameter.
 		/// </typeparam>
-		ICoroutine<TR> NewCoroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0);
+		ITypedCoroutine<TR> NewTypedCoroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0);
 
 		/// <summary>
 		/// News the coroutine.
@@ -150,9 +159,29 @@ namespace Flow
 		/// <typeparam name='T1'>
 		/// The 3rd type parameter.
 		/// </typeparam>
-		ICoroutine<TR> NewCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1);
+		ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1);
 
-		ICoroutine<TR> NewCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2);
+		ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="fun"></param>
+		/// <returns></returns>
+		ICoroutine NewCoroutine(Func<IGenerator, IEnumerator> fun);
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T0"></typeparam>
+		/// <param name="fun"></param>
+		/// <param name="t0"></param>
+		/// <returns></returns>
+		ICoroutine NewCoroutine<T0>(Func<IGenerator, T0, IEnumerator> fun, T0 t0);
+
+		ICoroutine NewCoroutine<T0, T1>(Func<IGenerator, T0, T1, IEnumerator> fun, T0 t0, T1 t1);
+
+		ICoroutine NewCoroutine<T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator> fun, T0 t0, T1 t1, T2 t2);
 
 		/// <summary>
 		/// News the subroutine.
