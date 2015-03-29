@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>Flow</id>
+        <version>0.1.0.0</version>
+        <title>Flow</title>
+        <authors>Christian Schladetsh</authors>
+        <owners />
+        <projectUrl>https://github.com/cschladetsch/Flow</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A coroutine based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and or fork.</description>
+        <language>en-IE</language>
+    </metadata>    
+    <files>
+        <file src="bin\Release\Flow.dll" target="lib\net20\Flow.dll" />               
+    </files>
+</package>
