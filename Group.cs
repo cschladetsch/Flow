@@ -6,31 +6,18 @@ using System.Linq;
 namespace Flow
 {
 	/// <summary>
-	/// A flow Group contains a collection of other Transients, and fires events when the contents 
-	/// of the group changes.
-	/// 
-	/// Suspending a Group suspends all contained Generators, and Resuming a Group
-	/// Resumes all contained Generators.
+	///     A flow Group contains a collection of other Transients, and fires events when the contents
+	///     of the group changes.
+	///     Suspending a Group suspends all contained Generators, and Resuming a Group
+	///     Resumes all contained Generators.
 	/// </summary>
 	internal class Group : TypedGenerator<bool>, IGroup
 	{
-		/// <inheritdoc />
-		public event GroupHandler Added;
+		protected readonly List<ITransient> Additions = new List<ITransient>();
 
-		/// <inheritdoc />
-		public event GroupHandler Removed;
-		
-		/// <inheritdoc />
-		public IEnumerable<ITransient> Contents { get { return _contents; } }
-		
-		/// <inheritdoc />
-		public IEnumerable<IGenerator> Generators 
-		{
-			get 
-			{
-				return Contents.OfType<IGenerator>();
-			}
-		}
+		protected readonly List<ITransient> Deletions = new List<ITransient>();
+
+		private readonly List<ITransient> _contents = new List<ITransient>();
 
 		internal Group()
 		{
@@ -40,17 +27,21 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public void Clear()
+		public IEnumerable<IGenerator> Generators
 		{
-			// all pending adds are aborted
-			Additions.Clear();
+			get { return Contents.OfType<IGenerator>(); }
+		}
 
-			// add all contents as pending deletions
-			foreach (var tr in Contents)
-				Deletions.Add(tr);
+		/// <inheritdoc />
+		public event GroupHandler Added;
 
-			// remove all contents
-			PerformRemoves();
+		/// <inheritdoc />
+		public event GroupHandler Removed;
+
+		/// <inheritdoc />
+		public IEnumerable<ITransient> Contents
+		{
+			get { return _contents; }
 		}
 
 		/// <inheritdoc />
@@ -85,10 +76,28 @@ namespace Flow
 			Deletions.Add(other);
 		}
 
-		void ForEachGenerator(Action<IGenerator> act)
+		/// <inheritdoc />
+		public void Clear()
 		{
-			foreach (var gen in Generators) 
+			// all pending adds are aborted
+			Additions.Clear();
+
+			// add all contents as pending deletions
+			foreach (ITransient tr in Contents)
+			{
+				Deletions.Add(tr);
+			}
+
+			// remove all contents
+			PerformRemoves();
+		}
+
+		private void ForEachGenerator(Action<IGenerator> act)
+		{
+			foreach (IGenerator gen in Generators)
+			{
 				act(gen);
+			}
 		}
 
 		protected void PerformPending()
@@ -97,9 +106,9 @@ namespace Flow
 			PerformRemoves();
 		}
 
-		void PerformRemoves()
+		private void PerformRemoves()
 		{
-			foreach (var tr in Deletions.ToList()) 
+			foreach (ITransient tr in Deletions.ToList())
 			{
 				_contents.RemoveRef(tr);
 				if (tr == null)
@@ -112,9 +121,9 @@ namespace Flow
 			Deletions.Clear();
 		}
 
-		void PerformAdds()
+		private void PerformAdds()
 		{
-			foreach (var tr in Additions) 
+			foreach (ITransient tr in Additions)
 			{
 				_contents.Add(tr);
 				//tr.Completed += Remove;
@@ -124,11 +133,5 @@ namespace Flow
 
 			Additions.Clear();
 		}
-
-		protected readonly List<ITransient> Additions = new List<ITransient>();
-		
-		protected readonly List<ITransient> Deletions = new List<ITransient>();
-
-		private readonly List<ITransient> _contents = new List<ITransient>();
 	}
 }

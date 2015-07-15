@@ -1,19 +1,20 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+
 #pragma warning disable 1685
 
 namespace Flow
 {
 	/// <summary>
-	/// Boot-strapper for the flow library using default implementations
+	///     Boot-strapper for the flow library using default implementations
 	/// </summary>
 	public static class Create
 	{
 		/// <summary>
-		/// Create a new Kernel and Factory
+		///     Create a new Kernel and Factory
 		/// </summary>
 		/// <returns>
-		/// The kernel.
+		///     The kernel.
 		/// </returns>
 		public static IKernel NewKernel()
 		{
@@ -21,10 +22,10 @@ namespace Flow
 		}
 
 		/// <summary>
-		/// Create a new Kernel and Factory
+		///     Create a new Kernel and Factory
 		/// </summary>
 		/// <returns>
-		/// The factory.
+		///     The factory.
 		/// </returns>
 		public static IFactory NewFactory()
 		{
@@ -34,7 +35,7 @@ namespace Flow
 			kernel.Factory = factory;
 			factory.Kernel = kernel;
 
-			kernel.Root = new Node { Kernel = kernel };
+			kernel.Root = new Node {Kernel = kernel};
 
 			return factory;
 		}

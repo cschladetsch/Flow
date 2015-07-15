@@ -6,6 +6,12 @@ namespace Flow
 {
 	internal class TimedFuture<T> : Future<T>, ITimedFuture<T>
 	{
+		internal TimedFuture(ITransient kernel, TimeSpan span)
+		{
+			Timer = kernel.Factory.NewTimer(span);
+			Timer.Elapsed += HandleElapsed;
+		}
+
 		/// <inheritdoc />
 		public event TimedOutHandler TimedOut;
 
@@ -15,13 +21,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool HasTimedOut { get; protected set; }
 
-		internal TimedFuture(ITransient kernel, TimeSpan span)
-		{
-			Timer = kernel.Factory.NewTimer(span);
-			Timer.Elapsed += HandleElapsed;
-		}
-
-		void HandleElapsed(ITransient sender)
+		private void HandleElapsed(ITransient sender)
 		{
 			if (!Active)
 				return;

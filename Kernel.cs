@@ -6,6 +6,15 @@ namespace Flow
 {
 	internal class Kernel : TypedGenerator<bool>, IKernel
 	{
+		private readonly TimeFrame _time = new TimeFrame();
+
+		internal Kernel()
+		{
+			_time.Now = DateTime.Now;
+			_time.Last = _time.Now;
+			_time.Delta = TimeSpan.FromSeconds(0);
+		}
+
 		/// <inheritdoc />
 		public INode Root { get; set; }
 
@@ -13,13 +22,9 @@ namespace Flow
 		public new IFactory Factory { get; internal set; }
 
 		/// <inheritdoc />
-		public ITimeFrame Time { get { return _time; } }
-
-		internal Kernel()
+		public ITimeFrame Time
 		{
-			_time.Now = DateTime.Now;
-			_time.Last = _time.Now;
-			_time.Delta = TimeSpan.FromSeconds(0);
+			get { return _time; }
 		}
 
 		/// <inheritdoc />
@@ -34,15 +39,13 @@ namespace Flow
 			Root.Post();
 		}
 
-		void StepTime()
+		private void StepTime()
 		{
-			var now = DateTime.Now;
+			DateTime now = DateTime.Now;
 
 			_time.Last = _time.Now;
 			_time.Delta = now - _time.Last;
 			_time.Now = now;
 		}
-
-		private readonly TimeFrame _time = new TimeFrame();
 	}
 }

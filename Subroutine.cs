@@ -4,13 +4,15 @@ namespace Flow
 {
 	internal class Subroutine<TR> : TypedGenerator<TR>, ISubroutine<TR>
 	{
+		internal Func<IGenerator, TR> Sub;
+
 		/// <inheritdoc />
 		public override void Step()
 		{
 			if (!Active || !Running)
 				return;
 
-			if (Sub == null) 
+			if (Sub == null)
 			{
 				Complete();
 				return;
@@ -20,7 +22,5 @@ namespace Flow
 
 			base.Step();
 		}
-
-		internal Func<IGenerator, TR> Sub;
 	}
 }

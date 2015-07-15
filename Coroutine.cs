@@ -5,14 +5,18 @@ namespace Flow
 {
 	internal class Coroutine : Generator, ICoroutine
 	{
+		internal Func<IEnumerator> Start;
+
+		private IEnumerator _state;
+
 		public object Value { get; private set; }
 
-		public override void Step ()
+		public override void Step()
 		{
 			if (!Running || !Active)
 				return;
 
-			if (_state == null) 
+			if (_state == null)
 			{
 				if (Start == null)
 					CannotStart();
@@ -32,13 +36,9 @@ namespace Flow
 			base.Step();
 		}
 
-		void CannotStart ()
+		private void CannotStart()
 		{
 			throw new Exception("TypedCoroutine cannot start");
 		}
-
-		private IEnumerator _state;
-
-		internal Func<IEnumerator> Start;
 	}
 }

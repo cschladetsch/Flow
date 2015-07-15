@@ -4,6 +4,8 @@ namespace Flow
 {
 	internal class Future<T> : Transient, IFuture<T>
 	{
+		private T _value;
+
 		/// <inheritdoc />
 		public event FutureHandler<T> Arrived;
 
@@ -11,16 +13,16 @@ namespace Flow
 		public bool Available { get; private set; }
 
 		/// <inheritdoc />
-		public T Value 
+		public T Value
 		{
-			get 
+			get
 			{
 				if (!Available)
 					throw new FutureNotSetException();
 
 				return _value;
 			}
-			set 
+			set
 			{
 				if (Available)
 					throw new FutureAlreadySetException();
@@ -34,7 +36,5 @@ namespace Flow
 				Complete();
 			}
 		}
-
-		private T _value;
 	}
 }

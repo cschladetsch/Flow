@@ -6,22 +6,28 @@ namespace Flow
 {
 	public class Transient : ITransient
 	{
+		public static bool DebugTrace;
+
+		private string _name;
+
+		public Transient()
+		{
+			Active = true;
+		}
+
 		/// <inheritdoc />
 		public event TransientHandler Completed;
 
 		/// <summary>
-		///  Occurs when completed, with a reason why. 
+		///     Occurs when completed, with a reason why.
 		/// </summary>
 		public event TransientHandlerReason WhyCompleted;
 
 		/// <inheritdoc />
-		public string Name 
-		{ 
-			get 
-			{
-				return _name;
-			}
-			set 
+		public string Name
+		{
+			get { return _name; }
+			set
 			{
 				if (_name == value)
 					return;
@@ -32,39 +38,21 @@ namespace Flow
 				_name = value;
 			}
 		}
-		
+
 		/// <inheritdoc />
 		public IKernel Kernel { get; /*internal*/ set; }
 
 		/// <inheritdoc />
-		public IFactory Factory  { get { return Kernel.Factory; } }
+		public IFactory Factory
+		{
+			get { return Kernel.Factory; }
+		}
 
 		/// <inheritdoc />
 		public event NamedHandler NewName;
 
 		/// <inheritdoc />
 		public bool Active { get; private set; }
-
-		/// <summary>
-		/// Return true if the given other transient is either null or does not exist
-		/// </summary>
-		/// <returns>
-		/// True if the given other transient is either null or does not exist
-		/// </returns>
-		/// <param name='other'>
-		/// The transient to consider
-		/// </param>
-		public static bool IsNullOrEmpty (ITransient other)
-		{
-			return other == null || !other.Active;
-		}
-
-	    public Transient()
-		{
-			Active = true;
-		}
-
-		public static bool DebugTrace;
 
 		/// <inheritdoc />
 		public void Complete()
@@ -87,7 +75,7 @@ namespace Flow
 			if (other == null)
 				return;
 
-			if (!other.Active) 
+			if (!other.Active)
 			{
 				Complete();
 				return;
@@ -96,7 +84,27 @@ namespace Flow
 			other.Completed += tr => CompletedBecause(other);
 		}
 
-		void CompletedBecause(ITransient other)
+		/// <inheritdoc />
+		public void CompleteAfter(TimeSpan span)
+		{
+			CompleteAfter(Factory.NewTimer(span));
+		}
+
+		/// <summary>
+		///     Return true if the given other transient is either null or does not exist
+		/// </summary>
+		/// <returns>
+		///     True if the given other transient is either null or does not exist
+		/// </returns>
+		/// <param name='other'>
+		///     The transient to consider
+		/// </param>
+		public static bool IsNullOrEmpty(ITransient other)
+		{
+			return other == null || !other.Active;
+		}
+
+		private void CompletedBecause(ITransient other)
 		{
 			if (!Active)
 				return;
@@ -106,13 +114,5 @@ namespace Flow
 
 			Complete();
 		}
-
-		/// <inheritdoc />
-		public void CompleteAfter(TimeSpan span)
-		{
-			CompleteAfter(Factory.NewTimer(span));
-		}
-
-		private string _name;
 	}
 }

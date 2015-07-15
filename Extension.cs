@@ -1,6 +1,5 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,19 +8,19 @@ namespace Flow
 	public static class Extension
 	{
 		/// <summary>
-		/// Returns true if the given sequences contains a reference to the given object.
+		///     Returns true if the given sequences contains a reference to the given object.
 		/// </summary>
 		/// <returns>
-		/// True if the sequence described by the enumerable contains a reference to the given object
+		///     True if the sequence described by the enumerable contains a reference to the given object
 		/// </returns>
 		/// <param name='list'>
-		/// The sequence
+		///     The sequence
 		/// </param>
 		/// <param name='obj'>
-		/// The reference to check for
+		///     The reference to check for
 		/// </param>
 		/// <typeparam name='T'>
-		/// The 1st type parameter.
+		///     The 1st type parameter.
 		/// </typeparam>
 		public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
 		{
@@ -29,22 +28,22 @@ namespace Flow
 		}
 
 		/// <summary>
-		/// Removes a reference from the list
+		///     Removes a reference from the list
 		/// </summary>
 		/// <param name='list'>
-		/// The list to search
+		///     The list to search
 		/// </param>
 		/// <param name='obj'>
-		/// The object reference to remove.
+		///     The object reference to remove.
 		/// </param>
 		/// <typeparam name='T'>
-		/// The 1st type parameter.
+		///     The 1st type parameter.
 		/// </typeparam>
 		public static void RemoveRef<T>(this IList<T> list, T obj)
 		{
-			for (var n = 0; n < list.Count; ++n)
+			for (int n = 0; n < list.Count; ++n)
 			{
-				if (!ReferenceEquals(list[n], obj)) 
+				if (!ReferenceEquals(list[n], obj))
 					continue;
 
 				list.RemoveAt(n);
@@ -69,4 +68,3 @@ namespace Flow
 
 	public delegate void Action<T0, T1>(T0 t0, T1 t1);
 }
-

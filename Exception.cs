@@ -5,31 +5,31 @@ using System;
 namespace Flow
 {
 	/// <summary>
-	/// Future not set exception.
+	///     Future not set exception.
 	/// </summary>
-	public class FutureNotSetException : System.Exception
+	public class FutureNotSetException : Exception
 	{
-		public FutureNotSetException () : base("Future value not arrived yet")
+		public FutureNotSetException() : base("Future value not arrived yet")
 		{
 		}
 	}
 
 	/// <summary>
-	/// Future already set exception.
+	///     Future already set exception.
 	/// </summary>
-	public class FutureAlreadySetException : System.Exception
+	public class FutureAlreadySetException : Exception
 	{
-		public FutureAlreadySetException () : base("Future already set")
+		public FutureAlreadySetException() : base("Future already set")
 		{
 		}
 	}
 
 	/// <summary>
-	/// Re-entrancy exception.
+	///     Re-entrancy exception.
 	/// </summary>
 	public class ReentrancyException : Exception
 	{
-		public ReentrancyException ()  : base("Method is not re-entrant")
+		public ReentrancyException() : base("Method is not re-entrant")
 		{
 		}
 	}
@@ -39,4 +39,3 @@ namespace Flow
 		//public EventStream(Action<
 	}
 }
-

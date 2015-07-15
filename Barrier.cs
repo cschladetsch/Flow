@@ -12,11 +12,11 @@ namespace Flow
 		{
 			base.Post();
 
-		    if (Contents.Any(t => t.Active))
-		        return;
+			if (Contents.Any(t => t.Active))
+				return;
 
-            if (Additions.Count == 0)
-                Complete();
+			if (Additions.Count == 0)
+				Complete();
 		}
 	}
 }

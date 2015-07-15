@@ -1,15 +1,17 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Flow
 {
 	/// <summary>
-	/// A flow Node contains a collection of other Transients. When the Node is stepped, it steps all referenced Generators.
+	///     A flow Node contains a collection of other Transients. When the Node is stepped, it steps all referenced
+	///     Generators.
 	/// </summary>
 	internal class Node : Group, INode
 	{
+		private bool _stepping;
+
 		/// <inheritdoc />
 		public override void Step()
 		{
@@ -25,7 +27,7 @@ namespace Flow
 
 				base.Step();
 
-				foreach (var gen in Generators)
+				foreach (IGenerator gen in Generators)
 				{
 					if (!gen.Active)
 						Remove(gen);
@@ -45,14 +47,13 @@ namespace Flow
 			base.Post();
 
 			// make a copy so that contents can be changed during iteration
-			var list = Generators.ToArray();
+			IGenerator[] list = Generators.ToArray();
 
 			// do post for all contained generators
-			foreach (var gen in list)
+			foreach (IGenerator gen in list)
+			{
 				gen.Post();
+			}
 		}
-
-		bool _stepping;
 	}
 }
-

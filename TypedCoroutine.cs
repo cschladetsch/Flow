@@ -8,13 +8,17 @@ namespace Flow
 	/// <inheritdoc />
 	internal class TypedCoroutine<TR> : TypedGenerator<TR>, ITypedCoroutine<TR>
 	{
+		internal Func<IEnumerator<TR>> Start;
+
+		private IEnumerator<TR> _state;
+
 		/// <inheritdoc />
-		public override void Step ()
+		public override void Step()
 		{
 			if (!Running || !Active)
 				return;
 
-			if (_state == null) 
+			if (_state == null)
 			{
 				if (Start == null)
 					CannotStart();
@@ -34,13 +38,9 @@ namespace Flow
 			base.Step();
 		}
 
-		void CannotStart ()
+		private void CannotStart()
 		{
 			throw new Exception("TypedCoroutine cannot start");
 		}
-
-		private IEnumerator<TR> _state;
-
-		internal Func<IEnumerator<TR>> Start;
 	}
 }

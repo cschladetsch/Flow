@@ -1,16 +1,32 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Flow
 {
 	internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
 	{
+		private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
+
+		private readonly Queue<TR> _values = new Queue<TR>();
+
+		internal Channel(IKernel kernel)
+		{
+			Sub = StepChannel;
+			Completed += tr => Close();
+		}
+
+		internal Channel(IKernel kernel, ITypedGenerator<TR> gen)
+			: this(kernel)
+		{
+			gen.Stepped += g => Insert(gen.Value);
+			CompleteAfter(gen);
+		}
+
 		/// <inheritdoc />
 		public IFuture<TR> Extract()
 		{
-			var future = Factory.NewFuture<TR>();
+			IFuture<TR> future = Factory.NewFuture<TR>();
 			_requests.Enqueue(future);
 			return future;
 		}
@@ -28,7 +44,7 @@ namespace Flow
 				list.Add(_values.Dequeue());
 			}
 
-			return list;			
+			return list;
 		}
 
 		/// <inheritdoc />
@@ -46,36 +62,21 @@ namespace Flow
 			}
 		}
 
-		internal Channel(IKernel kernel)
-		{
-			Sub = StepChannel;
-			Completed += tr => Close();
-		}
-
 		internal void Close()
 		{
 			Flush();
 
 			foreach (var f in _requests)
+			{
 				f.Complete();
+			}
 		}
 
-		internal Channel(IKernel kernel, ITypedGenerator<TR> gen)
-			: this(kernel)
-		{
-			gen.Stepped += g => Insert(gen.Value);
-			CompleteAfter(gen);
-		}
-
-		bool StepChannel(IGenerator self)
+		private bool StepChannel(IGenerator self)
 		{
 			Flush();
 
 			return true;
 		}
-
-		readonly Queue<TR> _values = new Queue<TR>();
-
-		readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
 	}
 }

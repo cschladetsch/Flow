@@ -20,57 +20,102 @@ using System.Threading;
 namespace Flow
 {
 	// CJS See http://stackoverflow.com/questions/12550749/what-is-the-dynamicallyinvokable-attribute-for
-	class __DynamicallyInvokable : Attribute
+	internal class __DynamicallyInvokable : Attribute
 	{
 	}
 
-	[Serializable, ComVisible(false), DebuggerDisplay("Count = {Count}"), __DynamicallyInvokable, HostProtection(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]
+	[Serializable, ComVisible(false), DebuggerDisplay("Count = {Count}"), __DynamicallyInvokable,
+	 HostProtection(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]
 	//CJS public class ConcurrentQueue<T> : IProducerConsumerCollection<T>, IEnumerable<T>, ICollection, IEnumerable
 	public class ConcurrentQueue<T> : IEnumerable<T>, ICollection, IEnumerable
 	{
-		[NonSerialized]
-		private volatile Segment<T> m_head;
-		[NonSerialized]
-		internal volatile int m_numSnapshotTakers;
-		private T[] m_serializationArray;
-		[NonSerialized]
-		private volatile Segment<T> m_tail;
 		private const int SEGMENT_SIZE = 0x20;
+
+		[NonSerialized] private volatile Segment<T> m_head;
+
+		[NonSerialized] internal volatile int m_numSnapshotTakers;
+
+		private T[] m_serializationArray;
+
+		[NonSerialized] private volatile Segment<T> m_tail;
 
 		[__DynamicallyInvokable]
 		public ConcurrentQueue()
 		{
-			this.m_head = this.m_tail = new Segment<T>(0L, (ConcurrentQueue<T>)this);
+			m_head = m_tail = new Segment<T>(0L, this);
 		}
 
 		[__DynamicallyInvokable]
 		public ConcurrentQueue(IEnumerable<T> collection)
 		{
 			if (collection == null)
-			{
 				throw new ArgumentNullException("collection");
-			}
-			this.InitializeFromCollection(collection);
+			InitializeFromCollection(collection);
 		}
 
 		[__DynamicallyInvokable]
-		public void CopyTo(T[] array, int index)
+		public bool IsEmpty
+		{
+			[__DynamicallyInvokable]
+			get
+			{
+				Segment<T> head = m_head;
+				if (head.IsEmpty)
+				{
+					if (head.Next == null)
+						return true;
+					var wait = new SpinWait();
+					while (head.IsEmpty)
+					{
+						if (head.Next == null)
+							return true;
+						wait.SpinOnce();
+						head = m_head;
+					}
+				}
+				return false;
+			}
+		}
+
+		[__DynamicallyInvokable]
+		void ICollection.CopyTo(Array array, int index)
 		{
 			if (array == null)
-			{
 				throw new ArgumentNullException("array");
-			}
-			this.ToList().CopyTo(array, index);
+
+			//CJS this.ToList().CopyTo(array, index);
+			throw new NotImplementedException();
 		}
 
 		[__DynamicallyInvokable]
-		public void Enqueue(T item)
+		public int Count
 		{
-			SpinWait wait = new SpinWait();
-			while (!this.m_tail.TryAppend(item))
+			[__DynamicallyInvokable]
+			get
 			{
-				wait.SpinOnce();
+				Segment<T> segment;
+				Segment<T> segment2;
+				int num;
+				int num2;
+				GetHeadTailPositions(out segment, out segment2, out num, out num2);
+				if (segment == segment2)
+					return ((num2 - num) + 1);
+				int num3 = 0x20 - num;
+				num3 += 0x20*((int) ((segment2.m_index - segment.m_index) - 1L));
+				return (num3 + (num2 + 1));
 			}
+		}
+
+		[__DynamicallyInvokable]
+		bool ICollection.IsSynchronized
+		{
+			[__DynamicallyInvokable] get { return false; }
+		}
+
+		[__DynamicallyInvokable]
+		object ICollection.SyncRoot
+		{
+			[__DynamicallyInvokable] get { throw new NotSupportedException("ConcurrentCollection_SyncRoot_NotSupported"); }
 		}
 
 		[__DynamicallyInvokable]
@@ -80,14 +125,38 @@ namespace Flow
 			Segment<T> segment2;
 			int num;
 			int num2;
-			Interlocked.Increment(ref this.m_numSnapshotTakers);
-			this.GetHeadTailPositions(out segment, out segment2, out num, out num2);
-			return this.GetEnumerator(segment, segment2, num, num2);
+			Interlocked.Increment(ref m_numSnapshotTakers);
+			GetHeadTailPositions(out segment, out segment2, out num, out num2);
+			return GetEnumerator(segment, segment2, num, num2);
+		}
+
+		[__DynamicallyInvokable]
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		[__DynamicallyInvokable]
+		public void CopyTo(T[] array, int index)
+		{
+			if (array == null)
+				throw new ArgumentNullException("array");
+			ToList().CopyTo(array, index);
+		}
+
+		[__DynamicallyInvokable]
+		public void Enqueue(T item)
+		{
+			var wait = new SpinWait();
+			while (!m_tail.TryAppend(item))
+			{
+				wait.SpinOnce();
+			}
 		}
 
 		private IEnumerator<T> GetEnumerator(Segment<T> head, Segment<T> tail, int headLow, int tailHigh)
 		{
-			SpinWait iteratorVariable0 = new SpinWait();
+			var iteratorVariable0 = new SpinWait();
 			if (head == tail)
 			{
 				for (int i = headLow; i <= tailHigh; i++)
@@ -111,7 +180,9 @@ namespace Flow
 					}
 					yield return head.m_array[j];
 				}
-				for (Segment<T> iteratorVariable3 = head.Next; iteratorVariable3 != tail; iteratorVariable3 = iteratorVariable3.Next)
+				for (Segment<T> iteratorVariable3 = head.Next;
+					iteratorVariable3 != tail;
+					iteratorVariable3 = iteratorVariable3.Next)
 				{
 					for (int m = 0; m < 0x20; m++)
 					{
@@ -137,16 +208,17 @@ namespace Flow
 
 		private void GetHeadTailPositions(out Segment<T> head, out Segment<T> tail, out int headLow, out int tailHigh)
 		{
-			head = this.m_head;
-			tail = this.m_tail;
+			head = m_head;
+			tail = m_tail;
 			headLow = head.Low;
 			tailHigh = tail.High;
-			SpinWait wait = new SpinWait();
-			while ((((head != this.m_head) || (tail != this.m_tail)) || ((headLow != head.Low) || (tailHigh != tail.High))) || (head.m_index > tail.m_index))
+			var wait = new SpinWait();
+			while ((((head != m_head) || (tail != m_tail)) || ((headLow != head.Low) || (tailHigh != tail.High))) ||
+			       (head.m_index > tail.m_index))
 			{
 				wait.SpinOnce();
-				head = this.m_head;
-				tail = this.m_tail;
+				head = m_head;
+				tail = m_tail;
 				headLow = head.Low;
 				tailHigh = tail.High;
 			}
@@ -154,8 +226,8 @@ namespace Flow
 
 		private void InitializeFromCollection(IEnumerable<T> collection)
 		{
-			Segment<T> segment = new Segment<T>(0L, (ConcurrentQueue<T>)this);
-			this.m_head = segment;
+			var segment = new Segment<T>(0L, this);
+			m_head = segment;
 			int num = 0;
 			foreach (T local in collection)
 			{
@@ -167,27 +239,27 @@ namespace Flow
 					num = 0;
 				}
 			}
-			this.m_tail = segment;
+			m_tail = segment;
 		}
 
 		[OnDeserialized]
 		private void OnDeserialized(StreamingContext context)
 		{
-			this.InitializeFromCollection(this.m_serializationArray);
-			this.m_serializationArray = null;
+			InitializeFromCollection(m_serializationArray);
+			m_serializationArray = null;
 		}
 
 		[OnSerializing]
 		private void OnSerializing(StreamingContext context)
 		{
-			this.m_serializationArray = this.ToArray();
+			m_serializationArray = ToArray();
 		}
 
 		[__DynamicallyInvokable]
 		//CJS bool IProducerConsumerCollection<T>.TryAdd(T item)
 		public bool TryAdd(T item)
 		{
-			this.Enqueue(item);
+			Enqueue(item);
 			return true;
 		}
 
@@ -195,44 +267,26 @@ namespace Flow
 		//CJS bool IProducerConsumerCollection<T>.TryTake(out T item)
 		public bool TryTake(out T item)
 		{
-			return this.TryDequeue(out item);
-		}
-
-		[__DynamicallyInvokable]
-		void ICollection.CopyTo(Array array, int index)
-		{
-			if (array == null)
-			{
-				throw new ArgumentNullException("array");
-			}
-
-			//CJS this.ToList().CopyTo(array, index);
-			throw new NotImplementedException();
-		}
-
-		[__DynamicallyInvokable]
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this.GetEnumerator();
+			return TryDequeue(out item);
 		}
 
 		[__DynamicallyInvokable]
 		public T[] ToArray()
 		{
-			return this.ToList().ToArray();
+			return ToList().ToArray();
 		}
 
 		private List<T> ToList()
 		{
-			Interlocked.Increment(ref this.m_numSnapshotTakers);
-			List<T> list = new List<T>();
+			Interlocked.Increment(ref m_numSnapshotTakers);
+			var list = new List<T>();
 			try
 			{
 				Segment<T> segment;
 				Segment<T> segment2;
 				int num;
 				int num2;
-				this.GetHeadTailPositions(out segment, out segment2, out num, out num2);
+				GetHeadTailPositions(out segment, out segment2, out num, out num2);
 				if (segment == segment2)
 				{
 					segment.AddToList(list, num, num2);
@@ -247,7 +301,7 @@ namespace Flow
 			}
 			finally
 			{
-				Interlocked.Decrement(ref this.m_numSnapshotTakers);
+				Interlocked.Decrement(ref m_numSnapshotTakers);
 			}
 			return list;
 		}
@@ -255,12 +309,10 @@ namespace Flow
 		[__DynamicallyInvokable]
 		public bool TryDequeue(out T result)
 		{
-			while (!this.IsEmpty)
+			while (!IsEmpty)
 			{
-				if (this.m_head.TryRemove(out result))
-				{
+				if (m_head.TryRemove(out result))
 					return true;
-				}
 			}
 			result = default(T);
 			return false;
@@ -269,147 +321,98 @@ namespace Flow
 		[__DynamicallyInvokable]
 		public bool TryPeek(out T result)
 		{
-			while (!this.IsEmpty)
+			while (!IsEmpty)
 			{
-				if (this.m_head.TryPeek(out result))
-				{
+				if (m_head.TryPeek(out result))
 					return true;
-				}
 			}
 			result = default(T);
 			return false;
 		}
 
-		[__DynamicallyInvokable]
-		public int Count
-		{
-			[__DynamicallyInvokable]
-			get
-			{
-				Segment<T> segment;
-				Segment<T> segment2;
-				int num;
-				int num2;
-				this.GetHeadTailPositions(out segment, out segment2, out num, out num2);
-				if (segment == segment2)
-				{
-					return ((num2 - num) + 1);
-				}
-				int num3 = 0x20 - num;
-				num3 += 0x20 * ((int)((segment2.m_index - segment.m_index) - 1L));
-				return (num3 + (num2 + 1));
-			}
-		}
-
-		[__DynamicallyInvokable]
-		public bool IsEmpty
-		{
-			[__DynamicallyInvokable]
-			get
-			{
-				Segment<T> head = this.m_head;
-				if (head.IsEmpty)
-				{
-					if (head.Next == null)
-					{
-						return true;
-					}
-					SpinWait wait = new SpinWait();
-					while (head.IsEmpty)
-					{
-						if (head.Next == null)
-						{
-							return true;
-						}
-						wait.SpinOnce();
-						head = this.m_head;
-					}
-				}
-				return false;
-			}
-		}
-
-		[__DynamicallyInvokable]
-		bool ICollection.IsSynchronized
-		{
-			[__DynamicallyInvokable]
-			get
-			{
-				return false;
-			}
-		}
-
-		[__DynamicallyInvokable]
-		object ICollection.SyncRoot
-		{
-			[__DynamicallyInvokable]
-			get
-			{
-				throw new NotSupportedException("ConcurrentCollection_SyncRoot_NotSupported");
-			}
-		}
-
 		internal class Segment<T2>
 		{
-			internal volatile T2[] m_array;
-			private volatile int m_high;
 			internal readonly long m_index;
+
+			internal volatile T2[] m_array;
+
+			private volatile int m_high;
+
 			private volatile int m_low;
+
 			private volatile ConcurrentQueue<T2>.Segment<T2> m_next;
+
 			private volatile ConcurrentQueue<T2> m_source;
+
 			internal volatile VolatileBool[] m_state;
 
 			internal Segment(long index, ConcurrentQueue<T2> source)
 			{
-				this.m_array = new T2[0x20];
-				this.m_state = new VolatileBool[0x20];
-				this.m_high = -1;
-				this.m_index = index;
-				this.m_source = source;
+				m_array = new T2[0x20];
+				m_state = new VolatileBool[0x20];
+				m_high = -1;
+				m_index = index;
+				m_source = source;
+			}
+
+			internal int High
+			{
+				get { return Math.Min(m_high, 0x1f); }
+			}
+
+			internal bool IsEmpty
+			{
+				get { return (Low > High); }
+			}
+
+			internal int Low
+			{
+				get { return Math.Min(m_low, 0x20); }
+			}
+
+			internal ConcurrentQueue<T2>.Segment<T2> Next
+			{
+				get { return m_next; }
 			}
 
 			internal void AddToList(List<T2> list, int start, int end)
 			{
 				for (int i = start; i <= end; i++)
 				{
-					SpinWait wait = new SpinWait();
-					while (!this.m_state[i].m_value)
+					var wait = new SpinWait();
+					while (!m_state[i].m_value)
 					{
 						wait.SpinOnce();
 					}
-					list.Add(this.m_array[i]);
+					list.Add(m_array[i]);
 				}
 			}
 
 			internal void Grow()
 			{
-				ConcurrentQueue<T2>.Segment<T2> segment = new ConcurrentQueue<T2>.Segment<T2>(this.m_index + 1L, this.m_source);
-				this.m_next = segment;
-				this.m_source.m_tail = this.m_next;
+				var segment = new ConcurrentQueue<T2>.Segment<T2>(m_index + 1L, m_source);
+				m_next = segment;
+				m_source.m_tail = m_next;
 			}
 
 			internal bool TryAppend(T2 value)
 			{
-				if (this.m_high >= 0x1f)
-				{
+				if (m_high >= 0x1f)
 					return false;
-				}
 				int index = 0x20;
 				try
 				{
 				}
 				finally
 				{
-					index = Interlocked.Increment(ref this.m_high);
+					index = Interlocked.Increment(ref m_high);
 					if (index <= 0x1f)
 					{
-						this.m_array[index] = value;
-						this.m_state[index].m_value = true;
+						m_array[index] = value;
+						m_state[index].m_value = true;
 					}
 					if (index == 0x1f)
-					{
-						this.Grow();
-					}
+						Grow();
 				}
 				return (index <= 0x1f);
 			}
@@ -417,51 +420,47 @@ namespace Flow
 			internal bool TryPeek(out T2 result)
 			{
 				result = default(T2);
-				int low = this.Low;
-				if (low > this.High)
-				{
+				int low = Low;
+				if (low > High)
 					return false;
-				}
-				SpinWait wait = new SpinWait();
-				while (!this.m_state[low].m_value)
+				var wait = new SpinWait();
+				while (!m_state[low].m_value)
 				{
 					wait.SpinOnce();
 				}
-				result = this.m_array[low];
+				result = m_array[low];
 				return true;
 			}
 
 			internal bool TryRemove(out T2 result)
 			{
-				SpinWait wait = new SpinWait();
-				int low = this.Low;
-				for (int i = this.High; low <= i; i = this.High)
+				var wait = new SpinWait();
+				int low = Low;
+				for (int i = High; low <= i; i = High)
 				{
-					if (Interlocked.CompareExchange(ref this.m_low, low + 1, low) == low)
+					if (Interlocked.CompareExchange(ref m_low, low + 1, low) == low)
 					{
-						SpinWait wait2 = new SpinWait();
-						while (!this.m_state[low].m_value)
+						var wait2 = new SpinWait();
+						while (!m_state[low].m_value)
 						{
 							wait2.SpinOnce();
 						}
-						result = this.m_array[low];
-						if (this.m_source.m_numSnapshotTakers <= 0)
-						{
-							this.m_array[low] = default(T2);
-						}
+						result = m_array[low];
+						if (m_source.m_numSnapshotTakers <= 0)
+							m_array[low] = default(T2);
 						if ((low + 1) >= 0x20)
 						{
 							wait2 = new SpinWait();
-							while (this.m_next == null)
+							while (m_next == null)
 							{
 								wait2.SpinOnce();
 							}
-							this.m_source.m_head = this.m_next;
+							m_source.m_head = m_next;
 						}
 						return true;
 					}
 					wait.SpinOnce();
-					low = this.Low;
+					low = Low;
 				}
 				result = default(T2);
 				return false;
@@ -469,49 +468,17 @@ namespace Flow
 
 			internal void UnsafeAdd(T2 value)
 			{
-				this.m_high++;
-				this.m_array[this.m_high] = value;
-				this.m_state[this.m_high].m_value = true;
+				m_high++;
+				m_array[m_high] = value;
+				m_state[m_high].m_value = true;
 			}
 
 			// CJS: was internal
 			internal ConcurrentQueue<T2>.Segment<T2> UnsafeGrow()
 			{
-				ConcurrentQueue<T2>.Segment<T2> segment = new ConcurrentQueue<T2>.Segment<T2>(this.m_index + 1L, this.m_source);
-				this.m_next = segment;
+				var segment = new ConcurrentQueue<T2>.Segment<T2>(m_index + 1L, m_source);
+				m_next = segment;
 				return segment;
-			}
-
-			internal int High
-			{
-				get
-				{
-					return Math.Min(this.m_high, 0x1f);
-				}
-			}
-
-			internal bool IsEmpty
-			{
-				get
-				{
-					return (this.Low > this.High);
-				}
-			}
-
-			internal int Low
-			{
-				get
-				{
-					return Math.Min(this.m_low, 0x20);
-				}
-			}
-
-			internal ConcurrentQueue<T2>.Segment<T2> Next
-			{
-				get
-				{
-					return this.m_next;
-				}
 			}
 		}
 	}

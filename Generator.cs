@@ -4,6 +4,11 @@ namespace Flow
 {
 	internal abstract class Generator : Transient, IGenerator
 	{
+		internal Generator()
+		{
+			Completed += tr => Suspend();
+		}
+
 		/// <inheritdoc />
 		public event GeneratorHandler Suspended;
 
@@ -38,9 +43,9 @@ namespace Flow
 		{
 			if (!Running || !Active)
 				return;
-			
+
 			Running = false;
-			
+
 			if (Suspended != null)
 				Suspended(this);
 		}
@@ -50,7 +55,7 @@ namespace Flow
 		{
 			if (Running || !Active)
 				return;
-			
+
 			Running = true;
 
 			if (Resumed != null)
@@ -107,11 +112,6 @@ namespace Flow
 			SuspendAfter(Factory.NewTimer(span));
 
 			return true;
-		}
-
-		internal Generator()
-		{
-			Completed += tr => Suspend();
 		}
 	}
 }
