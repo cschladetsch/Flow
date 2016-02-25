@@ -28,14 +28,14 @@ namespace TestFlow
 
 			if (shouldBeCompleted) 
 			{
-				NUnitFramework.Assert.IsTrue(!timer.Active);
-				NUnitFramework.Assert.IsTrue(elapsed);
-				NUnitFramework.Assert.IsTrue(when > start);
+				Assert.IsTrue(!timer.Active);
+				Assert.IsTrue(elapsed);
+				Assert.IsTrue(when > start);
 			} 
 			else 
 			{
-				NUnitFramework.Assert.IsFalse(!timer.Active);
-				NUnitFramework.Assert.IsFalse(elapsed);
+				Assert.IsFalse(!timer.Active);
+				Assert.IsFalse(elapsed);
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace TestFlow
  
 			RunKernel(kernel, TimeSpan.FromSeconds(runTime));
 
-			NUnitFramework.Assert.AreEqual(numElapsed, elapsed);
+			Assert.AreEqual(numElapsed, elapsed);
 		}
 
 		[TestCase(0.1f, 0.2f, true)]
@@ -62,7 +62,7 @@ namespace TestFlow
 			var kernel = Create.NewKernel();
 			var future = kernel.Factory.NewTimedFuture<int>(TimeSpan.FromSeconds(span));
 
-			NUnitFramework.Assert.IsFalse(future.Available);
+			Assert.IsFalse(future.Available);
 
 			RunKernel(kernel, TimeSpan.FromSeconds(runTime));
 
