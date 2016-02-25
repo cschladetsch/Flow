@@ -41,9 +41,6 @@ namespace Flow
 		/// <inheritdoc />
 		public void Suspend()
 		{
-			if (!Running || !Active)
-				return;
-
 			Running = false;
 
 			if (Suspended != null)
