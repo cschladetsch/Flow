@@ -60,10 +60,10 @@ namespace Flow
 			if (!Active)
 				return;
 
+			Active = false;
+
 			if (Completed != null)
 				Completed(this);
-
-			Active = false;
 		}
 
 		/// <inheritdoc />

@@ -108,12 +108,17 @@ namespace Flow
 
 		private void PerformRemoves()
 		{
+			if (Deletions.Count == 0)
+				return;
+			
 			foreach (ITransient tr in Deletions.ToList())
 			{
 				_contents.RemoveRef(tr);
 				if (tr == null)
 					continue;
-				//tr.Completed -= Remove;
+
+				tr.Completed -= Remove;
+
 				if (Removed != null)
 					Removed(this, tr);
 			}
@@ -126,7 +131,9 @@ namespace Flow
 			foreach (ITransient tr in Additions)
 			{
 				_contents.Add(tr);
-				//tr.Completed += Remove;
+
+				tr.Completed += Remove;
+
 				if (Added != null)
 					Added(this, tr);
 			}
