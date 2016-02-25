@@ -116,7 +116,7 @@ namespace Flow
 		/// </typeparam>
 		ITypedCoroutine<TR> NewTypedCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun);
 
-		ITransient NewAction(Action act);
+		IGenerator NewAction(Action act);
 
 		/// <summary>
 		///     News the coroutine.

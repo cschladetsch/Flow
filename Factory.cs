@@ -61,7 +61,7 @@ namespace Flow
 			foreach (var act in actions)
 			{
 				var tr = NewAction(act);
-				if (prev)
+				if (prev != null)
 					tr.CompleteAfter(prev);
 
 				prev = tr;
