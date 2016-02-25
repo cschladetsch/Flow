@@ -24,7 +24,7 @@ namespace Flow
 		public event TransientHandlerReason WhyCompleted;
 
 		/// <inheritdoc />
-		public string Name
+		public virtual string Name
 		{
 			get { return _name; }
 			set
@@ -99,7 +99,7 @@ namespace Flow
 		/// <param name='other'>
 		///     The transient to consider
 		/// </param>
-		public static bool IsNullOrEmpty(ITransient other)
+		public static bool IsNullOrInactive(ITransient other)
 		{
 			return other == null || !other.Active;
 		}

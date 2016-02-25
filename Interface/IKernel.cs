@@ -28,5 +28,7 @@ namespace Flow
 		///     The time to use for this update
 		/// </value>
 		ITimeFrame Time { get; }
+
+		void Update(float deltaSeconds);
 	}
 }

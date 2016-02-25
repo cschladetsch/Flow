@@ -32,6 +32,61 @@ namespace Flow
 			return Prepare(new Barrier());
 		}
 
+		public IGenerator NewAction(Action act)
+		{
+			return Prepare(new DoAction(act));
+		}
+
+		public INode NewNode()
+		{
+			return Prepare(new Node());
+		}
+
+		public ITransient NewParallel(params Action[] actions)
+		{
+			var gr = new Node();
+			Prepare(gr);
+			foreach (var act in actions)
+			{
+				gr.Add(NewAction(act)); 
+			}
+
+			return gr;
+		}
+
+		public ITransient NewSequence(params Action[] actions)
+		{
+			ITransient node = NewNode();
+			IGenerator prev = null;
+			foreach (var act in actions)
+			{
+				var tr = NewAction(act);
+				if (prev)
+					tr.CompleteAfter(prev);
+
+				prev = tr;
+			}
+
+			return Prepare(node);
+		}
+
+		class DoAction : Generator
+		{
+			public DoAction(Action act)
+			{
+				_act = act;
+			}
+
+			public override void Step()
+			{
+				_act();
+
+				Complete();
+			}
+
+			Action _act;
+		}
+
 		public IBarrier NewBarrier(string name, params ITransient[] args)
 		{
 			IBarrier barrier = NewBarrier();

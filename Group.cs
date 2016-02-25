@@ -53,7 +53,7 @@ namespace Flow
 		/// <inheritdoc />
 		public void Add(ITransient other)
 		{
-			if (IsNullOrEmpty(other))
+			if (IsNullOrInactive(other))
 				return;
 
 			if (Contents.ContainsRef(other) || Additions.ContainsRef(other))

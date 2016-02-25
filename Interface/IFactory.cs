@@ -19,6 +19,8 @@ namespace Flow
 		/// </value>
 		IKernel Kernel { get; }
 
+		INode NewNode();
+
 		/// <summary>
 		///     News the timer.
 		/// </summary>
@@ -113,6 +115,8 @@ namespace Flow
 		///     The 1st type parameter.
 		/// </typeparam>
 		ITypedCoroutine<TR> NewTypedCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun);
+
+		ITransient NewAction(Action act);
 
 		/// <summary>
 		///     News the coroutine.

@@ -21,7 +21,7 @@ namespace Flow
 		public event TransientHandler Elapsed;
 
 		/// <inheritdoc />
-		public DateTime TimeStarted { get; set; }
+		public DateTime TimeStarted { get; private set; }
 
 		/// <inheritdoc />
 		public TimeSpan Interval { get; set; }

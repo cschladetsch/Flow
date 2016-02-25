@@ -27,14 +27,29 @@ namespace Flow
 			get { return _time; }
 		}
 
+		public void Update(float dt)
+		{
+			var delta = TimeSpan.FromSeconds(dt);
+			_time.Last = _time.Now;
+			_time.Delta = delta;
+			_time.Now = _time.Now + delta;
+
+			Process();
+		}
+
 		/// <inheritdoc />
 		public override void Step()
 		{
 			StepTime();
 
-			if (IsNullOrEmpty(Root))
+			if (IsNullOrInactive(Root))
 				return;
 
+			Process();
+		}
+
+		void Process()
+		{
 			Root.Step();
 			Root.Post();
 		}

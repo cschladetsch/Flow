@@ -2,7 +2,7 @@ using System;
 
 namespace Flow
 {
-	internal abstract class Generator : Transient, IGenerator
+	public abstract class Generator : Transient, IGenerator
 	{
 		internal Generator()
 		{
@@ -62,7 +62,7 @@ namespace Flow
 		/// <inheritdoc />
 		public void SuspendAfter(ITransient other)
 		{
-			if (IsNullOrEmpty(other))
+			if (IsNullOrInactive(other))
 			{
 				Suspend();
 				return;
@@ -85,7 +85,7 @@ namespace Flow
 		/// <inheritdoc />
 		public bool ResumeAfter(ITransient other)
 		{
-			if (IsNullOrEmpty(other))
+			if (IsNullOrInactive(other))
 			{
 				Resume();
 				return true;
