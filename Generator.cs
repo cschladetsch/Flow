@@ -70,7 +70,16 @@ namespace Flow
 
 			Resume();
 
-			other.Completed += tr => Suspend();
+			// thanks to https://github.com/innostory for reporting an issue
+			// where a dangling reference to 'other' resulted in memory leaks.
+			TransientHandler action = null;
+			action = tr =>
+			{
+				other.Completed -= action;
+				Suspend();
+			};
+
+			other.Completed += action;
 		}
 
 		/// <inheritdoc />
@@ -84,7 +93,16 @@ namespace Flow
 
 			Suspend();
 
-			other.Completed += tr => Resume();
+			// thanks to https://github.com/innostory for reporting an issue
+			// where a dangling reference to 'other' resulted in memory leaks.
+			TransientHandler onCompleted = null;
+			onCompleted = tr =>
+			{
+				other.Completed -= onCompleted;
+				Resume();
+			};
+
+			other.Completed += onCompleted;
 
 			return true;
 		}
