@@ -19,6 +19,12 @@ namespace Flow
 		/// </value>
 		IKernel Kernel { get; }
 
+//		ITransient NewParallel(params Action<IGenerator> actions);
+
+		ITransient NewSequence(params Action[] actions);
+
+		ITransient NewParallel(params Action[] actions);
+
 		INode NewNode();
 
 		/// <summary>

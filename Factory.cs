@@ -34,7 +34,7 @@ namespace Flow
 
 		public IGenerator NewAction(Action act)
 		{
-			return Prepare(new DoAction(act));
+			return new DoAction(act);
 		}
 
 		public INode NewNode()
@@ -44,8 +44,8 @@ namespace Flow
 
 		public ITransient NewParallel(params Action[] actions)
 		{
-			var gr = new Node();
-			Prepare(gr);
+			var gr = NewNode();
+
 			foreach (var act in actions)
 			{
 				gr.Add(NewAction(act)); 
@@ -56,18 +56,20 @@ namespace Flow
 
 		public ITransient NewSequence(params Action[] actions)
 		{
-			ITransient node = NewNode();
+			INode seq = NewNode();
 			IGenerator prev = null;
+
 			foreach (var act in actions)
 			{
 				var tr = NewAction(act);
 				if (prev != null)
-					tr.CompleteAfter(prev);
+					tr.ResumeAfter(prev);
 
+				seq.Add(tr);
 				prev = tr;
 			}
 
-			return Prepare(node);
+			return Prepare(seq);
 		}
 
 		class DoAction : Generator
@@ -79,7 +81,12 @@ namespace Flow
 
 			public override void Step()
 			{
+				if (!Active)
+					return;
+				
 				_act();
+
+				Console.WriteLine ("Completed");
 
 				Complete();
 			}

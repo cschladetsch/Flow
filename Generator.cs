@@ -29,6 +29,9 @@ namespace Flow
 		{
 			++StepNumber;
 
+			if (!Active)
+				return;
+			
 			if (Stepped != null)
 				Stepped(this);
 		}
