@@ -2,12 +2,14 @@
 
 using System;
 
-namespace Flow
+namespace Flow.Impl
 {
-	/// <inheritdoc />
 	internal class Periodic : Subroutine<bool>, IPeriodic
 	{
-		private DateTime _expires;
+		public event TransientHandler Elapsed;
+
+		public DateTime TimeStarted { get; private set; }
+		public TimeSpan Interval { get; set; }
 
 		internal Periodic(IKernel kernel, TimeSpan interval)
 		{
@@ -16,15 +18,6 @@ namespace Flow
 			_expires = TimeStarted + Interval;
 			Sub = StepTimer;
 		}
-
-		/// <inheritdoc />
-		public event TransientHandler Elapsed;
-
-		/// <inheritdoc />
-		public DateTime TimeStarted { get; private set; }
-
-		/// <inheritdoc />
-		public TimeSpan Interval { get; set; }
 
 		private bool StepTimer(IGenerator self)
 		{
@@ -38,5 +31,7 @@ namespace Flow
 
 			return true;
 		}
+
+		private DateTime _expires;
 	}
 }

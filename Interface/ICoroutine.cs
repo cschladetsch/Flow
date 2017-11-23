@@ -5,4 +5,8 @@ namespace Flow
 	public interface ICoroutine : IGenerator
 	{
 	}
+
+	public interface ICoroutine<out T> : IGenerator<T>
+	{
+	}
 }

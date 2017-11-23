@@ -17,7 +17,7 @@ using System.Threading;
 //warning CS0618: `System.Security.Permissions.SecurityAction' is obsolete: `CAS support is not available with Silverlight applications.' 
 #pragma warning disable 618
 
-namespace Flow
+namespace Flow.Impl
 {
 	// CJS See http://stackoverflow.com/questions/12550749/what-is-the-dynamicallyinvokable-attribute-for
 	internal class __DynamicallyInvokable : Attribute

@@ -2,9 +2,9 @@
 
 using System;
 
-namespace Flow
+namespace Flow.Impl
 {
-	internal class Kernel : TypedGenerator<bool>, IKernel
+	public class Kernel : Generator<bool>, IKernel
 	{
 		private readonly TimeFrame _time = new TimeFrame();
 
@@ -15,13 +15,10 @@ namespace Flow
 			_time.Delta = TimeSpan.FromSeconds(0);
 		}
 
-		/// <inheritdoc />
 		public INode Root { get; set; }
 
-		/// <inheritdoc />
 		public new IFactory Factory { get; internal set; }
 
-		/// <inheritdoc />
 		public ITimeFrame Time
 		{
 			get { return _time; }
@@ -37,7 +34,6 @@ namespace Flow
 			Process();
 		}
 
-		/// <inheritdoc />
 		public override void Step()
 		{
 			StepTime();
@@ -48,7 +44,7 @@ namespace Flow
 			Process();
 		}
 
-		void Process()
+		private void Process()
 		{
 			Root.Step();
 			Root.Post();
@@ -56,7 +52,7 @@ namespace Flow
 
 		private void StepTime()
 		{
-			DateTime now = DateTime.Now;
+			var now = DateTime.Now;
 
 			_time.Last = _time.Now;
 			_time.Delta = now - _time.Last;

@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Flow
+namespace Flow.Impl
 {
 	internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
 	{
@@ -16,28 +16,24 @@ namespace Flow
 			Completed += tr => Close();
 		}
 
-		internal Channel(IKernel kernel, ITypedGenerator<TR> gen)
+		internal Channel(IKernel kernel, IGenerator<TR> gen)
 			: this(kernel)
 		{
 			gen.Stepped += g => Insert(gen.Value);
 			CompleteAfter(gen);
 		}
 
-		/// <inheritdoc />
 		public IFuture<TR> Extract()
 		{
-			IFuture<TR> future = Factory.NewFuture<TR>();
+			IFuture<TR> future = Factory.Future<TR>();
 			_requests.Enqueue(future);
 			return future;
 		}
 
-		/// <inheritdoc />
 		public List<TR> ExtractAll()
 		{
-			// honour all pending requests
 			Flush();
 
-			// feed everything remaining into the result
 			var list = new List<TR>();
 			while (_values.Count > 0)
 			{
@@ -47,13 +43,11 @@ namespace Flow
 			return list;
 		}
 
-		/// <inheritdoc />
 		public void Insert(TR val)
 		{
 			_values.Enqueue(val);
 		}
 
-		/// <inheritdoc />
 		public void Flush()
 		{
 			while (_values.Count > 0 && _requests.Count > 0)

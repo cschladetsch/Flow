@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
-namespace Flow
+namespace Flow.Impl
 {
 	internal class Coroutine : Generator, ICoroutine
 	{
-		internal Func<IEnumerator> Start;
+		public override object Value {
+			get { return _value; }
+		}
 
-		private IEnumerator _state;
-
-		public object Value { get; private set; }
+		private object _value;
 
 		public override void Step()
 		{
@@ -20,25 +21,66 @@ namespace Flow
 			{
 				if (Start == null)
 					CannotStart();
+				else
+					_state = Start();
 
-				_state = Start();
 				if (_state == null)
 					CannotStart();
 			}
 
-			if (!_state.MoveNext())
+			if (_state == null || !_state.MoveNext())
+			{
+				Complete();
+				return;
+			}
+
+			_value = _state.Current;
+
+			base.Step();
+		}
+
+		protected static void CannotStart()
+		{
+			throw new Exception("Coroutine cannot start");
+		}
+
+		internal Func<IEnumerator> Start;
+
+		protected IEnumerator _state;
+	}
+
+	internal class Coroutine<T> : Generator<T>, ICoroutine<T>
+	{
+		public new T Value { get; private set; }
+
+		public override void Step()
+		{
+			if (!Running || !Active)
+				return;
+
+			if (_state == null)
+			{
+				if (Start == null)
+					CannotStart();
+				else
+					_state = Start();
+
+				if (_state == null)
+					CannotStart();
+			}
+
+			if (_state == null || !_state.MoveNext())
 			{
 				Complete();
 				return;
 			}
 
 			Value = _state.Current;
+
 			base.Step();
 		}
 
-		private void CannotStart()
-		{
-			throw new Exception("TypedCoroutine cannot start");
-		}
+		internal Func<IEnumerator<T>> Start;
+		private IEnumerator<T> _state;
 	}
 }

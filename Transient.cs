@@ -2,28 +2,19 @@
 
 using System;
 
-namespace Flow
+namespace Flow.Impl
 {
 	public class Transient : ITransient
 	{
-		public static bool DebugTrace;
-
-		private string _name;
-
-		public Transient()
-		{
-			Active = true;
-		}
-
-		/// <inheritdoc />
+		public event NamedHandler NewName;
 		public event TransientHandler Completed;
-
-		/// <summary>
-		///     Occurs when completed, with a reason why.
-		/// </summary>
 		public event TransientHandlerReason WhyCompleted;
 
-		/// <inheritdoc />
+		public static bool DebugTrace;
+		public bool Active { get; private set; }
+		public IKernel Kernel { get; /*internal*/ set; }
+		public IFactory Factory { get { return Kernel.Factory; } }
+
 		public virtual string Name
 		{
 			get { return _name; }
@@ -39,22 +30,11 @@ namespace Flow
 			}
 		}
 
-		/// <inheritdoc />
-		public IKernel Kernel { get; /*internal*/ set; }
-
-		/// <inheritdoc />
-		public IFactory Factory
+		public Transient()
 		{
-			get { return Kernel.Factory; }
+			Active = true;
 		}
 
-		/// <inheritdoc />
-		public event NamedHandler NewName;
-
-		/// <inheritdoc />
-		public bool Active { get; private set; }
-
-		/// <inheritdoc />
 		public void Complete()
 		{
 			if (!Active)
@@ -66,7 +46,6 @@ namespace Flow
 				Completed(this);
 		}
 
-		/// <inheritdoc />
 		public void CompleteAfter(ITransient other)
 		{
 			if (!Active)
@@ -84,21 +63,11 @@ namespace Flow
 			other.Completed += tr => CompletedBecause(other);
 		}
 
-		/// <inheritdoc />
 		public void CompleteAfter(TimeSpan span)
 		{
-			CompleteAfter(Factory.NewTimer(span));
+			CompleteAfter(Factory.Timer(span));
 		}
 
-		/// <summary>
-		///     Return true if the given other transient is either null or does not exist
-		/// </summary>
-		/// <returns>
-		///     True if the given other transient is either null or does not exist
-		/// </returns>
-		/// <param name='other'>
-		///     The transient to consider
-		/// </param>
 		public static bool IsNullOrInactive(ITransient other)
 		{
 			return other == null || !other.Active;
@@ -114,5 +83,7 @@ namespace Flow
 
 			Complete();
 		}
+
+		private string _name;
 	}
 }

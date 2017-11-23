@@ -2,7 +2,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Flow
+namespace Flow.Impl
 {
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct VolatileBool

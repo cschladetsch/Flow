@@ -3,65 +3,159 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace Flow
+namespace Flow.Impl
 {
 	/// <summary>
 	///     Makes instances for the Flow library
 	/// </summary>
 	public class Factory : IFactory
 	{
-		/// <inheritdoc />
 		public IKernel Kernel { get; internal set; }
 
-		/// <inheritdoc />
-		public ITimer NewTimer(TimeSpan interval)
-		{
-			return Prepare(new Timer(Kernel, interval));
-		}
-
-		/// <inheritdoc />
-		public IPeriodic NewPeriodicTimer(TimeSpan interval)
-		{
-			return Prepare(new Periodic(Kernel, interval));
-		}
-
-		/// <inheritdoc />
-		public IBarrier NewBarrier()
-		{
-			return Prepare(new Barrier());
-		}
-
-		public IGenerator NewAction(Action act)
-		{
-			return new DoAction(act);
-		}
-
-		public INode NewNode()
+		public INode Node()
 		{
 			return Prepare(new Node());
 		}
 
-		public ITransient NewParallel(params Action[] actions)
+		public IGroup Group()
 		{
-			var gr = NewNode();
-
-			foreach (var act in actions)
-			{
-				gr.Add(NewAction(act)); 
-			}
-
-			return gr;
+			return Prepare(new Group());
 		}
 
-		public ITransient NewSequence(params Action[] actions)
+		public ITransient Transient()
 		{
-			INode seq = NewNode();
+			return Prepare(new Transient());
+		}
+
+		public IGenerator Do(Action act)
+		{
+			return Prepare(new detail.EveryTime(act));
+		}
+
+		public IGenerator<bool> If(Func<bool> fun)
+		{
+			return Prepare(Expression(fun));
+		}
+
+		public ITransient If(Func<bool> test, IGenerator @if)
+		{
+			return Prepare(new Conditional(Expression(test), @if));
+		}
+
+		public ITransient IfElse(Func<bool> pred, ITransient @if, ITransient @else)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ITransient While(Func<bool> pred, params ITransient[] body)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IGenerator<T> Value<T>(Func<T> act)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IGenerator<T> Expression<T>(Func<T> act)
+		{
+			return Prepare(new Subroutine<T> {Sub = s => act()});
+		}
+
+		public ITransient DebugException(string fmt, Exception ex)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ITimer Timer(TimeSpan interval)
+		{
+			return Prepare(new Timer(Kernel, interval));
+		}
+
+		public IPeriodic PeriodicTimer(TimeSpan interval)
+		{
+			return Prepare(new Periodic(Kernel, interval));
+		}
+
+		public IBarrier Barrier()
+		{
+			return Prepare(new Barrier());
+		}
+
+		public ITransient Parallel(params ITransient[] transients)
+		{
+			var gr = Node();
+			foreach (var act in transients)
+			{
+				gr.Add(act);
+			}
+			return Prepare(gr);
+		}
+
+		public ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ITransient Parallel(params Action[] actions)
+		{
+			var node = Node();
+			foreach (var act in actions)
+			{
+				node.Add(Do(act));
+			}
+			return Prepare(node);
+		}
+
+		IEnumerator<bool> ConditionCoro(IGenerator self, Func<bool> pred)
+		{
+			while (pred())
+			{
+				yield return true;
+			}
+
+			yield return false;
+			self.Complete();
+		}
+
+		public ITransient DebugLog(string fmt, params object[] objs)
+		{
+			return Do(() =>
+			{
+				 Debug.LogFormat(fmt, objs);
+			});
+		}
+
+		public ITransient DebugWarning(string fmt, params object[] objs)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ITransient DebugError(string fmt, params object[] objs)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ITransient Loop(params ITransient[] trans)
+		{
+			var node = Node();
+			foreach (var other in trans)
+			{
+				node.Add(other);
+			}
+			return Prepare(node);
+		}
+
+		public ITransient ActionSequence(params Action[] actions)
+		{
+			INode seq = Node();
 			IGenerator prev = null;
 
 			foreach (var act in actions)
 			{
-				var tr = NewAction(act);
+				var tr = Do(act);
 				if (prev != null)
 					tr.ResumeAfter(prev);
 
@@ -72,169 +166,179 @@ namespace Flow
 			return Prepare(seq);
 		}
 
-		class DoAction : Generator
+		public ITransient ActionParallel(params Action[] actions)
 		{
-			public DoAction(Action act)
-			{
-				_act = act;
-			}
-
-			public override void Step()
-			{
-				if (!Active)
-					return;
-				
-				_act();
-
-				Console.WriteLine ("Completed");
-
-				Complete();
-			}
-
-			Action _act;
+			var node = Node();
+			foreach (var act in actions)
+				node.Add(Do(act));
+			return Prepare(node);
 		}
 
-		public IBarrier NewBarrier(string name, params ITransient[] args)
+		public ITransient Sequence(params ITransient[] transients)
 		{
-			IBarrier barrier = NewBarrier();
-			barrier.Name = name;
-			foreach (ITransient tr in args)
+			ITransient next = Node();
+			var first = next;
+			foreach (var trans in transients)
+			{
+				if (next != null)
+					trans.Completed += (tr) => Sequence(trans);
+				next = Prepare(trans);
+			}
+
+			return Prepare(first);
+		}
+
+		public IBarrier Barrier(params ITransient[] args)
+		{
+			var barrier = Barrier();
+			foreach (var tr in args)
 			{
 				barrier.Add(tr);
 			}
-			return barrier;
+			return Prepare(barrier);
 		}
 
-		/// <inheritdoc />
-		public ITrigger NewTrigger()
-		{
-			return Prepare(new Trigger());
-		}
-
-		/// <inheritdoc />
-		public ITimedTrigger NewTimedTrigger(TimeSpan span)
+		public IBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
 		{
 			throw new NotImplementedException();
 		}
 
-		/// <inheritdoc />
-		public IFuture<T> NewFuture<T>()
+		public ITrigger Trigger()
+		{
+			return Prepare(new Trigger());
+		}
+
+		public ITimedTrigger TimedTrigger(TimeSpan span)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IFuture<T> Future<T>()
 		{
 			return Prepare(new Future<T>());
 		}
 
-		/// <inheritdoc />
-		public ITimedFuture<T> NewTimedFuture<T>(TimeSpan interval)
+		public ITransient WaitFor(TimeSpan span)
+		{
+			var start = Kernel.Time.Now;
+			var end = Kernel.Time.Now + span;
+			var next = Node();
+			var test = If(() => end > start);
+			return next;
+		}
+
+		//public IGenerator<bool> While(Func<bool> act, ITransient body)
+		//{
+		//	return Do(act);
+		//}
+
+		public ITimedFuture<T> TimedFuture<T>(TimeSpan interval)
 		{
 			return Prepare(new TimedFuture<T>(Kernel, interval));
 		}
 
-		/// <inheritdoc />
-		public ISubroutine<TR> NewSubroutine<TR>(Func<IGenerator, TR> fun)
+		public ISubroutine<TR> Subroutine<TR>(Func<IGenerator, TR> fun)
 		{
 			var sub = new Subroutine<TR>();
 			sub.Sub = tr => fun(sub);
 			return Prepare(sub);
 		}
 
-		/// <inheritdoc />
-		public ISubroutine<TR> NewSubroutine<TR, T0>(Func<IGenerator, T0, TR> fun, T0 t0)
+		public ISubroutine<TR> Subroutine<TR, T0>(Func<IGenerator, T0, TR> fun, T0 t0)
 		{
 			var sub = new Subroutine<TR>();
 			sub.Sub = tr => fun(sub, t0);
 			return Prepare(sub);
 		}
 
-		/// <inheritdoc />
-		public ISubroutine<TR> NewSubroutine<TR, T0, T1>(Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1)
+		public ISubroutine<TR> Subroutine<TR, T0, T1>(Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1)
 		{
 			var sub = new Subroutine<TR>();
 			sub.Sub = tr => fun(sub, t0, t1);
 			return Prepare(sub);
 		}
 
-		/// <inheritdoc />
-		public ISubroutine<TR> NewSubroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2)
+		public ISubroutine<TR> Subroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2)
 		{
 			var sub = new Subroutine<TR>();
 			sub.Sub = tr => fun(sub, t0, t1, t2);
 			return Prepare(sub);
 		}
 
-		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun)
+		public ICoroutine<TR> Coroutine<TR>(Func<IGenerator, IEnumerator<TR>> fun)
 		{
-			var coro = new TypedCoroutine<TR>();
+			var coro = new Coroutine<TR>();
 			coro.Start = () => fun(coro);
 			return Prepare(coro);
 		}
 
-		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0)
+		public ICoroutine<TR> Coroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0)
 		{
-			var coro = new TypedCoroutine<TR>();
+			var coro = new Coroutine<TR>();
 			coro.Start = () => fun(coro, t0);
 			return Prepare(coro);
 		}
 
-		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1)
+		public ICoroutine<TR> TypedCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1)
 		{
-			var coro = new TypedCoroutine<TR>();
+			var coro = new Coroutine<TR>();
 			coro.Start = () => fun(coro, t0, t1);
 			return Prepare(coro);
 		}
 
-		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0,
+		public ICoroutine<TR> TypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0,
 			T1 t1, T2 t2)
 		{
-			var coro = new TypedCoroutine<TR>();
+			var coro = new Coroutine<TR>();
 			coro.Start = () => fun(coro, t0, t1, t2);
 			return Prepare(coro);
 		}
 
-		public ICoroutine NewCoroutine(Func<IGenerator, IEnumerator> fun)
+		public ICoroutine Coroutine(Func<IGenerator, IEnumerator> fun)
 		{
 			var coro = new Coroutine();
 			coro.Start = () => fun(coro);
 			return Prepare(coro);
 		}
 
-		public ICoroutine NewCoroutine<T0>(Func<IGenerator, T0, IEnumerator> fun, T0 t0)
+		public ICoroutine Coroutine<T0>(Func<IGenerator, T0, IEnumerator> fun, T0 t0)
 		{
 			var coro = new Coroutine();
 			coro.Start = () => fun(coro, t0);
 			return Prepare(coro);
 		}
 
-		public ICoroutine NewCoroutine<T0, T1>(Func<IGenerator, T0, T1, IEnumerator> fun, T0 t0, T1 t1)
+		public ICoroutine Coroutine<T0, T1>(Func<IGenerator, T0, T1, IEnumerator> fun, T0 t0, T1 t1)
 		{
 			var coro = new Coroutine();
 			coro.Start = () => fun(coro, t0, t1);
 			return Prepare(coro);
 		}
 
-		public ICoroutine NewCoroutine<T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator> fun, T0 t0, T1 t1, T2 t2)
+		public ICoroutine Coroutine<T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator> fun, T0 t0, T1 t1, T2 t2)
 		{
 			var coro = new Coroutine();
 			coro.Start = () => fun(coro, t0, t1, t2);
 			return Prepare(coro);
 		}
 
-		/// <inheritdoc />
-		public IChannel<TR> NewChannel<TR>(ITypedGenerator<TR> gen)
+		public IChannel<TR> Channel<TR>(IGenerator<TR> gen)
 		{
 			return Prepare(new Channel<TR>(Kernel, gen));
 		}
 
-		/// <inheritdoc />
-		public IChannel<TR> NewChannel<TR>()
+		public IChannel<TR> Channel<TR>()
 		{
 			return Prepare(new Channel<TR>(Kernel));
 		}
 
-		/// <inheritdoc />
+		public T Prepare<T>(T obj, bool add) where T : ITransient
+		{
+			var tr = Prepare(obj);
+			Kernel.Root.Add(tr);
+			return tr;
+		}
+
 		public T Prepare<T>(T obj) where T : ITransient
 		{
 			obj.Kernel = Kernel;
@@ -243,18 +347,50 @@ namespace Flow
 			if (gen != null)
 				gen.Resume();
 
-			Kernel.Root.Add(obj);
+			//Kernel.Root.Add(obj);
 
 			return obj;
 		}
 
-		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2, T3>(
-			Func<IGenerator, T0, T1, T2, T3, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2, T3 t3)
+		///// <inheritdoc />
+		//public ICoroutine<TR> TypedCoroutine<TR, T0, T1, T2, T3>(
+		//	Func<IGenerator, T0, T1, T2, T3, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2, T3 t3)
+		//{
+		//	var coro = new Coroutine<TR>();
+		//	coro.Start = () => fun(coro, t0, t1, t2, t3);
+		//	return Prepare(coro);
+		//}
+	}
+
+	namespace detail
+	{
+		class EveryTime : Generator
 		{
-			var coro = new TypedCoroutine<TR>();
-			coro.Start = () => fun(coro, t0, t1, t2, t3);
-			return Prepare(coro);
+			public EveryTime(Action act)
+			{
+				_act = act;
+			}
+
+			public override void Step()
+			{
+				if (!Active)
+					return;
+
+				_act();
+			}
+
+			readonly Action _act;
+		}
+
+		class OneTime : EveryTime
+		{
+			public OneTime(Action act) : base(act) { }
+
+			public override void Step()
+			{
+				base.Step();
+				Complete();
+			}
 		}
 	}
 }

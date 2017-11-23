@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Flow
+namespace Flow.Impl
 {
 	internal class Timer : Periodic, ITimer
 	{
@@ -13,7 +13,6 @@ namespace Flow
 			Elapsed += self => Complete();
 		}
 
-		/// <inheritdoc />
 		public DateTime TimeEnds { get; private set; }
 	}
 }

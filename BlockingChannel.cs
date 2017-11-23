@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Flow
+namespace Flow.Impl
 {
 	/// <summary>
-	///     A thread-safe channel of values.
+	/// A thread-safe channel of values.
 	/// </summary>
-	/// <typeparam name="TR">The type of objects that travel through the channel</typeparam>
 	internal class BlockingChannel<TR> : Subroutine<bool>, IChannel<TR>
 	{
 		private readonly object _mutex = new object();
@@ -21,19 +20,18 @@ namespace Flow
 			Completed += tr => Close();
 		}
 
-		internal BlockingChannel(IKernel kernel, ITypedGenerator<TR> gen)
+		internal BlockingChannel(IKernel kernel, IGenerator<TR> gen)
 			: this(kernel)
 		{
 			gen.Stepped += g => Insert(gen.Value);
 			CompleteAfter(gen);
 		}
 
-		/// <inheritdoc />
 		public IFuture<TR> Extract()
 		{
 			lock (_mutex)
 			{
-				IFuture<TR> future = Factory.NewFuture<TR>();
+				IFuture<TR> future = Factory.Future<TR>();
 				_requests.Enqueue(future);
 				return future;
 			}
@@ -44,7 +42,6 @@ namespace Flow
 			throw new NotImplementedException();
 		}
 
-		/// <inheritdoc />
 		public void Insert(TR val)
 		{
 			lock (_mutex)
@@ -53,7 +50,6 @@ namespace Flow
 			}
 		}
 
-		/// <inheritdoc />
 		public void Flush()
 		{
 			lock (_mutex)

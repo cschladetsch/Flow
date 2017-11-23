@@ -3,7 +3,7 @@
 using System;
 using System.Threading;
 
-namespace Flow
+namespace Flow.Impl
 {
 	public struct SpinWait
 	{

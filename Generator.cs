@@ -1,30 +1,24 @@
 using System;
 
-namespace Flow
+namespace Flow.Impl
 {
 	public abstract class Generator : Transient, IGenerator
 	{
+		public event GeneratorHandler Suspended;
+		public event GeneratorHandler Resumed;
+		public event GeneratorHandler Stepped;
+
+		public virtual object Value { get; private set; }
+
 		internal Generator()
 		{
 			Completed += tr => Suspend();
 		}
 
-		/// <inheritdoc />
-		public event GeneratorHandler Suspended;
-
-		/// <inheritdoc />
-		public event GeneratorHandler Resumed;
-
-		/// <inheritdoc />
-		public event GeneratorHandler Stepped;
-
-		/// <inheritdoc />
 		public bool Running { get; private set; }
 
-		/// <inheritdoc />
 		public int StepNumber { get; protected set; }
 
-		/// <inheritdoc />
 		public virtual void Step()
 		{
 			++StepNumber;
@@ -36,12 +30,14 @@ namespace Flow
 				Stepped(this);
 		}
 
-		/// <inheritdoc />
+		public virtual void Pre()
+		{
+		}
+
 		public virtual void Post()
 		{
 		}
 
-		/// <inheritdoc />
 		public void Suspend()
 		{
 			Running = false;
@@ -50,7 +46,6 @@ namespace Flow
 				Suspended(this);
 		}
 
-		/// <inheritdoc />
 		public void Resume()
 		{
 			if (Running || !Active)
@@ -62,13 +57,12 @@ namespace Flow
 				Resumed(this);
 		}
 
-		/// <inheritdoc />
-		public void SuspendAfter(ITransient other)
+		public IGenerator SuspendAfter(ITransient other)
 		{
 			if (IsNullOrInactive(other))
 			{
 				Suspend();
-				return;
+				return this;
 			}
 
 			Resume();
@@ -83,15 +77,16 @@ namespace Flow
 			};
 
 			other.Completed += action;
+
+			return this;
 		}
 
-		/// <inheritdoc />
-		public bool ResumeAfter(ITransient other)
+		public IGenerator ResumeAfter(ITransient other)
 		{
 			if (IsNullOrInactive(other))
 			{
 				Resume();
-				return true;
+				return this;
 			}
 
 			Suspend();
@@ -107,29 +102,42 @@ namespace Flow
 
 			other.Completed += onCompleted;
 
-			return true;
+			return this;
 		}
 
-		/// <inheritdoc />
-		public bool ResumeAfter(TimeSpan span)
+		public IGenerator ResumeAfter(TimeSpan span)
 		{
-			if (!Active)
-				return false;
-
-			ResumeAfter(Factory.NewTimer(span));
-
-			return true;
+			return !Active ? this : ResumeAfter(Factory.Timer(span));
 		}
 
-		/// <inheritdoc />
-		public bool SuspendAfter(TimeSpan span)
+		public IGenerator SuspendAfter(TimeSpan span)
 		{
-			if (!Active)
-				return false;
-
-			SuspendAfter(Factory.NewTimer(span));
-
-			return true;
+			return !Active ? this : SuspendAfter(Factory.Timer(span));
 		}
+	}
+
+	public delegate void WhyTypedGeneratorCompleted<TR>(Generator<TR> self);
+
+	public abstract class Generator<TR> : Generator, IGenerator<TR>
+	{
+		public new TR Value
+		{
+			get { return _value; }
+		}
+
+		public event WhyTypedGeneratorCompleted<TR> TypedCompleted;
+
+		protected static void CannotStart()
+		{
+			throw new Exception("Can't start typed gen");
+		}
+
+		protected void InvokeTypedCompleted()
+		{
+			if (TypedCompleted != null)
+				TypedCompleted(this);
+		}
+
+		protected TR _value;
 	}
 }

@@ -1,25 +1,22 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
-namespace Flow
+namespace Flow.Impl
 {
-	/// <summary>
-	///     A flow Node contains a collection of other Transients. When the Node is stepped, it steps all referenced
-	///     Generators.
-	/// </summary>
 	internal class Node : Group, INode
 	{
 		private bool _stepping;
 
-		/// <inheritdoc />
 		public override void Step()
 		{
 			try
 			{
 				if (_stepping)
 				{
-					//Utils.LogError("Node.Step: Name=" + Name);
 					throw new ReentrancyException();
 				}
 
@@ -27,12 +24,19 @@ namespace Flow
 
 				base.Step();
 
-				foreach (IGenerator gen in Generators)
+				foreach (var tr in Contents)
 				{
-					if (!gen.Active)
-						Remove(gen);
-					else
+					if (!tr.Active)
+					{
+						Remove(tr);
+						continue;
+					}
+
+					var gen = tr as IGenerator;
+					if (gen != null)
+					{
 						gen.Step();
+					}
 				}
 			}
 			finally
@@ -41,19 +45,53 @@ namespace Flow
 			}
 		}
 
-		/// <inheritdoc />
 		public override void Post()
 		{
 			base.Post();
 
 			// make a copy so that contents can be changed during iteration
-			IGenerator[] list = Generators.ToArray();
+			var list = Generators.ToArray();
 
 			// do post for all contained generators
-			foreach (IGenerator gen in list)
+			foreach (var gen in list)
 			{
 				gen.Post();
 			}
+		}
+	}
+
+	class Conditional : Group
+	{
+		public Conditional(IGenerator test, IGenerator body)
+		{
+			Add(test, body);
+			PerformPending();
+		}
+
+		public override void Step()
+		{
+			base.Step();
+
+			if (_contents.Count != 2)
+				return;
+
+			var test = _contents[0];
+			var body = _contents[1];
+
+			var gen = test as IGenerator;
+			if (gen == null)
+				return;
+
+			gen.Step();
+			var s = (bool) gen.Value;
+			if (!s)
+				return;
+
+			var action = body as IGenerator;
+			if (action == null)
+				return;
+
+			action.Step();
 		}
 	}
 }

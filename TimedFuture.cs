@@ -2,23 +2,21 @@
 
 using System;
 
-namespace Flow
+namespace Flow.Impl
 {
 	internal class TimedFuture<T> : Future<T>, ITimedFuture<T>
 	{
-		internal TimedFuture(ITransient kernel, TimeSpan span)
+		internal TimedFuture(IKernel k, TimeSpan span)
 		{
-			Timer = kernel.Factory.NewTimer(span);
+			Timer = k.Factory.Timer(span);
+			k.Root.Add(Timer);
 			Timer.Elapsed += HandleElapsed;
 		}
 
-		/// <inheritdoc />
 		public event TimedOutHandler TimedOut;
 
-		/// <inheritdoc />
 		public ITimer Timer { get; internal set; }
 
-		/// <inheritdoc />
 		public bool HasTimedOut { get; protected set; }
 
 		private void HandleElapsed(ITransient sender)

@@ -1,12 +1,13 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
-namespace Flow
+using System;
+
+namespace Flow.Impl
 {
-	internal class Subroutine<TR> : TypedGenerator<TR>, ISubroutine<TR>
+	internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>
 	{
 		internal Func<IGenerator, TR> Sub;
 
-		/// <inheritdoc />
 		public override void Step()
 		{
 			if (!Active || !Running)
@@ -18,7 +19,7 @@ namespace Flow
 				return;
 			}
 
-			Value = Sub(this);
+			_value = Sub(this);
 
 			base.Step();
 		}

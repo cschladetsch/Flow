@@ -2,12 +2,10 @@
 
 using System.Linq;
 
-namespace Flow
+namespace Flow.Impl
 {
-	/// <inheritdoc />
 	internal class Barrier : Group, IBarrier
 	{
-		/// <inheritdoc />
 		public override void Post()
 		{
 			base.Post();
