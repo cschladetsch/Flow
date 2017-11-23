@@ -123,7 +123,9 @@ namespace Flow.Impl
 		{
 			return Do(() =>
 			{
-				 Debug.LogFormat(fmt, objs);
+				#if UNITY
+				Debug.LogFormat(fmt, objs);
+				#endif
 			});
 		}
 

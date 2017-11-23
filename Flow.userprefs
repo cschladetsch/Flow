@@ -1,6 +1,14 @@
 ﻿<Properties StartupItem="TestFlow/TestFlow.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Factory.cs">
+    <Files>
+      <File FileName="Factory.cs" Line="124" Column="19" />
+      <File FileName="Future.cs" Line="1" Column="1" />
+      <File FileName="Interface/IGenerator.cs" Line="40" Column="2" />
+      <File FileName="Node.cs" Line="1" Column="1" />
+      <File FileName="Generator.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
