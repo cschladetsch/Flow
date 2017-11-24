@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{ADD6C2
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFlow", "TestFlow\TestFlow\TestFlow.csproj", "{4DAB771B-8560-4535-B5A0-D6D06B2B5D87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFlow", "TestFlow\Editor\TestFlow.csproj", "{9FD6CC27-9B95-41BB-B645-423F1D0B3312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +24,10 @@ Global
 		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DAB771B-8560-4535-B5A0-D6D06B2B5D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DAB771B-8560-4535-B5A0-D6D06B2B5D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DAB771B-8560-4535-B5A0-D6D06B2B5D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DAB771B-8560-4535-B5A0-D6D06B2B5D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD6CC27-9B95-41BB-B645-423F1D0B3312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD6CC27-9B95-41BB-B645-423F1D0B3312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD6CC27-9B95-41BB-B645-423F1D0B3312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD6CC27-9B95-41BB-B645-423F1D0B3312}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
