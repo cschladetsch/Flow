@@ -10,9 +10,9 @@ namespace Flow.Test
 		{
 			_kernel.DebugLevel = Flow.EDebugLevel.Verbose;
 			var executed = false;
-			var exp = _factory.If(
+			var exp = _flow.If(
 				() => true,
-				_factory.Do(() => executed = true)
+				_flow.Do(() => executed = true)
 			);
 			exp.Name = "If1";
 
@@ -22,9 +22,9 @@ namespace Flow.Test
 
 			executed = false;
 			_root.Remove(exp);
-			var exp2 = _factory.If(
+			var exp2 = _flow.If(
 				() => false, 
-				_factory.Do(() => executed = true)
+				_flow.Do(() => executed = true)
 			);
 			exp2.Name = "If2";
 

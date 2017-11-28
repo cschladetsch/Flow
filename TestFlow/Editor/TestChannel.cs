@@ -17,9 +17,15 @@ namespace Flow.Test
 			var f0 = chan.Extract();
 			var f1 = chan.Extract();
 			var f2 = chan.Extract();
+			var f3 = chan.Extract();
 
 			_root.Add(chan);
 			Step(5);
+
+			Assert.IsTrue(f0.Available);
+			Assert.IsTrue(f1.Available);
+			Assert.IsTrue(f2.Available);
+			Assert.IsFalse(f3.Available);
 
 			Assert.AreEqual(1, f0.Value);
 			Assert.AreEqual(2, f1.Value);

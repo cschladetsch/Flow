@@ -59,7 +59,7 @@ namespace Flow.Test
 		public void TestTimedFuture(float futureLifetime, float runTime, bool result)
 		{
 			var span = TimeSpan.FromSeconds(futureLifetime);
-			var future = _factory.TimedFuture<int>(span);
+			var future = _flow.TimedFuture<int>(span);
 
 			Assert.IsFalse(future.Available);
 

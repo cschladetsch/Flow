@@ -8,14 +8,14 @@ namespace Flow.Test
 		[Test]
 		public void TestDebugLog()
 		{
-			_root.Add(_factory.Log("Hello World"));
+			_root.Add(_flow.Log("Hello World"));
 			Step(5);
 		}
 
 		[Test]
 		public void TestCoro()
 		{
-			var f = _factory;
+			var f = _flow;
 			_root.Add(
 				f.Coroutine(CountTo, 10).Named("Body")
 			);
@@ -36,7 +36,7 @@ namespace Flow.Test
 		[Test]
 		public void TestWhile()
 		{
-			var f = _factory;
+			var f = _flow;
 			count = 0;
 			_root.Add(
 				f.While(
@@ -53,7 +53,7 @@ namespace Flow.Test
 		[Test]
 		public void TestWhileEarlyBreak()
 		{
-			var f = _factory;
+			var f = _flow;
 			count = 0;
 			_root.Add(
 				f.While(

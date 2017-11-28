@@ -7,13 +7,13 @@ namespace Flow.Test
 	{
 		protected IKernel _kernel;
 		protected INode _root;
-		protected IFactory _factory;
+		protected IFactory _flow;
 
 		[SetUp]
 		public void Pre()
 		{
 			_kernel = Create.Kernel();
-			_factory = _kernel.Factory;
+			_flow = _kernel.Factory;
 			_root = _kernel.Root;
 		}
 

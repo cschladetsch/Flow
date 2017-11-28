@@ -1,6 +1,7 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
 using System;
+using System.Diagnostics;
 using Flow.Logger;
 
 namespace Flow.Impl
@@ -77,15 +78,15 @@ namespace Flow.Impl
 					return;
 			}
 
-			if (IsNullOrInactive(Root))
-				return;
-
 			Process();
 		}
 
 		private void Process()
 		{
-			Root.Step();
+			if (!IsNullOrInactive(Root))
+				Root.Step();
+
+			base.Step();
 		}
 
 		private void StepTime()
