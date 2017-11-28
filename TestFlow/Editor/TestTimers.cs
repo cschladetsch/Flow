@@ -10,7 +10,7 @@ namespace Flow.Test
 		public void TestOneShot(float span, float runTime, bool shouldBeCompleted)
 		{
 			var k = _kernel;
-			var timer = k.Factory.Timer(TimeSpan.FromSeconds(span));
+			var timer = _flow.Timer(TimeSpan.FromSeconds(span));
 
 			var elapsed = false;
 			var when = DateTime.Now;
@@ -21,7 +21,7 @@ namespace Flow.Test
 				when = timer.Kernel.Time.Now; 
 			};
 
-			k.Root.Add(timer);
+			_root.Add(timer);
 			var start = RunKernel(TimeSpan.FromSeconds(runTime));
 
 			if (shouldBeCompleted) 
@@ -42,13 +42,12 @@ namespace Flow.Test
 		[TestCase(0.1f, 0.0f, 0)]
 		public void TestPeriodic(float interval, float runTime, int numElapsed)
 		{
-			var k = _kernel;
-			var timer = k.Factory.PeriodicTimer(TimeSpan.FromSeconds(interval));
+			var timer = _flow.PeriodicTimer(TimeSpan.FromSeconds(interval));
 
 			int elapsed = 0;
 			timer.Elapsed += (sender) => ++elapsed;
  
-			k.Root.Add(timer);
+			_root.Add(timer);
 			RunKernel(TimeSpan.FromSeconds(runTime));
 
 			Assert.AreEqual(numElapsed, elapsed);
@@ -70,7 +69,6 @@ namespace Flow.Test
 
 			Assert.AreEqual(result, future.HasTimedOut);
 		}
-
 	}
 }
 

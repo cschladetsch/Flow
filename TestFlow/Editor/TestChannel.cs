@@ -8,7 +8,7 @@ namespace Flow.Test
 		[Test()]
 		public void TestInsertExtract()
 		{
-			var chan = _kernel.Factory.Channel<int>();
+			var chan = _flow.Channel<int>();
 
 			chan.Insert(1);
 			chan.Insert(2);
