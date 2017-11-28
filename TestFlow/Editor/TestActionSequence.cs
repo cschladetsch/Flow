@@ -12,7 +12,7 @@ namespace Flow.Test
 		[Test()]
 		public void TestParallel1()
 		{
-			var total = 0;
+			//var total = 0;
 			//var node = _factory.Parallel(
 			//	() => total++,
 			//	() => total++,

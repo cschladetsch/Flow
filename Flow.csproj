@@ -77,6 +77,9 @@
     <Compile Include="Transient.cs" />
     <Compile Include="Trigger.cs" />
     <Compile Include="VolatileBool.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\UnityLogger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -90,4 +93,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <None Include="Logger\ILogger.cs.meta" />
+    <None Include="Logger\Logger.cs.meta" />
+    <None Include="Logger\UnityLogger.cs.meta" />
+  </ItemGroup>
 </Project>

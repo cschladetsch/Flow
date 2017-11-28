@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Flow.Test
 {
@@ -25,11 +24,7 @@ namespace Flow.Test
 
 		protected void PrintFmt(string fmt, params object[] args)
 		{
-#if UNITY
-			UnityEngine.Debug.LogFormat(fmt, args);
-#else
-			Console.WriteLine(fmt, args);
-#endif
+            _kernel.Trace.Log(fmt, args);
 		}
 
 		protected void Step(int steps = 1)

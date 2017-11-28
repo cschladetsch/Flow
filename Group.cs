@@ -35,9 +35,28 @@ namespace Flow.Impl
 			get { return _contents; }
 		}
 
+		public override void Pre()
+		{
+			base.Pre();
+
+			PerformPending();
+
+			// TODO: do we really need to copy?
+			foreach (var gen in Generators.ToArray())
+			{
+				gen.Pre();
+			}
+		}
+
 		public override void Post()
 		{
-			PerformPending();
+			base.Post();
+
+			// TODO: do we really need to copy?
+			foreach (var gen in Generators.ToArray())
+			{
+				gen.Post();
+			}
 		}
 
 		public void Add(params ITransient[] others)
@@ -98,6 +117,8 @@ namespace Flow.Impl
 				if (tr == null)
 					continue;
 
+				Kernel.Trace.Log("Removing {0} from Node {1}", tr.Name, Name);
+
 				tr.Completed -= Remove;
 
 				if (Removed != null)
@@ -112,6 +133,7 @@ namespace Flow.Impl
 			foreach (var tr in Additions)
 			{
 				_contents.Add(tr);
+				Kernel.Trace.Log("Adding {0} to Node {1}", tr.Name, Name);
 
 				tr.Completed += Remove;
 

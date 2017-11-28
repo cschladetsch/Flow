@@ -1,6 +1,5 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
-using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -12,10 +11,18 @@ namespace Flow.Impl
 
 		public override void Step()
 		{
+			Pre();
+
 			try
 			{
+				if (Kernel.DebugLevel >= EDebugLevel.High)
+				{
+					Kernel.Trace.Log("Stepping Node {0}", Name);	
+				}
+
 				if (_stepping)
 				{
+					Kernel.Trace.Error("Node {0} is re-entrant", Name);
 					throw new ReentrancyException();
 				}
 
@@ -23,7 +30,7 @@ namespace Flow.Impl
 
 				base.Step();
 
-				foreach (var tr in Contents)
+				foreach (var tr in Contents.ToList())
 				{
 					if (!tr.Active)
 					{
@@ -42,55 +49,18 @@ namespace Flow.Impl
 			{
 				_stepping = false;
 			}
+
+			Post();
+		}
+
+		public override void Pre()
+		{
+			base.Pre();
 		}
 
 		public override void Post()
 		{
 			base.Post();
-
-			// make a copy so that contents can be changed during iteration
-			var list = Generators.ToArray();
-
-			// do post for all contained generators
-			foreach (var gen in list)
-			{
-				gen.Post();
-			}
-		}
-	}
-
-	class Conditional : Group
-	{
-		public Conditional(IGenerator test, IGenerator body)
-		{
-			Add(test, body);
-			PerformPending();
-		}
-
-		public override void Step()
-		{
-			base.Step();
-
-			if (_contents.Count != 2)
-				return;
-
-			var test = _contents[0];
-			var body = _contents[1];
-
-			var gen = test as IGenerator;
-			if (gen == null)
-				return;
-
-			gen.Step();
-			var s = (bool) gen.Value;
-			if (!s)
-				return;
-
-			var action = body as IGenerator;
-			if (action == null)
-				return;
-
-			action.Step();
 		}
 	}
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>TestFlow</RootNamespace>
+    <AssemblyName>TestFlow</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Editor\GetParamName.cs" />
+    <Compile Include="Editor\Test.cs" />
+    <Compile Include="Editor\TestActionSequence.cs" />
+    <Compile Include="Editor\TestBase.cs" />
+    <Compile Include="Editor\TestChannel.cs" />
+    <Compile Include="Editor\TestConditionals.cs" />
+    <Compile Include="Editor\TestEventStream.cs" />
+    <Compile Include="Editor\TestLog.cs" />
+    <Compile Include="Editor\TestLoops.cs" />
+    <Compile Include="Editor\TestProcess.cs" />
+    <Compile Include="Editor\TestSequence.cs" />
+    <Compile Include="Editor\TestTimers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Flow.csproj">
+      <Project>{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}</Project>
+      <Name>Flow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

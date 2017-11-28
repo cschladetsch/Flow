@@ -13,30 +13,27 @@ namespace Flow
 	{
 		IKernel Kernel { get; }
 
-		INode Node();
-		IGroup Group();
 		ITransient Transient();
+		IGroup Group();
+		INode Node();
 
-		//IGenerator Once(Action act);
 		IGenerator Do(Action act);
-		//IGenerator<T> Expression<T>(Func<T> act);
-		//IGenerator<T> Once<T>(Func<T> act);
-		//IGenerator<T> Do<T>(Func<T> act);
-		IGenerator<T> Value<T>(Func<T> act);
-		IGenerator<T> Expression<T>(Func<T> act);
-		ITransient If(Func<bool> pred, IGenerator @if);
-		ITransient IfElse(Func<bool> pred, ITransient @if, ITransient @else);
-		ITransient While(Func<bool> pred, params ITransient[] body);
-		ITransient Loop(params ITransient[] trans);
-		ITransient Sequence(params ITransient[] transients);
-		ITransient Parallel(params ITransient[] transients);
-		ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
-		ITransient WaitFor(TimeSpan span);
+		IGenerator<T> Value<T>(T act);
 
-		ITransient DebugLog(string fmt, params object[] objs);
-		ITransient DebugWarning(string fmt, params object[] objs);
-		ITransient DebugError(string fmt, params object[] objs);
-		ITransient DebugException(string fmt, Exception ex);
+		IGenerator<T> Expression<T>(Func<T> act);
+		IGenerator If(Func<bool> pred, IGenerator @if);
+		IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
+		ITransient While(Func<bool> pred, IGenerator body);
+		ITransient Sequence(params IGenerator[] transients);
+		ITransient Parallel(params IGenerator[] transients);
+
+		ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
+		ITransient Wait(TimeSpan span);
+
+		ITransient SetDebugLEvel(EDebugLevel level);
+		ITransient Log(string fmt, params object[] objs);
+		ITransient Warn(string fmt, params object[] objs);
+		ITransient Error(string fmt, params object[] objs);
 
 		ITimer Timer(TimeSpan interval);
 		IPeriodic PeriodicTimer(TimeSpan interval);
@@ -47,6 +44,7 @@ namespace Flow
 		ITrigger Trigger();
 		ITimedTrigger TimedTrigger(TimeSpan span);
 
+		IGenerator Nop();
 		IFuture<T> Future<T>();
 		ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut);
 

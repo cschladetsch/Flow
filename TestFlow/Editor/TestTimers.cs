@@ -78,7 +78,15 @@ namespace Flow.Test
 			Assert.IsFalse(future.Available);
 
 			_root.Add(future);
-			_root.Add(_factory.WaitFor(TimeSpan.FromSeconds(futureLifetime*1.1f)));
+			var span = TimeSpan.FromSeconds(futureLifetime);
+			var end = _kernel.Time.Now + span;
+			_root.Add(_factory.Wait(span));
+			_root.Add(
+				_factory.While(
+					() => _kernel.Time.Now < end,
+					_factory.Nop()
+				)
+			);
 
 			Step(3);
 			RunKernel(_kernel, TimeSpan.FromSeconds(runTime));

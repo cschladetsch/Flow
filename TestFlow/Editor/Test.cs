@@ -47,26 +47,6 @@ namespace Flow.Test
 		[Test]
 		public void TestSubroutine()
 		{
-			var kernel = Create.Kernel();
-			var sub = kernel.Factory.Subroutine(Sub1, 2);
-			kernel.Root.Add(sub);
-
-			Assert.IsTrue(sub.Active);
-			Assert.IsTrue(sub.Running);
-
-			// first subroutine is added after first step
-			Assert.AreEqual(0, kernel.Root.Contents.Count());		
-			kernel.Step();
-			Assert.AreEqual(1, kernel.Root.Contents.Count());
-			
-			kernel.Step();
-			Assert.AreEqual(0, sub.Value);
-			
-			kernel.Step();
-			Assert.AreEqual(2, sub.Value);
-
-			kernel.Step();
-			Assert.AreEqual(4, sub.Value);
 		}
 
 		int Sub1(IGenerator self, int num)

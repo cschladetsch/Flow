@@ -2,13 +2,13 @@ using System;
 
 namespace Flow.Impl
 {
-	public abstract class Generator : Transient, IGenerator
+	public class Generator : Transient, IGenerator
 	{
 		public event GeneratorHandler Suspended;
 		public event GeneratorHandler Resumed;
 		public event GeneratorHandler Stepped;
 
-		public virtual object Value { get; private set; }
+		public virtual object Value { get; protected set; }
 
 		internal Generator()
 		{
@@ -118,11 +118,12 @@ namespace Flow.Impl
 
 	public delegate void WhyTypedGeneratorCompleted<TR>(Generator<TR> self);
 
-	public abstract class Generator<TR> : Generator, IGenerator<TR>
+	public class Generator<TR> : Generator, IGenerator<TR>
 	{
 		public new TR Value
 		{
-			get { return _value; }
+			get { return (TR) base.Value; }
+			set { base.Value = value; }
 		}
 
 		public event WhyTypedGeneratorCompleted<TR> TypedCompleted;
@@ -137,7 +138,5 @@ namespace Flow.Impl
 			if (TypedCompleted != null)
 				TypedCompleted(this);
 		}
-
-		protected TR _value;
 	}
 }
