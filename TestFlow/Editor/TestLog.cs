@@ -16,7 +16,7 @@ namespace Flow.Logger
 #if UNITY
             log.AddLogger(new UnityLogger());
 #endif
-            log.AddFile("testlog.txt");
+            //log.AddFile("testlog.txt");
 			log.Log("log1");
 			log.Warn("warn1");
 			log.Error("Error1");

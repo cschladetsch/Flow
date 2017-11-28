@@ -25,16 +25,6 @@ namespace Flow.Test
 			Assert.AreEqual(count, 10);
 		}
 
-		[Test]
-		public void TestLoop()
-		{
-			//var f = _factory;
-			//_root.Add(
-			//	f.Loop(
-			//		)
-			//	);
-		}
-
 		private int count = 0;
 
 		IEnumerator CountTo(IGenerator self, int max)
@@ -46,7 +36,7 @@ namespace Flow.Test
 		}
 
 		[Test]
-		public void TestConditionalLoop()
+		public void TestWhile()
 		{
 			var f = _factory;
 			var count = 0;
@@ -57,7 +47,7 @@ namespace Flow.Test
 				)
 			);
 
-			Step(5);
+			Step(2);
 			Print(count);
 			Assert.AreEqual(5, count);
 		}

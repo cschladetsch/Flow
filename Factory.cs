@@ -98,7 +98,7 @@ namespace Flow.Impl
 
 				body.Step();
 
-				yield return 0;
+				yield return self;
 			}
 		}
 

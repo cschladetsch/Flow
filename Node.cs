@@ -32,16 +32,17 @@ namespace Flow.Impl
 
 				foreach (var tr in Contents.ToList())
 				{
-					if (!tr.Active)
-					{
-						Remove(tr);
-						continue;
-					}
-
 					var gen = tr as IGenerator;
-					if (gen != null)
+					while (gen != null)
 					{
+						if (!gen.Active)
+						{
+							Remove(gen);
+							break;
+						}
+
 						gen.Step();
+						gen = gen.Value as IGenerator;
 					}
 				}
 			}
