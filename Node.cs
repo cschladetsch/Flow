@@ -41,6 +41,11 @@ namespace Flow.Impl
 							break;
 						}
 
+						if (!gen.Running)
+						{
+							break;
+						}
+
 						gen.Step();
 						gen = gen.Value as IGenerator;
 					}

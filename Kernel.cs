@@ -7,7 +7,11 @@ namespace Flow.Impl
 {
 	public class Kernel : Generator<bool>, IKernel
 	{
-		private readonly TimeFrame _time = new TimeFrame();
+		public EDebugLevel DebugLevel { get; set; }
+		public Logger.ILogger Trace { get; set; }
+		public INode Root { get; set; }
+		public new IFactory Factory { get; internal set; }
+
 
 		internal Kernel()
 		{
@@ -21,36 +25,57 @@ namespace Flow.Impl
 			_time.Delta = TimeSpan.FromSeconds(0);
 		}
 
-		public EDebugLevel DebugLevel { get; set; }
-		public Logger.ILogger Trace { get; set; }
-		
-		public INode Root { get; set; }
-
-		public new IFactory Factory { get; internal set; }
-
 		public ITimeFrame Time
 		{
 			get { return _time; }
 		}
 
-		public void Wait(DateTime end)
+		public void WaitSteps(int numSteps)
 		{
-			throw new NotImplementedException("Kernel.Wait");
+			throw new NotImplementedException();
+		}
+
+		public void Wait(TimeSpan span)
+		{
+			if (_waiting)
+			{
+				_resumeTime += span;
+				return;
+			}
+
+			_resumeTime = _time.Now + span;
+			_waiting = true;
 		}
 
 		public void Update(float dt)
+		{
+			UpdateTime(dt);
+
+			Process();
+		}
+
+		private void UpdateTime(float dt)
 		{
 			var delta = TimeSpan.FromSeconds(dt);
 			_time.Last = _time.Now;
 			_time.Delta = delta;
 			_time.Now = _time.Now + delta;
-
-			Process();
 		}
 
 		public override void Step()
 		{
 			StepTime();
+
+			if (_waiting)
+			{
+				if (_time.Now > _resumeTime)
+				{
+					_resumeTime = DateTime.MinValue;
+					_waiting = false;
+				}
+				else
+					return;
+			}
 
 			if (IsNullOrInactive(Root))
 				return;
@@ -71,5 +96,9 @@ namespace Flow.Impl
 			_time.Delta = now - _time.Last;
 			_time.Now = now;
 		}
+
+		private bool _waiting;
+		private DateTime _resumeTime;
+		private readonly TimeFrame _time = new TimeFrame();
 	}
 }

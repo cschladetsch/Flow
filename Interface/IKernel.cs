@@ -40,7 +40,8 @@ namespace Flow
 
 		void Update(float deltaSeconds);
 
-		void Wait(DateTime end);
+		void Wait(TimeSpan end);
+		void WaitSteps(int numSteps);
 	}
 
 	public enum EDebugLevel

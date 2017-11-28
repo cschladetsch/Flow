@@ -8,7 +8,7 @@ namespace Flow.Test
 		[Test()]
 		public void TestInsertExtract()
 		{
-			var chan = _factory.Channel<int>();
+			var chan = _kernel.Factory.Channel<int>();
 
 			chan.Insert(1);
 			chan.Insert(2);
@@ -29,7 +29,7 @@ namespace Flow.Test
 		[Test()]
 		public void TestExtractInsert()
 		{
-			var chan = _factory.Channel<int>();
+			var chan = _kernel.Factory.Channel<int>();
 
 			var f0 = chan.Extract();
 			var f1 = chan.Extract();
@@ -53,7 +53,7 @@ namespace Flow.Test
 		[Test()]
 		public void TestProducerConsumer ()
 		{
-			var channel = _factory.Channel<int>();
+			var channel = _kernel.Factory.Channel<int>();
 			var con = new Consumer(_kernel, channel);
 
 			_root.Add(channel);

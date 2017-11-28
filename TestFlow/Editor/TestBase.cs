@@ -6,8 +6,8 @@ namespace Flow.Test
 	public class TestBase
 	{
 		protected IKernel _kernel;
-		protected IFactory _factory;
 		protected INode _root;
+		protected IFactory _factory;
 
 		[SetUp]
 		public void Pre()

@@ -261,8 +261,7 @@ namespace Flow.Impl
 
 		public ITransient Wait(TimeSpan span)
 		{
-			var end = Kernel.Time.Now + span;
-			return Do(() => Kernel.Wait(end));
+			return Do(() => Kernel.Wait(span));
 		}
 
 		//public IGenerator<bool> While(Func<bool> act, ITransient body)

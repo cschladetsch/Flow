@@ -25,8 +25,6 @@ namespace Flow.Test
 			Assert.AreEqual(count, 10);
 		}
 
-		private int count = 0;
-
 		IEnumerator CountTo(IGenerator self, int max)
 		{
 			while (++count != max)
@@ -39,7 +37,7 @@ namespace Flow.Test
 		public void TestWhile()
 		{
 			var f = _factory;
-			var count = 0;
+			count = 0;
 			_root.Add(
 				f.While(
 					() => ++count < 5, 
@@ -47,9 +45,48 @@ namespace Flow.Test
 				)
 			);
 
-			Step(2);
+			Step(1);
 			Print(count);
 			Assert.AreEqual(5, count);
 		}
+
+		[Test]
+		public void TestWhileEarlyBreak()
+		{
+			var f = _factory;
+			count = 0;
+			_root.Add(
+				f.While(
+					() => true,
+					f.Coroutine(BreakEarly)
+				),
+				f.While(
+					() => true,
+					f.Coroutine(BreakEarly)
+				)
+			);
+
+			Step(2);
+			Print(count);
+			Assert.AreEqual(5, count);
+			Assert.AreEqual(2, numBreakEarly);
+		}
+
+		private IEnumerator BreakEarly(IGenerator self)
+		{
+			++numBreakEarly;
+			for (var n = 0; n < 3; ++n)
+			{
+				if (++count == 5)
+					yield break;
+
+				yield return self;
+			}
+
+			self.Suspend();
+		}
+
+		private int count = 0;
+		private int numBreakEarly = 0;
 	}
 }

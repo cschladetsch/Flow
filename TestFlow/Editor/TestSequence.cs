@@ -8,7 +8,7 @@ namespace Flow.Test
 		[Test]
 		public void TestSequenceTransients()
 		{
-			var f = _factory;
+			var f = _kernel.Factory;
 			var seq = f.Sequence(f.Coroutine<int>(First), f.Coroutine<int>(Second));
 			_root.Add(seq);
 			Step(5);
