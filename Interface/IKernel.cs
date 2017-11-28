@@ -1,5 +1,8 @@
 // (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
 
+using System;
+using Flow.Logger;
+
 namespace Flow
 {
 	/// <summary>
@@ -11,6 +14,10 @@ namespace Flow
 	/// </summary>
 	public interface IKernel : IGenerator
 	{
+		EDebugLevel DebugLevel { get; set; }
+
+		ILogger Trace { get; set; }
+
 		/// <summary>
 		///     Gets or sets the root of the kernel. When the Kernel is stepped, it will first Step() every generator reachable
 		///     from Root,
@@ -21,6 +28,8 @@ namespace Flow
 		/// </value>
 		INode Root { get; set; }
 
+		IFactory Factory { get; }
+
 		/// <summary>
 		///     Gets the time to use for this update.
 		/// </summary>
@@ -30,5 +39,17 @@ namespace Flow
 		ITimeFrame Time { get; }
 
 		void Update(float deltaSeconds);
+
+		void Wait(TimeSpan end);
+		void WaitSteps(int numSteps);
+	}
+
+	public enum EDebugLevel
+	{
+		None,
+		Low,
+		Medium,
+		High,
+		Verbose,
 	}
 }

@@ -24,7 +24,7 @@ namespace Flow
 			kernel.Factory = factory;
 			factory.Kernel = kernel;
 
-			kernel.Root = new Node {Kernel = kernel};
+			kernel.Root = new Node {Kernel = kernel, Name = "Root"};
 
 			return factory;
 		}

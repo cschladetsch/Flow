@@ -1,6 +1,5 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Internal.Execution;
-using UnityEngineInternal;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace Flow.Test
 {								 
@@ -9,24 +8,29 @@ namespace Flow.Test
 		[Test]
 		public void TestIf()
 		{
-			var worked = false;
+			_kernel.DebugLevel = Flow.EDebugLevel.Verbose;
+			var executed = false;
 			var exp = _factory.If(
-				() => true, 
-				_factory.Do(() => worked = true)
+				() => true,
+				_factory.Do(() => executed = true)
 			);
+			exp.Name = "If1";
+
 			_root.Add(exp);
 			Step(2);
-			Assert.IsTrue(worked);
+			Assert.IsTrue(executed);
 
-			worked = true;
+			executed = false;
 			_root.Remove(exp);
 			var exp2 = _factory.If(
 				() => false, 
-				_factory.Do(() => worked = true)
+				_factory.Do(() => executed = true)
 			);
+			exp2.Name = "If2";
+
 			_root.Add(exp2);
 			Step(2);
-			Assert.IsFalse(worked);
+			Assert.IsFalse(executed);
 		}
 	}
 }

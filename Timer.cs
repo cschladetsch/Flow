@@ -13,6 +13,6 @@ namespace Flow.Impl
 			Elapsed += self => Complete();
 		}
 
-		public DateTime TimeEnds { get; private set; }
+		public DateTime TimeEnds { get; }
 	}
 }

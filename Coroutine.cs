@@ -51,8 +51,6 @@ namespace Flow.Impl
 
 	internal class Coroutine<T> : Generator<T>, ICoroutine<T>
 	{
-		public new T Value { get; private set; }
-
 		public override void Step()
 		{
 			if (!Running || !Active)

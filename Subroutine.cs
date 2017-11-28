@@ -4,6 +4,27 @@ using System;
 
 namespace Flow.Impl
 {
+	internal class Subroutine : Generator, ISubroutine
+	{
+		internal Action<IGenerator> Sub;
+
+		public override void Step()
+		{
+			if (!Active || !Running)
+				return;
+
+			if (Sub == null)
+			{
+				Complete();
+				return;
+			}
+
+			Sub(this);
+
+			base.Step();
+		}
+	}
+
 	internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>
 	{
 		internal Func<IGenerator, TR> Sub;
@@ -19,7 +40,7 @@ namespace Flow.Impl
 				return;
 			}
 
-			_value = Sub(this);
+			Value = Sub(this);
 
 			base.Step();
 		}

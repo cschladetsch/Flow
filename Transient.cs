@@ -35,6 +35,12 @@ namespace Flow.Impl
 			Active = true;
 		}
 
+		public ITransient Named(string name)
+		{
+			Name = name;
+			return this;
+		}
+
 		public void Complete()
 		{
 			if (!Active)

@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -32,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>packages\NUnit.3.9.0\lib\net35\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -67,8 +68,6 @@
     <Compile Include="Interface\ITimesOut.cs" />
     <Compile Include="Interface\ITransient.cs" />
     <Compile Include="Interface\ITrigger.cs" />
-    <Compile Include="Interface\ITypedCoroutine.cs" />
-    <Compile Include="Interface\ITypedGenerator.cs" />
     <Compile Include="Kernel.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Periodic.cs" />
@@ -80,9 +79,13 @@
     <Compile Include="Timer.cs" />
     <Compile Include="Transient.cs" />
     <Compile Include="Trigger.cs" />
-    <Compile Include="TypedCoroutine.cs" />
-    <Compile Include="TypedGenerator.cs" />
     <Compile Include="VolatileBool.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\UnityLogger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
