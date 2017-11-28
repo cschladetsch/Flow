@@ -14,7 +14,7 @@ namespace Flow.Logger
         public void Test()
         {
             var log = new Logger(ELogLevel.Verbose, "test");
-#if UNITY
+#if UNITY_EDITOR
             log.AddLogger(new UnityLogger());
 #endif
             //log.AddFile("testlog.txt");

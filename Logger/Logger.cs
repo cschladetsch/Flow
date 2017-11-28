@@ -100,7 +100,7 @@ namespace Flow.Logger
 		protected virtual string MakeEntryText(DateTime dateTime, ELogLevel level, string message)
 		{
 			var entry = string.Format("{0}: {1}: #{2}: {3}: {4}", level.ToString(), MakeTimeString(dateTime),
-				#if UNITY
+				#if UNITY_EDITOR
 				UnityEngine.Time.frameCount
 				#else
 				0

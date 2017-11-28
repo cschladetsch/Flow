@@ -3,7 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if UNITY
+#if UNITY_EDITOR
 using UnityEditorInternal;
 using UnityEngine;
 #endif

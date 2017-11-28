@@ -19,6 +19,6 @@ namespace Flow.Impl
 			Complete();
 		}
 
-		public DateTime TimeEnds { get; }
+		public DateTime TimeEnds { get; private set; }
 	}
 }
