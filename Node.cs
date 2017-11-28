@@ -15,7 +15,7 @@ namespace Flow.Impl
 
 			try
 			{
-				if (Kernel.DebugLevel >= EDebugLevel.High)
+				if (Kernel.DebugLevel > EDebugLevel.High)
 				{
 					Kernel.Trace.Log("Stepping Node {0}", Name);	
 				}

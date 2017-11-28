@@ -239,14 +239,16 @@ namespace Flow.Impl
 			throw new NotImplementedException();
 		}
 
-		public ITrigger Trigger()
+		public ITrigger Trigger(params ITransient[] args)
 		{
-			return Prepare(new Trigger());
+			var trigger = new Trigger();
+			trigger.Add(args);
+			return Prepare(trigger);
 		}
 
 		public ITimedTrigger TimedTrigger(TimeSpan span)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException("New TimedTrigger");
 		}
 
 		public IGenerator Nop()

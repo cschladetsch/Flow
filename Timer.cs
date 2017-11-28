@@ -10,7 +10,13 @@ namespace Flow.Impl
 			: base(kernel, span)
 		{
 			TimeEnds = kernel.Time.Now + span;
-			Elapsed += self => Complete();
+			Elapsed += TimedOutHandler;
+		}
+
+		private void TimedOutHandler(ITransient sender)
+		{
+			Kernel.Trace.Log("Timer completed {0}", Name);
+			Complete();
 		}
 
 		public DateTime TimeEnds { get; }

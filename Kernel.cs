@@ -16,11 +16,17 @@ namespace Flow.Impl
 
 		internal Kernel()
 		{
-			Trace = new Logger.Logger(ELogLevel.Verbose, "Kernel");
-			#if UNITY
-			Trace.AddLogger(new UnityLogger(ELogLevel.Verbose));
-			#endif // using UnityEngine;
-			
+			var level = ELogLevel.Verbose;
+
+			Trace = new Logger.Logger(level, "Kernel");
+#if UNITY
+			Trace.AddLogger(new UnityLogger(level));
+#endif
+
+#if DOTNET
+			Trace.AddLogger(new ConsoleLogger(level));
+#endif
+
 			_time.Now = DateTime.Now;
 			_time.Last = _time.Now;
 			_time.Delta = TimeSpan.FromSeconds(0);

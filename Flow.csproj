@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -69,6 +69,7 @@
     <Compile Include="Interface\ITransient.cs" />
     <Compile Include="Interface\ITrigger.cs" />
     <Compile Include="Kernel.cs" />
+    <Compile Include="Logger\ConsoleLogger.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Periodic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -71,17 +71,6 @@ namespace Flow.Test
 			Assert.AreEqual(result, future.HasTimedOut);
 		}
 
-		private DateTime RunKernel(TimeSpan span)
-		{
-			var start = _kernel.Time.Now;
-			var end = start + span;
-			_kernel.Step();
-			while (_kernel.Time.Now < end)
-			{
-				_kernel.Step();
-			}
-			return start;
-		}
 	}
 }
 

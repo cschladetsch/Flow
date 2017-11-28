@@ -15,15 +15,11 @@ namespace Flow
 	public interface ITransient : INamed
 	{
 		event TransientHandler Completed;
-		//event TransientHandlerReason WhyCompleted;
 
-		IKernel Kernel { get; /*internal*/ set; }
-		//IFactory Factory { get; }
 		bool Active { get; }
+		IKernel Kernel { get; /*internal*/ set; }
 
 		void Complete();
-		//void CompleteAfter(ITransient other);
-		//void CompleteAfter(TimeSpan span);
 
 		ITransient Named(string name);
 	}

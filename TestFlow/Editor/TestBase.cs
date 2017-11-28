@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace Flow.Test
 {
@@ -33,6 +34,18 @@ namespace Flow.Test
 			{
 				_kernel.Step();
 			}
+		}
+
+		protected DateTime RunKernel(TimeSpan span)
+		{
+			_kernel.Step();
+			var start = _kernel.Time.Now;
+			var end = start + span;
+			while (_kernel.Time.Now < end)
+			{
+				_kernel.Step();
+			}
+			return start;
 		}
 	}
 }

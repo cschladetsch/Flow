@@ -14,7 +14,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;DOTNET</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -40,7 +40,7 @@
     <Compile Include="Editor\TestEventStream.cs" />
     <Compile Include="Editor\TestLog.cs" />
     <Compile Include="Editor\TestLoops.cs" />
-    <Compile Include="Editor\TestProcess.cs" />
+    <Compile Include="Editor\TestSequenceTopology.cs" />
     <Compile Include="Editor\TestSequence.cs" />
     <Compile Include="Editor\TestTimers.cs" />
   </ItemGroup>
