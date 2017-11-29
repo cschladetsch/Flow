@@ -6,7 +6,12 @@ using System.Collections.Generic;
 
 namespace Flow
 {
-	/// <summary>
+    public interface ICase<T> : IGenerator<IGenerator> where T : IComparable<T>
+    {
+        bool Matches(T val);
+    }
+
+    /// <summary>
 	/// Creates Flow instances that reside within a Kernel.
 	/// </summary>
 	public interface IFactory
@@ -26,6 +31,9 @@ namespace Flow
 		ITransient While(Func<bool> pred, IGenerator body);
 		ITransient Sequence(params IGenerator[] transients);
 		ITransient Parallel(params IGenerator[] transients);
+
+        IGenerator Switch<T>(IGenerator<T> val, params ICase<T>[] cases) where T : IComparable<T>;
+        ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;
 
 		ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
 		ITransient Wait(TimeSpan span);

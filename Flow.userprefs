@@ -1,27 +1,35 @@
-﻿<Properties StartupConfiguration="{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}|Unit Tests">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TestFlow/Editor/TestBase.cs">
+﻿<Properties StartupConfiguration="{C9F3733E-7E0D-45B9-ACC0-7B83644D5D60}|Unit Tests">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TestFlow/Editor/TestSwitch.cs">
     <Files>
-      <File FileName="Factory.cs" Line="9" Column="7" />
+      <File FileName="Factory.cs" Line="131" Column="10" />
       <File FileName="Future.cs" Line="1" Column="1" />
       <File FileName="Interface/IGenerator.cs" Line="1" Column="1" />
-      <File FileName="Node.cs" Line="5" Column="1" />
+      <File FileName="Node.cs" Line="1" Column="1" />
       <File FileName="Generator.cs" Line="1" Column="1" />
-      <File FileName="Interface/IKernel.cs" Line="4" Column="12" />
-      <File FileName="Interface/ISubroutine.cs" Line="3" Column="1" />
-      <File FileName="Kernel.cs" Line="18" Column="4" />
+      <File FileName="Interface/IKernel.cs" Line="1" Column="1" />
+      <File FileName="Interface/ISubroutine.cs" Line="1" Column="1" />
+      <File FileName="Kernel.cs" Line="1" Column="1" />
       <File FileName="Create.cs" Line="1" Column="1" />
-      <File FileName="Logger/Logger.cs" Line="5" Column="21" />
-      <File FileName="Logger/UnityLogger.cs" Line="41" Column="7" />
+      <File FileName="Logger/Logger.cs" Line="1" Column="1" />
+      <File FileName="Logger/UnityLogger.cs" Line="1" Column="1" />
       <File FileName=".nuget/NuGet.Config" Line="1" Column="1" />
       <File FileName=".nuget/NuGet.targets" Line="17" Column="20" />
       <File FileName="Coroutine.cs" Line="1" Column="1" />
       <File FileName="Periodic.cs" Line="20" Column="4" />
       <File FileName="TestFlow/Editor/GetParamName.cs" Line="1" Column="1" />
       <File FileName="TestFlow/Editor/Test.cs" Line="1" Column="1" />
-      <File FileName="TestFlow/Editor/TestConditionals.cs" Line="3" Column="1" />
-      <File FileName="TestFlow/Editor/TestChannel.cs" Line="95" Column="29" />
-      <File FileName="TestFlow/Editor/TestLog.cs" Line="27" Column="1" />
-      <File FileName="TestFlow/Editor/TestBase.cs" Line="26" Column="4" />
+      <File FileName="TestFlow/Editor/TestConditionals.cs" Line="1" Column="1" />
+      <File FileName="TestFlow/Editor/TestChannel.cs" Line="77" Column="13" />
+      <File FileName="TestFlow/Editor/TestLog.cs" Line="31" Column="54" />
+      <File FileName="TestFlow/Editor/TestBase.cs" Line="1" Column="1" />
+      <File FileName="TestFlow/Editor/TestSequence.cs" Line="30" Column="1" />
+      <File FileName="TestFlow/Editor/TestLoops.cs" Line="1" Column="1" />
+      <File FileName="TestFlow/Editor/TestTimers.cs" Line="1" Column="1" />
+      <File FileName="TestFlow/Editor/TestActionSequence.cs" Line="1" Column="1" />
+      <File FileName="TestFlow/Editor/TestSequenceTopology.cs" Line="1" Column="1" />
+      <File FileName="TestFlow/Editor/TestSwitch.cs" Line="23" Column="1" />
+      <File FileName="Interface/IFactory.cs" Line="36" Column="43" />
+      <File FileName="Case.cs" Line="22" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -29,6 +37,7 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Flow PreferredExecutionTarget="MonoDevelop.Default" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.TestFlow PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

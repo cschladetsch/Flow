@@ -10,7 +10,9 @@ using UnityEngine;
 
 namespace Flow.Impl
 {
-	/// <summary>
+
+
+    /// <summary>
 	///     Makes instances for the Flow library
 	/// </summary>
 	public class Factory : IFactory
@@ -111,6 +113,33 @@ namespace Flow.Impl
 		{
 			return Prepare(new Subroutine<T> {Sub = s => act()});
 		}
+
+        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
+        {
+            gen.Step();
+            T val = gen.Value;
+            var coro = Coroutine(SwitchCoro<T>, val, cases);
+            Prepare(coro);
+            return coro;
+        }
+
+        public ICase<T> Case<T>(T val, IGenerator<T> statement) where T : IComparable<T>
+        {
+            var c = new Case<T>(val, statement);
+            Prepare(c);
+            return c;
+        }
+
+        IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
+        {
+            foreach (var c in cases)
+            {
+                if (c.Matches(val))
+                {
+                    yield return c.Value;
+                }
+            }
+        }
 
 		public ITimer Timer(TimeSpan interval)
 		{
