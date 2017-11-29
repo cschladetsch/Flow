@@ -35,6 +35,9 @@ namespace Flow.Impl
 					var gen = tr as IGenerator;
 					while (gen != null)
 					{
+						if (Kernel.Break)
+							goto end;
+
 						if (!gen.Active)
 						{
 							Remove(gen);
@@ -48,6 +51,8 @@ namespace Flow.Impl
 
 						gen.Step();
 						gen = gen.Value as IGenerator;
+
+						Kernel.StepTime();
 					}
 				}
 			}
@@ -56,6 +61,7 @@ namespace Flow.Impl
 				_stepping = false;
 			}
 
+		end:
 			Post();
 		}
 

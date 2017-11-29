@@ -10,7 +10,18 @@ using UnityEngine;
 
 namespace Flow.Impl
 {
+	public interface IBreak : IGenerator
+	{
+		
+	}
 
+	internal class Break : Generator, IBreak
+	{
+		public override void Step()
+		{
+			Kernel.BreakFlow();
+		}
+	}
 
 	/// <summary>
 	///     Makes instances for the Flow library
@@ -86,7 +97,7 @@ namespace Flow.Impl
 			}
 		}
 
-		public ITransient While(Func<bool> pred, IGenerator body)
+		public IGenerator While(Func<bool> pred, IGenerator body)
 		{
 			return Prepare(Coroutine(WhileCoro, pred, body));
 		}
@@ -218,6 +229,11 @@ namespace Flow.Impl
 
 			yield return false;
 			self.Complete();
+		}
+
+		public IGenerator Break()
+		{
+			return Prepare(new Break());
 		}
 
 		public ITransient SetDebugLEvel(EDebugLevel level)

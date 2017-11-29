@@ -24,7 +24,7 @@ namespace Flow
 		IGenerator<T> Expression<T>(Func<T> act);
 		IGenerator If(Func<bool> pred, IGenerator @if);
 		IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
-		ITransient While(Func<bool> pred, IGenerator body);
+		IGenerator While(Func<bool> pred, IGenerator body);
 		ITransient Sequence(params IGenerator[] transients);
 		ITransient Parallel(params IGenerator[] transients);
 
@@ -34,6 +34,8 @@ namespace Flow
 		ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
 		ITransient Wait(TimeSpan span);
 		ITransient Wait(ITransient trans, TimeSpan timeOut);
+
+		IGenerator Break();
 
 		ITransient SetDebugLEvel(EDebugLevel level);
 		ITransient Log(string fmt, params object[] objs);

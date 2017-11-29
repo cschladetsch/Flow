@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+
+namespace Flow.Test
+{
+	[TestFixture]
+	class TimerWaitTest : TestBase
+	{
+		[TestCase(0.5f)]
+		[TestCase(0.2f)]
+		public void TestBreak(float timeOut)
+		{
+			var oneShotTimer = _flow.OneShotTimer(TimeSpan.FromSeconds(timeOut),
+				(self) => self.Kernel.BreakFlow());
+			_root.Add(
+				_flow.Parallel(
+					_flow.While(() => true, oneShotTimer)
+				)
+			);
+
+			var start = RunKernel(TimeSpan.FromSeconds(2));
+			var deltaSeconds = (_kernel.Time.Now - start).TotalSeconds;
+			Assert.IsTrue(Math.Abs(deltaSeconds) < 0.1f);
+		}
+
+		[TestCase(0.5f, 1.0f, 0.5f)]
+		[TestCase(1.5f, 1.0f, 1.0f)]
+		public void TestTimedWait(float timerLen, float timeOut, float kernelRunTime)
+		{
+			_root.Add(
+				_flow.Wait(
+					_flow.Trigger(_flow.OneShotTimer(TimeSpan.FromSeconds(timerLen))),
+					TimeSpan.FromSeconds(timeOut)
+				),
+				_flow.Break()
+			);
+
+			var start = RunKernel(TimeSpan.FromSeconds(2));
+			var deltaSeconds = (_kernel.Time.Now - start).TotalSeconds;
+			Assert.IsTrue(Math.Abs(deltaSeconds) < 0.1f);
+		}
+	}
+}

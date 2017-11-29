@@ -38,10 +38,14 @@ namespace Flow
 		/// </value>
 		ITimeFrame Time { get; }
 
-		void Update(float deltaSeconds);
+		bool Break { get; }
 
+		void Update(float deltaSeconds);
 		void Wait(TimeSpan end);
 		void WaitSteps(int numSteps);
+		void BreakFlow();
+		void StepTime();
+		void ContinueFlow();
 	}
 
 	public enum EDebugLevel

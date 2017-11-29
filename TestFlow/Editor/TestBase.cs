@@ -44,6 +44,8 @@ namespace Flow.Test
 			while (_kernel.Time.Now < end)
 			{
 				_kernel.Step();
+				if (_kernel.Break)
+					break;
 			}
 			return start;
 		}

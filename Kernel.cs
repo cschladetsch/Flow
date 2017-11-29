@@ -42,6 +42,18 @@ namespace Flow.Impl
 			throw new NotImplementedException();
 		}
 
+		public bool Break { get; private set; }
+
+		public void BreakFlow()
+		{
+			Break = true;
+		}
+
+		public void ContinueFlow()
+		{
+			Break = false;
+		}
+
 		public void Wait(TimeSpan span)
 		{
 			if (_waiting)
@@ -89,13 +101,16 @@ namespace Flow.Impl
 
 		private void Process()
 		{
+			if (Break)
+				return;
+
 			if (!IsNullOrInactive(Root))
 				Root.Step();
 
 			base.Step();
 		}
 
-		private void StepTime()
+		public void StepTime()
 		{
 			var now = DateTime.Now;
 
