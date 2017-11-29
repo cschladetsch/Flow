@@ -36,18 +36,18 @@ namespace Flow.Test
 			}
 		}
 
-		protected DateTime RunKernel(TimeSpan span)
+		protected float RunKernel(float seconds)
 		{
 			_kernel.Step();
 			var start = _kernel.Time.Now;
-			var end = start + span;
+			var end = start + TimeSpan.FromSeconds(seconds);
 			while (_kernel.Time.Now < end)
 			{
 				_kernel.Step();
 				if (_kernel.Break)
 					break;
 			}
-			return start;
+			return (float)(_kernel.Time.Now - start).TotalSeconds;
 		}
 	}
 }

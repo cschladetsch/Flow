@@ -9,30 +9,19 @@ namespace Flow.Test
 		[TestCase(0.4f, 0.2f, false)]
 		public void TestOneShot(float span, float runTime, bool shouldBeCompleted)
 		{
-			var k = _kernel;
-			var timer = _flow.OneShotTimer(TimeSpan.FromSeconds(span));
-
 			var elapsed = false;
-			var when = DateTime.Now;
-
-			timer.Elapsed += (sender) => 
-			{
-				elapsed = true;
-				when = timer.Kernel.Time.Now; 
-			};
-
-			_root.Add(timer);
-			var start = RunKernel(TimeSpan.FromSeconds(runTime));
+			var oneShotTimer = _flow.OneShotTimer(TimeSpan.FromSeconds(span), (timer) => elapsed = true);
+			_root.Add(oneShotTimer);
+			RunKernel(runTime);
 
 			if (shouldBeCompleted) 
 			{
-				Assert.IsTrue(!timer.Active);
+				Assert.IsTrue(!oneShotTimer.Active);
 				Assert.IsTrue(elapsed);
-				Assert.IsTrue(when > start);
 			} 
 			else 
 			{
-				Assert.IsFalse(!timer.Active);
+				Assert.IsTrue(oneShotTimer.Active);
 				Assert.IsFalse(elapsed);
 			}
 		}
@@ -48,7 +37,7 @@ namespace Flow.Test
 			timer.Elapsed += (sender) => ++elapsed;
  
 			_root.Add(timer);
-			RunKernel(TimeSpan.FromSeconds(runTime));
+			RunKernel(runTime);
 
 			Assert.AreEqual(numElapsed, elapsed);
 		}
@@ -63,7 +52,7 @@ namespace Flow.Test
 			Assert.IsFalse(future.Available);
 
 			_root.Add(future);
-			RunKernel(TimeSpan.FromSeconds(runTime));
+			RunKernel(runTime);
 
 			Step();
 
