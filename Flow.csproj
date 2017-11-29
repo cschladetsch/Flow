@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Barrier.cs" />
     <Compile Include="BlockingChannel.cs" />
+    <Compile Include="Break.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="ConcurrentQueue.cs" />
     <Compile Include="Coroutine.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Future.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="Interface\IBreak.cs" />
     <Compile Include="Interface\IBarrier.cs" />
     <Compile Include="Interface\ICase.cs" />
     <Compile Include="Interface\IChannel.cs" />

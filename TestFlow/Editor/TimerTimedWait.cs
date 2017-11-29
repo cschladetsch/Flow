@@ -14,17 +14,16 @@ namespace Flow.Test
 		[TestCase(0.2f)]
 		public void TestBreak(float timeOut)
 		{
-			var oneShotTimer = _flow.OneShotTimer(TimeSpan.FromSeconds(timeOut),
-				(self) => self.Kernel.BreakFlow());
 			_root.Add(
 				_flow.Parallel(
-					_flow.While(() => true, oneShotTimer)
+					_flow.While(() => true,
+						_flow.OneShotTimer(TimeSpan.FromSeconds(timeOut), (self) => self.Kernel.BreakFlow())
+					)
 				)
 			);
 
-			var start = RunKernel(TimeSpan.FromSeconds(2));
-			var deltaSeconds = (_kernel.Time.Now - start).TotalSeconds;
-			Assert.IsTrue(Math.Abs(deltaSeconds) < 0.1f);
+			var delta = RunKernel(2) - timeOut;
+			Assert.IsTrue(Math.Abs(delta) < 0.1f);
 		}
 
 		[TestCase(0.5f, 1.0f, 0.5f)]
@@ -39,9 +38,8 @@ namespace Flow.Test
 				_flow.Break()
 			);
 
-			var start = RunKernel(TimeSpan.FromSeconds(2));
-			var deltaSeconds = (_kernel.Time.Now - start).TotalSeconds;
-			Assert.IsTrue(Math.Abs(deltaSeconds) < 0.1f);
+			var delta = timerLen - RunKernel(kernelRunTime);
+			Assert.IsTrue(Math.Abs(delta) < 0.1f);
 		}
 	}
 }

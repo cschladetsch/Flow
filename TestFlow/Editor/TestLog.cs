@@ -67,7 +67,7 @@ namespace Flow.Logger
 				})
 			);
 
-		    RunKernel(TimeSpan.FromSeconds(runTime));
+		    RunKernel(runTime);
 
 			Assert.AreEqual(timedOut, !timeout.Active);
 			Assert.AreEqual(firstAvail, roll0.Available);

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace Flow
 {
-
 	/// <summary>
 	/// Creates Flow instances that reside within a Kernel.
 	/// </summary>

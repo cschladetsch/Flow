@@ -10,19 +10,6 @@ using UnityEngine;
 
 namespace Flow.Impl
 {
-	public interface IBreak : IGenerator
-	{
-		
-	}
-
-	internal class Break : Generator, IBreak
-	{
-		public override void Step()
-		{
-			Kernel.BreakFlow();
-		}
-	}
-
 	/// <summary>
 	///     Makes instances for the Flow library
 	/// </summary>
