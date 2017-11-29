@@ -1,21 +1,22 @@
 ﻿using System;
 
-
 namespace Flow.Impl
 {
-    public class Case<T> : Generator<IGenerator>, ICase<T> where T : IComparable<T>
-    {
-        T _compare;
+	internal class Case<T> : ICase<T> where T : IComparable<T>
+	{
+		internal Case(T val, IGenerator gen)
+		{
+			_compare = val;
+			Body = gen;
+		}
 
-        public Case(T val, IGenerator gen)
-        {
-            Value = gen;
-            _compare = val;
-        }
+		public IGenerator Body { get; }
 
-        public bool Matches(T val)
-        {
-            return val.CompareTo(_compare) == 0;// ? Value : null;
-        }
-    }
+		public bool Matches(T val)
+		{
+			return val.CompareTo(_compare) == 0;
+		}
+
+		private readonly T _compare;
+	}
 }

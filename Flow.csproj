@@ -51,6 +51,7 @@
     <Compile Include="Generator.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Interface\IBarrier.cs" />
+    <Compile Include="Interface\ICase.cs" />
     <Compile Include="Interface\IChannel.cs" />
     <Compile Include="Interface\ICoroutine.cs" />
     <Compile Include="Interface\IFactory.cs" />

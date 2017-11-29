@@ -12,7 +12,7 @@ namespace Flow.Impl
 {
 
 
-    /// <summary>
+	/// <summary>
 	///     Makes instances for the Flow library
 	/// </summary>
 	public class Factory : IFactory
@@ -40,7 +40,7 @@ namespace Flow.Impl
 
 		public IGenerator Do(Action act)
 		{
-			return Prepare(new Subroutine() {Sub = (tr) => act()});
+			return Prepare(new Subroutine() { Sub = (tr) => act() });
 		}
 
 		public IGenerator If(Func<bool> pred, IGenerator body)
@@ -111,35 +111,33 @@ namespace Flow.Impl
 
 		public IGenerator<T> Expression<T>(Func<T> act)
 		{
-			return Prepare(new Subroutine<T> {Sub = s => act()});
+			return Prepare(new Subroutine<T> { Sub = s => act() });
 		}
 
-        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
-        {
-            gen.Step();
-            T val = gen.Value;
-            var coro = Coroutine(SwitchCoro<T>, val, cases);
-            Prepare(coro);
-            return coro;
-        }
+		public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
+		{
+			gen.Step();
+			T val = gen.Value;
+			var coro = Coroutine(SwitchCoro<T>, val, cases);
+			Prepare(coro);
+			return coro;
+		}
 
-        public ICase<T> Case<T>(T val, IGenerator<T> statement) where T : IComparable<T>
-        {
-            var c = new Case<T>(val, statement);
-            Prepare(c);
-            return c;
-        }
+		public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
+		{
+			return new Case<T>(val, statement);
+		}
 
-        IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
-        {
-            foreach (var c in cases)
-            {
-                if (c.Matches(val))
-                {
-                    yield return c.Value;
-                }
-            }
-        }
+		IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
+		{
+			foreach (var c in cases)
+			{
+				if (c.Matches(val))
+				{
+					yield return c.Body;
+				}
+			}
+		}
 
 		public ITimer Timer(TimeSpan interval)
 		{
