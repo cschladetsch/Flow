@@ -43,7 +43,7 @@ namespace Flow.Logger
 		    var cancel = _flow.Future<bool>().Named("Cancel");
 
 			// global timeout
-		    var timeout = _flow.Timer(TimeSpan.FromSeconds(1)).Named("Timer");
+		    var timeout = _flow.OneShotTimer(TimeSpan.FromSeconds(1)).Named("OneShotTimer");
 
 			// will complete when any of the given transients complete
 		    var trigger = _flow.Trigger(

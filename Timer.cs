@@ -15,7 +15,7 @@ namespace Flow.Impl
 
 		private void TimedOutHandler(ITransient sender)
 		{
-			Kernel.Trace.Log("Timer completed {0}", Name);
+			Kernel.Trace.Log("OneShotTimer completed {0}", Name);
 			Complete();
 		}
 

@@ -71,7 +71,7 @@ namespace Flow.Impl
 
 		public void CompleteAfter(TimeSpan span)
 		{
-			CompleteAfter(Factory.Timer(span));
+			CompleteAfter(Factory.OneShotTimer(span));
 		}
 
 		public static bool IsNullOrInactive(ITransient other)

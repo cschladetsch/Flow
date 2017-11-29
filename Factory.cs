@@ -139,7 +139,14 @@ namespace Flow.Impl
 			}
 		}
 
-		public ITimer Timer(TimeSpan interval)
+		public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
+		{
+			var timer = OneShotTimer(interval);
+			timer.Elapsed += (self) => onElapsed(self);
+			return timer;
+		}
+
+		public ITimer OneShotTimer(TimeSpan interval)
 		{
 			return Prepare(new Timer(Kernel, interval));
 		}
@@ -293,10 +300,10 @@ namespace Flow.Impl
 			return Do(() => Kernel.Wait(span));
 		}
 
-		//public IGenerator<bool> While(Func<bool> act, ITransient body)
-		//{
-		//	return Do(act);
-		//}
+		public ITransient Wait(ITransient trans, TimeSpan timeOut)
+		{
+			return Prepare(Trigger(trans, OneShotTimer(timeOut)));
+		}
 
 		public ITimedFuture<T> TimedFuture<T>(TimeSpan interval)
 		{

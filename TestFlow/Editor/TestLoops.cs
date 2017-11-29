@@ -41,7 +41,7 @@ namespace Flow.Test
 			_root.Add(
 				f.While(
 					() => ++count < 5, 
-					f.Do(() => _kernel.Trace.Log("count={0}", count))
+					f.Do(() => PrintFmt("count={0}", count))
 				)
 			);
 

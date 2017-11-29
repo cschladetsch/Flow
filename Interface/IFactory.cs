@@ -33,13 +33,15 @@ namespace Flow
 
 		ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
 		ITransient Wait(TimeSpan span);
+		ITransient Wait(ITransient trans, TimeSpan timeOut);
 
 		ITransient SetDebugLEvel(EDebugLevel level);
 		ITransient Log(string fmt, params object[] objs);
 		ITransient Warn(string fmt, params object[] objs);
 		ITransient Error(string fmt, params object[] objs);
 
-		ITimer Timer(TimeSpan interval);
+		ITimer OneShotTimer(TimeSpan interval);
+		ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed);
 		IPeriodic PeriodicTimer(TimeSpan interval);
 
 		IBarrier Barrier(params ITransient[] args);

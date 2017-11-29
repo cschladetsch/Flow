@@ -107,12 +107,12 @@ namespace Flow.Impl
 
 		public IGenerator ResumeAfter(TimeSpan span)
 		{
-			return !Active ? this : ResumeAfter(Factory.Timer(span));
+			return !Active ? this : ResumeAfter(Factory.OneShotTimer(span));
 		}
 
 		public IGenerator SuspendAfter(TimeSpan span)
 		{
-			return !Active ? this : SuspendAfter(Factory.Timer(span));
+			return !Active ? this : SuspendAfter(Factory.OneShotTimer(span));
 		}
 	}
 

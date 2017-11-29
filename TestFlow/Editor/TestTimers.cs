@@ -10,7 +10,7 @@ namespace Flow.Test
 		public void TestOneShot(float span, float runTime, bool shouldBeCompleted)
 		{
 			var k = _kernel;
-			var timer = _flow.Timer(TimeSpan.FromSeconds(span));
+			var timer = _flow.OneShotTimer(TimeSpan.FromSeconds(span));
 
 			var elapsed = false;
 			var when = DateTime.Now;

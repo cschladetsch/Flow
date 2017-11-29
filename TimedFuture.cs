@@ -8,7 +8,7 @@ namespace Flow.Impl
 	{
 		internal TimedFuture(IKernel k, TimeSpan span)
 		{
-			Timer = k.Factory.Timer(span);
+			Timer = k.Factory.OneShotTimer(span);
 			k.Root.Add(Timer);
 			Timer.Elapsed += HandleElapsed;
 		}
