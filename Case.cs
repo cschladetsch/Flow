@@ -10,7 +10,7 @@ namespace Flow.Impl
 			Body = gen;
 		}
 
-		public IGenerator Body { get; }
+		public IGenerator Body { get; private set; }
 
 		public bool Matches(T val)
 		{

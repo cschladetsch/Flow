@@ -35,7 +35,7 @@ namespace Flow.Logger
 
 		private void Write(DateTime dateTime, string message, Action<string> log)
 		{
-			log(string.Format("{0}: #{1}: {2}", dateTime.ToShortTimeString(), UnityEngine.Time.frameCount, message));
+			log(string.Format("{0}: #{1}: {2}", dateTime.ToLongTimeString(), UnityEngine.Time.frameCount, message));
 		}
 	}
 	#endif
