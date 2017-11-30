@@ -15,6 +15,9 @@ namespace Flow
 	public interface IGroup : IGenerator
 	{
 		IEnumerable<ITransient> Contents { get; }
+		IEnumerable<IGenerator> Generators { get; }
+
+		bool Empty { get; }
 
 		// Occurs when a transient is added to this group.
 		event GroupHandler Added;

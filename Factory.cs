@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditorInternal;
 using UnityEngine;
@@ -21,14 +22,18 @@ namespace Flow.Impl
 
 		public bool AutoAdd { get; set; }
 
-		public INode Node()
+		public INode Node(params IGenerator[] gens)
 		{
-			return Prepare(new Node());
+			var node = Prepare(new Node());
+			node.Add(gens);
+			return node;
 		}
 
-		public IGroup Group()
+		public IGroup Group(params ITransient[] trans)
 		{
-			return Prepare(new Group());
+			var group = Prepare(new Group());
+			group.Add(trans);
+			return group;
 		}
 
 		public ITransient Transient()
@@ -84,19 +89,19 @@ namespace Flow.Impl
 			}
 		}
 
-		public IGenerator While(Func<bool> pred, IGenerator body)
+		public IGenerator While(Func<bool> pred, params IGenerator[] body)
 		{
 			return Prepare(Coroutine(WhileCoro, pred, body));
 		}
 
-		IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator body)
+		IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
 		{
+			var node = Prepare(Node(gens));
 			while (pred())
 			{
-				if (!body.Active)
+				node.Step();
+				if (!node.Active || node.Empty)
 					yield break;
-
-				body.Step();
 
 				yield return self;
 			}

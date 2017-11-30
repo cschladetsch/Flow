@@ -14,8 +14,8 @@ namespace Flow
 		IKernel Kernel { get; }
 
 		ITransient Transient();
-		IGroup Group();
-		INode Node();
+		IGroup Group(params ITransient[] gens);
+		INode Node(params IGenerator[] gens);
 
 		IGenerator Do(Action act);
 		IGenerator<T> Value<T>(T act);
@@ -23,7 +23,7 @@ namespace Flow
 		IGenerator<T> Expression<T>(Func<T> act);
 		IGenerator If(Func<bool> pred, IGenerator @if);
 		IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
-		IGenerator While(Func<bool> pred, IGenerator body);
+		IGenerator While(Func<bool> pred, params IGenerator[] body);
 		ITransient Sequence(params IGenerator[] transients);
 		ITransient Parallel(params IGenerator[] transients);
 

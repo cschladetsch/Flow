@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.XR.WSA.Persistence;
 
 namespace Flow.Impl
 {
@@ -18,11 +19,11 @@ namespace Flow.Impl
 		public event GroupHandler Added;
 		public event GroupHandler Removed;
 
-		internal Group()
+		public bool Empty { get { return _contents.Count == 0; } }
+
+		public IEnumerable<ITransient> Contents
 		{
-			Resumed += tr => ForEachGenerator(g => g.Resume());
-			Suspended += tr => ForEachGenerator(g => g.Suspend());
-			Completed += tr => Clear();
+			get { return _contents; }
 		}
 
 		public IEnumerable<IGenerator> Generators
@@ -30,9 +31,11 @@ namespace Flow.Impl
 			get { return Contents.OfType<IGenerator>(); }
 		}
 
-		public IEnumerable<ITransient> Contents
+		internal Group()
 		{
-			get { return _contents; }
+			Resumed += tr => ForEachGenerator(g => g.Resume());
+			Suspended += tr => ForEachGenerator(g => g.Suspend());
+			Completed += tr => Clear();
 		}
 
 		public override void Pre()
@@ -65,10 +68,13 @@ namespace Flow.Impl
 			{
 				if (other == null)
 					continue;
-
-				Deletions.RemoveRef(other);
-				Additions.Add(other);
 			}
+		}
+
+		protected void DeferAdd(ITransient other)
+		{
+			Deletions.RemoveRef(other);
+			Additions.Add(other);
 		}
 
 		public void Remove(ITransient other)

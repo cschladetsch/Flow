@@ -7,7 +7,17 @@ namespace Flow.Impl
 {
 	internal class Node : Group, INode
 	{
-		private bool _stepping;
+		public new void Add(params ITransient[] trans)
+		{
+			foreach (var gen in trans.OfType<IGenerator>())
+				DeferAdd(gen);
+		}
+
+		public void Add(params IGenerator[] gens)
+		{
+			foreach (var gen in gens)
+				DeferAdd(gen);
+		}
 
 		public override void Step()
 		{
@@ -74,5 +84,8 @@ namespace Flow.Impl
 		{
 			base.Post();
 		}
+
+		private bool _stepping;
+
 	}
 }
