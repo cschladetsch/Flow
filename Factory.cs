@@ -18,7 +18,7 @@ namespace Flow.Impl
 	{
 		// TODO: does the Factory really need a referene to a kernel? 
 		// Kernel and Factory should be separated? 
-		public IKernel Kernel { get; internal set; }
+		public IKernel Kernel { get; set; }
 
 		public bool AutoAdd { get; set; }
 

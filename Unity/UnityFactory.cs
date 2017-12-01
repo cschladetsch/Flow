@@ -55,7 +55,7 @@ namespace Flow.Impl.Unity
 
 	    T Interp<T>(dynamic a, dynamic b, float t)
 	    {
-		    return default(T);
+		    return a + (b - a) * t;
 	    }
     }
 }

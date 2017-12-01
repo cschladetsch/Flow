@@ -11,7 +11,7 @@ namespace Flow
 	/// </summary>
     public partial interface IFactory
 	{
-		IKernel Kernel { get; }
+		IKernel Kernel { get; set; }
 
 		ITransient Transient();
 		IGroup Group(params ITransient[] gens);

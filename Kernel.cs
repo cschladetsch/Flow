@@ -18,7 +18,7 @@ namespace Flow.Impl
 			var level = ELogLevel.Verbose;
 
 			Trace = new Logger.Logger(level, "Kernel");
-#if UNITY_EDITOR
+#if UNITY3D
 			Trace.AddLogger(new UnityLogger(level));
 #endif
 

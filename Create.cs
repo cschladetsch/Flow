@@ -13,13 +13,18 @@ namespace Flow
 	{
 		public static IKernel Kernel()
 		{
-			return NewFactory().Kernel;
+			return NewFactory<Factory>().Kernel;
 		}
 
-		public static IFactory NewFactory()
+		public static IKernel Kernel<TF>() where TF : class, IFactory, new()
+		{
+			return NewFactory<TF>().Kernel;
+		}
+
+		public static IFactory NewFactory<TF>() where TF : class, IFactory, new()
 		{
 			var kernel = new Kernel();
-			var factory = new Factory();
+			var factory = new TF();
 
 			kernel.Factory = factory;
 			factory.Kernel = kernel;
