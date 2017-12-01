@@ -2,7 +2,7 @@
 
 namespace Flow.Logger
 {
-	#if UNITY_EDITOR
+	#if UNITY
 	public class UnityLogger : Logger
 	{
 		public UnityLogger() : base(ELogLevel.Verbose)

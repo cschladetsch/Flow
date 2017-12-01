@@ -7,19 +7,20 @@ namespace Flow.Impl.Unity
 {
     public class Ref<T>
     {
-        public Action<T> set;
-        public Func<T> get;
+        public Action<T> Set;
+        public Func<T> Get;
 
         public Ref(Action<T> set, Func<T> get)
         {
-            this.get = get;
-            this.set = set;
+            Get = get;
+            Set = set;
         }
     }
 
     public interface IUnityFactory
     {
-        IGenerator MoveTo(Ref<Vector3> src, Vector3 pos, float seconds);
+        IGenerator MoveTo<T>(Ref<T> src, T target, float seconds);
+        //IGenerator Seek(Ref<Transform> src, Transform pos, float seconds);
     }
 
     public class UnityFactory : Factory, IUnityFactory
@@ -44,9 +45,18 @@ namespace Flow.Impl.Unity
             }
         }
 
-        public IGenerator MoveTo(Ref<Vector3> src, Vector3 target, float seconds)
+        public IGenerator MoveTo<T>(Ref<T> src, T target, float seconds)
         {
-            return Prepare(OverTime((t) => src.set((target - src.get())*t), seconds));
+	        dynamic s = src.Get();
+	        dynamic tgt = target;
+
+	        return Prepare(OverTime((t) => src.Set(Interp<T>(s, tgt, t)), seconds));
         }
+
+	    T Interp<T>(dynamic a, dynamic b, float t)
+	    {
+		    return default(T);
+	    }
     }
 }
+
