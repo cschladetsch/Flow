@@ -49,5 +49,25 @@ namespace Flow.Test
 		    orig = Expression.Lambda<Func<int>>(block).Compile()();
 		    Assert.AreEqual(12, orig);
 	    }
+
+	  //  public struct Ref<T>
+	  //  {
+		 //   public Func<T> assign;
+
+		 //   public Expression<Action> Assignment<T>(Expression<Func<T>> lvalue, T rvalue)
+		 //   {
+			//    var body = lvalue.Body;
+			//    var c = Expression.Constant(rvalue, typeof(T));
+			//    var a = Expression.Assign(body, c);
+			//    return Expression.Lambda<Action>(a);
+		 //   }
+
+
+			//public Ref(ref T v)
+			//{
+			//	Expression<Action<T>> setter = val => Set
+			//	Action<T> set = 
+			//}
+	  //  }
 	}
 }
