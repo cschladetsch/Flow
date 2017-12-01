@@ -9,7 +9,7 @@ namespace Flow
 	/// <summary>
 	/// Creates Flow instances that reside within a Kernel.
 	/// </summary>
-	public interface IFactory
+    public partial interface IFactory
 	{
 		IKernel Kernel { get; }
 

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.XR.WSA.Persistence;
 
 namespace Flow.Impl
 {
@@ -66,13 +65,15 @@ namespace Flow.Impl
 		{
 			foreach (var other in others)
 			{
-				if (other == null)
-					continue;
+                DeferAdd(other);
 			}
 		}
 
 		protected void DeferAdd(ITransient other)
 		{
+            if (other == null)
+                return;
+            
 			Deletions.RemoveRef(other);
 			Additions.Add(other);
 		}

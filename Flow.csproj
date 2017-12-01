@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>Assembly\macOS\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barrier.cs" />
@@ -88,9 +91,15 @@
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\UnityLogger.cs" />
     <Compile Include="Case.cs" />
+    <Compile Include="Unity\UnityFactory.cs" />
+    <Compile Include="Unity\TestUnityFlow\TestMoveTo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Unity\" />
+    <Folder Include="Unity\TestUnityFlow\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -104,4 +113,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'macOS|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\macOS</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
 </Project>

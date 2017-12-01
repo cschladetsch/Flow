@@ -107,11 +107,11 @@ namespace Flow.Test
 		public void TestBarrier()
 		{
 			var kernel = Create.Kernel();
-			var factory = kernel.Factory;
+            var flow = kernel.Factory;
 
-			var barrier = factory.Barrier();
-			var future1 = factory.Future<int>();
-			var future2 = factory.Future<int>();
+			var barrier = flow.Barrier();
+			var future1 = flow.Future<int>();
+			var future2 = flow.Future<int>();
 
 			barrier.Add(future1);
 			barrier.Add(future2);

@@ -14,7 +14,7 @@ namespace Flow.Impl
 	/// <summary>
 	///     Makes instances for the Flow library
 	/// </summary>
-	public class Factory : IFactory
+	public partial class Factory : IFactory
 	{
 		// TODO: does the Factory really need a referene to a kernel? 
 		// Kernel and Factory should be separated? 

@@ -11,8 +11,7 @@ namespace Flow.Impl
 		public EDebugLevel DebugLevel { get; set; }
 		public Logger.ILogger Trace { get; set; }
 		public INode Root { get; set; }
-		public new IFactory Factory { get; internal set; }
-
+        public new IFactory Factory { get; internal set; }
 
 		internal Kernel()
 		{

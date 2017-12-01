@@ -9,8 +9,7 @@ namespace Flow.Impl
 	{
 		public new void Add(params ITransient[] trans)
 		{
-			foreach (var gen in trans.OfType<IGenerator>())
-				DeferAdd(gen);
+            base.Add(trans);
 		}
 
 		public void Add(params IGenerator[] gens)
