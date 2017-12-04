@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 namespace Flow.Test
 {
     [TestFixture]
-    public class MoveToTest
+    public class TestMoveTo
     {
         [Test]
-        public void TestMoveTo()
+        public void MoveToTest()
         {
 			var k = Create.Kernel<UnityFactory>();
 			var f = k.Factory as IUnityFactory;

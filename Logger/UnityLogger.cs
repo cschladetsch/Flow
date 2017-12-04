@@ -1,8 +1,9 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Flow.Logger
 {
-	#if UNITY3D
+#if UNITY3D
 	public class UnityLogger : Logger
 	{
 		public UnityLogger() : base(ELogLevel.Verbose)
@@ -26,6 +27,8 @@ namespace Flow.Logger
 					Write(dateTime, message, UnityEngine.Debug.LogWarning);
 					break;
 				case ELogLevel.Error:
+					// TODO: have to use this if running as a unit test - but there is no way to tell?
+					//Write(dateTime, message, (str) => UnityEngine.TestTools.LogAssert.Expect(LogType.Error, str));
 					Write(dateTime, message, UnityEngine.Debug.LogError);
 					break;
 				case ELogLevel.Verbose:
@@ -35,8 +38,8 @@ namespace Flow.Logger
 
 		private void Write(DateTime dateTime, string message, Action<string> log)
 		{
-			log(string.Format("{0}: #{1}: {2}", dateTime.ToLongTimeString(), UnityEngine.Time.frameCount, message));
+			log($"{dateTime.ToLongTimeString()}: #{UnityEngine.Time.frameCount}: {message}");
 		}
 	}
-	#endif
+#endif
 }

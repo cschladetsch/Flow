@@ -33,7 +33,7 @@ namespace Flow.Logger
 
 		public void WriteEntry(ELogLevel level, string fmt, params object[] args)
 		{
-			if (ShouldWrite(ELogLevel.Error))
+			if (ShouldWrite(level))
 				AddEntry(DateTime.Now, level, MakeMessageText(fmt, args));
 
 			foreach (var log in _logs)
