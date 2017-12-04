@@ -45,17 +45,21 @@ namespace Flow.Impl.Unity
             }
         }
 
-        public IGenerator MoveTo<T>(Ref<T> src, T target, float seconds)
-        {
-	        dynamic s = src.Get();
-	        dynamic tgt = target;
+     //   public IGenerator MoveTo<T>(Ref<T> src, T target, float seconds)
+     //   {
+	    //    dynamic s = src.Get();
+	    //    dynamic tgt = target;
 
-	        return Prepare(OverTime((t) => src.Set(Interp<T>(s, tgt, t)), seconds));
-        }
+	    //    return Prepare(OverTime((t) => src.Set(Interp<T>(s, tgt, t)), seconds));
+     //   }
 
-	    T Interp<T>(dynamic a, dynamic b, float t)
+	    //T Interp<T>(dynamic a, dynamic b, float t)
+	    //{
+		   // return a + (b - a) * t;
+	    //}
+	    public IGenerator MoveTo<T>(Ref<T> src, T target, float seconds)
 	    {
-		    return a + (b - a) * t;
+		    throw new NotImplementedException();
 	    }
     }
 }

@@ -405,12 +405,13 @@ namespace Flow.Impl
 
 		public IChannel<TR> Channel<TR>(IGenerator<TR> gen)
 		{
-			return Prepare(new Channel<TR>(Kernel, gen));
+			//return Prepare(new Channel<TR>(Kernel, gen));
+			throw new NotImplementedException();
 		}
 
 		public IChannel<TR> Channel<TR>()
 		{
-			return Prepare(new Channel<TR>(Kernel));
+			return Prepare(new Channel<TR>());
 		}
 
 		public T Prepare<T>(T obj, bool add) where T : ITransient
