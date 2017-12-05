@@ -10,18 +10,18 @@ namespace Flow.Impl
 
 		private readonly Queue<TR> _values = new Queue<TR>();
 
-		//internal Channel(IKernel kernel)
-		//{
-		//	Sub = StepChannel;
-		//	Completed += tr => Close();
-		//}
+		internal Channel(IKernel kernel)
+		{
+			Sub = StepChannel;
+			Completed += tr => Close();
+		}
 
-		//internal Channel(IKernel kernel, IGenerator<TR> gen)
-		//	: this(kernel)
-		//{
-		//	gen.Stepped += g => Insert(gen.Value);
-		//	CompleteAfter(gen);
-		//}
+		internal Channel(IKernel kernel, IGenerator<TR> gen)
+			: this(kernel)
+		{
+			gen.Stepped += g => Insert(gen.Value);
+			CompleteAfter(gen);
+		}
 
 		public IFuture<TR> Extract()
 		{

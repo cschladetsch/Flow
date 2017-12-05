@@ -96,20 +96,28 @@ namespace TestFlow.Editor
 					yield return new ReturnValue<T>(next);
 			}
 		}
-	}
 
-	class Foo
-	{
-		public IObservable<int> num = new Observable<int>();
-	}
-
-	class FooWatchher
-	{
-		public FooWatchher(Foo foo)
+		internal Observable(IKernel kernel) : base(kernel)
 		{
-			Observable<int> n = new Observable<int>();
-			n.Value = true;
-			n.Subscribe(Console.WriteLine);
+		}
+
+		internal Observable(IKernel kernel, IGenerator<T> gen) : base(kernel, gen)
+		{
 		}
 	}
+
+	//class Foo
+	//{
+	//	public IObservable<int> num = new Observable<int>();
+	//}
+
+	//class FooWatchher
+	//{
+	//	public FooWatchher(Foo foo)
+	//	{
+	//		Observable<int> n = new Observable<int>();
+	//		n.Value = true;
+	//		n.Subscribe(Console.WriteLine);
+	//	}
+	//}
 }
