@@ -1,9 +1,9 @@
-﻿using System;
+﻿#if UNITY3D
+using System;
 using UnityEngine;
 
 namespace Flow.Logger
 {
-#if UNITY3D
 	public class UnityLogger : Logger
 	{
 		public UnityLogger() : base(ELogEntryType.Everything)
@@ -41,5 +41,5 @@ namespace Flow.Logger
 			log($"{dateTime.ToLongTimeString()}: #{UnityEngine.Time.frameCount}: {message}");
 		}
 	}
-#endif
 }
+#endif
