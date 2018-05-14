@@ -467,7 +467,7 @@ namespace Flow.Impl
             return obj;
         }
 
-        public ITransient NamedFuture<T>(string name)
+        public IFuture<T> NamedFuture<T>(string name)
         {
             var fut = Future<T>();
             fut.Name = name;
