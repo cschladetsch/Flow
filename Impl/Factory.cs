@@ -29,6 +29,13 @@ namespace Flow.Impl
             return node;
         }
 
+        public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
+        {
+            var timed = TimedFuture<TR>(span);
+            timed.TimedOut += (tr) => trans.Complete();
+            return Prepare(timed);
+        }
+
         public INode Node(params IGenerator[] gens)
         {
             var node = Prepare(new Node());
@@ -43,7 +50,7 @@ namespace Flow.Impl
             return group;
         }
 
-        public ITransient Group(string name, params ITransient[] contents)
+        public IGroup Group(string name, params ITransient[] contents)
         {
             var group = Group(contents);
             group.Name = name;
@@ -185,7 +192,7 @@ namespace Flow.Impl
             return Prepare(new Barrier());
         }
 
-        public IGenerator Sequence(params IGenerator[] gens)
+        public IGenerator Sequence(params ITransient[] gens)
         {
             var seq = new Sequence();
             seq.Add(gens);
@@ -331,7 +338,7 @@ namespace Flow.Impl
             return Do(() => Kernel.Wait(span));
         }
 
-        public ITransient Wait(ITransient trans, TimeSpan timeOut)
+        public ITransient WaitFor(ITransient trans, TimeSpan timeOut)
         {
             return Prepare(Trigger(trans, OneShotTimer(timeOut)));
         }

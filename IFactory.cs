@@ -8,39 +8,25 @@ namespace Flow
 {
     /// <summary>
     /// Creates Flow instances that reside within a Kernel.
+    ///
+    /// Instances created by a Factory are not automatically added to any process.
+    /// Rather, they have to be later added to a Group that will be executed, such
+    /// as Kernel.Root or some other Group.
     /// </summary>
     public interface IFactory
     {
         IKernel Kernel { get; set; }
 
         ITransient Transient();
+        ITransient Transient(string name);
+
         IGroup Group(params ITransient[] gens);
-        ITransient Group(string name, params ITransient[] contents);
-        INode Node(string name, params IGenerator[] gens);
+        IGroup Group(string name, params ITransient[] contents);
+
         INode Node(params IGenerator[] gens);
+        INode Node(string name, params IGenerator[] gens);
 
-        IGenerator Do(Action act);
-        IGenerator<T> Value<T>(T act);
-
-        IGenerator<T> Expression<T>(Func<T> act);
-        IGenerator If(Func<bool> pred, IGenerator @if);
-        IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
-        IGenerator While(Func<bool> pred, params IGenerator[] body);
-        IGenerator Sequence(params IGenerator[] transients);
-
-        IGenerator Switch<T>(IGenerator<T> val, params ICase<T>[] cases) where T : IComparable<T>;
-        ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;
-
-        ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
-        ITransient Wait(TimeSpan span);
-        ITransient Wait(ITransient trans, TimeSpan timeOut);
-
-        IGenerator Break();
-
-        IGenerator SetDebugLEvel(EDebugLevel level);
-        IGenerator Log(string fmt, params object[] objs);
-        IGenerator Warn(string fmt, params object[] objs);
-        IGenerator Error(string fmt, params object[] objs);
+        IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans);
 
         ITimer OneShotTimer(TimeSpan interval);
         ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed);
@@ -55,8 +41,6 @@ namespace Flow
         ITrigger Trigger(string name, params ITransient[] args);
         ITimedTrigger TimedTrigger(TimeSpan span, params ITransient[] args);
         ITimedTrigger TimedTrigger(string name, TimeSpan span, params ITransient[] args);
-
-        IGenerator Nop();
 
         IFuture<T> Future<T>();
         IFuture<T> Future<T>(T val);
@@ -79,7 +63,29 @@ namespace Flow
         IChannel<TR> Channel<TR>();
         IChannel<TR> Channel<TR>(IGenerator<TR> gen);
 
+        IGenerator Nop();
+
+        IGenerator Do(Action act);
+        IGenerator<T> Value<T>(T val);
+        IGenerator<T> Expression<T>(Func<T> act);
+        IGenerator If(Func<bool> pred, IGenerator @if);
+        IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
+        IGenerator While(Func<bool> pred, params IGenerator[] body);
+        IGenerator Sequence(params ITransient[] transients);
+
+        IGenerator Switch<T>(IGenerator<T> val, params ICase<T>[] cases) where T : IComparable<T>;
+        ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;
+        IGenerator Break();
+
+        ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
+        ITransient Wait(TimeSpan span);
+        ITransient WaitFor(ITransient trans, TimeSpan timeOut);
+
+        IGenerator SetDebugLEvel(EDebugLevel level);
+        IGenerator Log(string fmt, params object[] objs);
+        IGenerator Warn(string fmt, params object[] objs);
+        IGenerator Error(string fmt, params object[] objs);
+
         T Prepare<T>(T obj) where T : ITransient;
-        ITransient Transient(string name);
     }
 }

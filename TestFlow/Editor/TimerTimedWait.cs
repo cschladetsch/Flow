@@ -34,7 +34,7 @@ namespace Flow.Test
         public void TestTimedWait(float timerLen, float timeOut, float kernelRunTime)
         {
             _root.Add(
-                _flow.Wait(
+                _flow.WaitFor(
                     _flow.Trigger(_flow.OneShotTimer(TimeSpan.FromSeconds(timerLen))),
                     TimeSpan.FromSeconds(timeOut)
                 ),
