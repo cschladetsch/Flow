@@ -6,32 +6,32 @@ namespace Flow.Logger
 #if UNITY3D
 	public class UnityLogger : Logger
 	{
-		public UnityLogger() : base(ELogLevel.Verbose)
+		public UnityLogger() : base(ELogEntryType.Everything)
 		{
 		}
 
-		public UnityLogger(ELogLevel level, string name = "") : base(level, name)
+		public UnityLogger(ELogEntryType entryType, string name = "") : base(entryType, name)
 		{
 		}
 
-		protected override void AddEntry(DateTime dateTime, ELogLevel level, string message)
+		protected override void AddEntry(DateTime dateTime, ELogEntryType entryType, string message)
 		{
-			switch (level)
+			switch (entryType)
 			{
-				case ELogLevel.None:
+				case ELogEntryType.None:
 					break;
-				case ELogLevel.Log:
+				case ELogEntryType.Log:
 					Write(dateTime, message, UnityEngine.Debug.Log);
 					break;
-				case ELogLevel.Warn:
+				case ELogEntryType.Warn:
 					Write(dateTime, message, UnityEngine.Debug.LogWarning);
 					break;
-				case ELogLevel.Error:
+				case ELogEntryType.Error:
 					// TODO: have to use this if running as a unit test - but there is no way to tell?
 					//Write(dateTime, message, (str) => UnityEngine.TestTools.LogAssert.Expect(LogType.Error, str));
 					Write(dateTime, message, UnityEngine.Debug.LogError);
 					break;
-				case ELogLevel.Verbose:
+				case ELogEntryType.Everything:
 					break;
 			}
 		}

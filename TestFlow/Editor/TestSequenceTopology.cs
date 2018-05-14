@@ -25,7 +25,7 @@ namespace Flow.Test
 		{
 			var stepNum = 0;
 			_root.Add(
-				_flow.Parallel(
+				_flow.Node(
 					_flow.Do(() => stepNum += _kernel.StepNumber),
 					_flow.Do(() => stepNum += _kernel.StepNumber),
 					_flow.Do(() => stepNum += _kernel.StepNumber)

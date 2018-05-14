@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using NUnit.Framework;
 using Flow.Logger;
 
@@ -10,7 +11,7 @@ namespace Flow.Test
         [Test]
         public void Test()
         {
-            var log = new Logger.Logger(ELogLevel.Verbose, "test");
+            var log = new Logger.Logger(ELogEntryType.Everything, "test");
 #if UNITY_EDITOR
             log.AddLogger(new UnityLogger());
 #endif
@@ -22,3 +23,5 @@ namespace Flow.Test
 		}
 	}
 }
+
+*/

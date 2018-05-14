@@ -5,21 +5,21 @@ using System.Text;
 
 namespace Flow.Logger
 {
-	#if DOTNET
+#if DOTNET
 	public class ConsoleLogger : Logger
 	{
-		public ConsoleLogger() : base(ELogLevel.Verbose)
+		public ConsoleLogger() : base(ELogEntryType.Everything)
 		{
 		}
 
-		public ConsoleLogger(ELogLevel level, string name = "") : base(level, name)
+		public ConsoleLogger(ELogEntryType entryType, string name = "") : base(entryType, name)
 		{
 		}
 
-		protected override void AddEntry(DateTime dateTime, ELogLevel level, string message)
+		protected override void AddEntry(DateTime dateTime, ELogEntryType entryType, string message)
 		{
-			Console.WriteLine("{0}: {1}: {2}", MakeTimeString(dateTime), level, message);
+			Console.WriteLine("{0}: {1}: {2}", MakeTimeString(dateTime), entryType, message);
 		}
 	}
-	#endif
+#endif
 }

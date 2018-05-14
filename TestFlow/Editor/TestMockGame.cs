@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,21 +22,21 @@ namespace Flow.Test
 			_kernel.DebugLevel = EDebugLevel.Medium;
 
 			// roll for player1
-			var roll0 = _flow.Future<int>(); //.Named("Roll0");
+			var roll0 = _flow.Future<int>(); //.SetName("Roll0");
 
 			// roll for player2
-			var roll1 = _flow.Future<int>(); //.Named("Roll1");
+			var roll1 = _flow.Future<int>(); //.SetName("Roll1");
 
 			// either player cancel
-			var cancel = _flow.Future<bool>().Named("Cancel");
+			var cancel = _flow.Future<bool>().SetName("Cancel");
 
 			// global timeout
-			var timeout = _flow.OneShotTimer(TimeSpan.FromSeconds(1)).Named("OneShotTimer");
+			var timeout = _flow.OneShotTimer(TimeSpan.FromSeconds(1)).SetName("OneShotTimer");
 
 			// will complete when any of the given transients complete
 			var trigger = _flow.Trigger(
 				roll0, roll1, cancel, timeout
-			).Named("Trigger");
+			).SetName("Trigger");
 
 			// setup first time for kernel
 			_kernel.Step();
@@ -63,3 +64,4 @@ namespace Flow.Test
 		}
 	}
 }
+*/
