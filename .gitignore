@@ -1,3 +1,6 @@
+obj/
+bin/
+
 .vs/
 *.meta
 
