@@ -11,8 +11,9 @@ using UnityEngine;
 
 namespace Flow.Impl
 {
+    /// <inheritdoc />
     /// <summary>
-    ///     Makes instances for the Flow library
+    /// Makes instances for the Flow library
     /// </summary>
     public class Factory : IFactory
     {
@@ -79,7 +80,7 @@ namespace Flow.Impl
             return Prepare(Coroutine(IfCoro, pred, body));
         }
 
-        IEnumerator IfCoro(IGenerator self, Func<bool> pred, IGenerator body)
+        private static IEnumerator IfCoro(IGenerator self, Func<bool> pred, IGenerator body)
         {
             while (true)
             {
@@ -98,7 +99,7 @@ namespace Flow.Impl
             return Prepare(Coroutine(IfElseCoro, pred, then, elseBody));
         }
 
-        IEnumerator IfElseCoro(IGenerator self, Func<bool> pred, IGenerator then, IGenerator elseBody)
+        private static IEnumerator IfElseCoro(IGenerator self, Func<bool> pred, IGenerator then, IGenerator elseBody)
         {
             while (true)
             {
@@ -122,7 +123,7 @@ namespace Flow.Impl
             return Prepare(Coroutine(WhileCoro, pred, body));
         }
 
-        IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
+        private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
         {
             var node = Prepare(Node(gens));
             while (pred())
@@ -148,8 +149,8 @@ namespace Flow.Impl
         public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
         {
             gen.Step();
-            T val = gen.Value;
-            var coro = Coroutine(SwitchCoro<T>, val, cases);
+            var val = gen.Value;
+            var coro = Coroutine(SwitchCoro, val, cases);
             Prepare(coro);
             return coro;
         }
@@ -159,15 +160,9 @@ namespace Flow.Impl
             return new Case<T>(val, statement);
         }
 
-        IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
+        private static IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
         {
-            foreach (var c in cases)
-            {
-                if (c.Matches(val))
-                {
-                    yield return c.Body;
-                }
-            }
+            return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
         }
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
@@ -242,7 +237,7 @@ namespace Flow.Impl
 
         public ITransient ActionSequence(params Action[] actions)
         {
-            INode seq = Node();
+            var seq = Node();
             IGenerator prev = null;
 
             foreach (var act in actions)
@@ -460,17 +455,7 @@ namespace Flow.Impl
         public T Prepare<T>(T obj) where T : ITransient
         {
             obj.Kernel = Kernel;
-
-            var gen = obj as IGenerator;
-            gen?.Resume();
-
-            // contentious!
-            // should we always add new things to the root of the Kernel?
-            // Should we only add them to Groups passed as arguments to the various maker methods?
-            // should we never add automatically to anything?
-            // All have pros and cons.
-            //Kernel.Root.Add(obj);
-
+            (obj as IGenerator)?.Resume();
             return obj;
         }
 
@@ -482,35 +467,5 @@ namespace Flow.Impl
         }
     }
 
-    namespace detail
-    {
-        class EveryTime : Generator
-        {
-            public EveryTime(Action act)
-            {
-                _act = act;
-            }
 
-            public override void Step()
-            {
-                if (!Active)
-                    return;
-
-                _act();
-            }
-
-            readonly Action _act;
-        }
-
-        class OneTime : EveryTime
-        {
-            public OneTime(Action act) : base(act) { }
-
-            public override void Step()
-            {
-                base.Step();
-                Complete();
-            }
-        }
-    }
 }
