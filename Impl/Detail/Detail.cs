@@ -2,7 +2,10 @@
 
 namespace Flow.Impl.Detail
 {
-    class EveryTime : Generator
+    /// <summary>
+    /// Perform an arbitrary action at every step.
+    /// </summary>
+    internal class EveryTime : Generator
     {
         public EveryTime(Action act)
         {
@@ -20,7 +23,10 @@ namespace Flow.Impl.Detail
         readonly Action _act;
     }
 
-    class OneTime : EveryTime
+    /// <summary>
+    /// Perform an arbitrary action at first step, then Complete.
+    /// </summary>
+    internal class OneTime : EveryTime
     {
         public OneTime(Action act) : base(act) { }
 

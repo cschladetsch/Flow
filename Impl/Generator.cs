@@ -19,7 +19,7 @@ namespace Flow.Impl
 
         public int StepNumber { get; protected set; }
 
-        public new IGenerator SetName(string name)
+        public IGenerator Named(string name)
         {
             Name = name;
             return this;

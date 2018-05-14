@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Flow.Impl
 {
+    /// <inheritdoc cref="Channel{TR}" />
     /// <summary>
     /// A thread-safe channel of values.
     /// </summary>

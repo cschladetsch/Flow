@@ -17,7 +17,7 @@ namespace Flow.Test
         {
             var f = _flow;
             _root.Add(
-                f.Coroutine(CountTo, 10)//.SetName("Body")
+                f.Coroutine(CountTo, 10)//.Named("Body")
             );
 
             count = 0;
