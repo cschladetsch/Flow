@@ -8,11 +8,11 @@ namespace Flow.Test
         [Test]
         public void TriggerTest()
         {
-            var trans1 = _flow.Transient();
-            var trans2 = _flow.Transient();
-            var trigger = _flow.Trigger(trans1, trans2);
+            var trans1 = New.Transient();
+            var trans2 = New.Transient();
+            var trigger = New.Trigger(trans1, trans2);
 
-            _root.Add(trigger);
+            Root.Add(trigger);
 
             Step();
 
@@ -32,14 +32,14 @@ namespace Flow.Test
         [Test]
         public void TriggerFutureTest()
         {
-            var trigger = _flow.Trigger();
-            var future1 = _flow.Future<int>();
-            var future2 = _flow.Future<string>();
+            var trigger = New.Trigger();
+            var future1 = New.Future<int>();
+            var future2 = New.Future<string>();
 
             trigger.Add(future1);
             trigger.Add(future2);
 
-            _root.Add(trigger, future1, future2);
+            Root.Add(trigger, future1, future2);
             Step(2);
 
             Assert.IsTrue(trigger.Active);

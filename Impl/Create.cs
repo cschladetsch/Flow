@@ -27,6 +27,7 @@ namespace Flow
             var factory = new TF();
 
             kernel.Factory = factory;
+            kernel.Kernel = kernel;
             factory.Kernel = kernel;
 
             kernel.Root = new Node { Kernel = kernel, Name = "Root" };

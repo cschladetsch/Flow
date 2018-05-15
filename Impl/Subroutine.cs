@@ -8,6 +8,11 @@ namespace Flow.Impl
     {
         internal Action<IGenerator> Sub;
 
+        internal Subroutine(bool once = false)
+        {
+            _once = once;
+        }
+
         public override void Step()
         {
             if (!Active || !Running)
@@ -22,13 +27,22 @@ namespace Flow.Impl
             Sub(this);
 
             base.Step();
+
+            if (_once)
+                Complete();
         }
+
+        private readonly bool _once;
     }
 
     internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>
     {
         internal Func<IGenerator, TR> Sub;
 
+        internal Subroutine(bool once = false)
+        {
+            _once = once;
+        }
         public override void Step()
         {
             if (!Active || !Running)
@@ -43,6 +57,10 @@ namespace Flow.Impl
             Value = Sub(this);
 
             base.Step();
+
+            if (_once)
+                Complete();
         }
+        private readonly bool _once;
     }
 }

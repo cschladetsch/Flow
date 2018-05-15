@@ -118,7 +118,7 @@ namespace Flow.Impl
                 if (tr == null)
                     continue;
 
-                Kernel.Trace.Log("Removing {0} from Node {1}", tr, Name);
+                Kernel.Log.Info("Removing {0} from Node {1}", tr, Name);
 
                 tr.Completed -= Remove;
 
@@ -133,7 +133,7 @@ namespace Flow.Impl
             foreach (var tr in Additions)
             {
                 _contents.Add(tr);
-                Kernel.Trace.Log("Adding {0} to Node {1}", tr, Name);
+                Kernel.Log.Info("Adding {0} to Node {1}", tr, Name);
                 tr.Completed += Remove;
                 Added?.Invoke(this, tr);
             }

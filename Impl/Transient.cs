@@ -4,7 +4,11 @@ using System;
 
 namespace Flow.Impl
 {
-    public class Transient : ITransient
+    public class Transient :
+        #if TRACE
+        Logger,
+        #endif
+        ITransient
     {
         public event TransientHandler Completed;
         public event TransientHandlerReason WhyCompleted;
@@ -27,7 +31,7 @@ namespace Flow.Impl
             return Flow.Print.Object(this);
         }
 
-        public ITransient SetName(string name)
+        public ITransient Named(string name)
         {
             Name = name;
             return this;

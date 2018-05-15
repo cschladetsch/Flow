@@ -45,6 +45,7 @@ namespace Flow
         IFuture<T> Future<T>();
         IFuture<T> Future<T>(T val);
         IFuture<T> NamedFuture<T>(string name);
+        IFuture<T> NamedFuture<T>(string name, T val);
         ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut);
         ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut, T val);
 

@@ -26,12 +26,12 @@ namespace Flow.Impl
             {
                 if (Kernel.DebugLevel > EDebugLevel.High)
                 {
-                    Kernel.Trace.Log("Stepping Node {0}", Name);
+                    Kernel.Log.Info($"Stepping Node {Name}");
                 }
 
                 if (_stepping)
                 {
-                    Kernel.Trace.Error("Node {0} is re-entrant", Name);
+                    Kernel.Log.Error($"Node {Name} is re-entrant");
                     throw new ReentrancyException();
                 }
 

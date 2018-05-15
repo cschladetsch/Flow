@@ -20,7 +20,7 @@ namespace Flow
         IKernel Kernel { get; /*internal*/ set; }
         string Name { get; set; }
 
-        ITransient SetName(string name);
+        ITransient Named(string name);
         void Complete();
     }
 }

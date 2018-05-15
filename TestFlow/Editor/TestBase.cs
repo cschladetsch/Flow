@@ -6,16 +6,16 @@ namespace Flow.Test
     [TestFixture]
     public class TestBase
     {
-        protected IKernel _kernel;
-        protected INode _root;
-        protected IFactory _flow;
+        protected IKernel Kernel;
+        protected INode Root;
+        protected IFactory New;
 
         [SetUp]
         public void Pre()
         {
-            _kernel = Create.Kernel();
-            _flow = _kernel.Factory;
-            _root = _kernel.Root;
+            Kernel = Create.Kernel();
+            New = Kernel.Factory;
+            Root = Kernel.Root;
         }
 
         protected void Print(object q)
@@ -25,29 +25,29 @@ namespace Flow.Test
 
         protected void PrintFmt(string fmt, params object[] args)
         {
-            _kernel.Trace.Log(fmt, args);
+            Kernel.Log.Info(fmt, args);
         }
 
         protected void Step(int steps = 1)
         {
             for (var n = 0; n < steps; ++n)
             {
-                _kernel.Step();
+                Kernel.Step();
             }
         }
 
         protected float RunKernel(float seconds)
         {
-            _kernel.Step();
-            var start = _kernel.Time.Now;
+            Kernel.Step();
+            var start = Kernel.Time.Now;
             var end = start + TimeSpan.FromSeconds(seconds);
-            while (_kernel.Time.Now < end)
+            while (Kernel.Time.Now < end)
             {
-                _kernel.Step();
-                if (_kernel.Break)
+                Kernel.Step();
+                if (Kernel.Break)
                     break;
             }
-            return (float)(_kernel.Time.Now - start).TotalSeconds;
+            return (float)(Kernel.Time.Now - start).TotalSeconds;
         }
     }
 }

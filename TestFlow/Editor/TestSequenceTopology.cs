@@ -9,11 +9,11 @@ namespace Flow.Test
         public void TestSequence()
         {
             var stepNum = 0;
-            _root.Add(
-                _flow.Sequence(
-                    _flow.Do(() => stepNum += _kernel.StepNumber),
-                    _flow.Do(() => stepNum += _kernel.StepNumber),
-                    _flow.Do(() => stepNum += _kernel.StepNumber)
+            Root.Add(
+                New.Sequence(
+                    New.Do(() => stepNum += Kernel.StepNumber),
+                    New.Do(() => stepNum += Kernel.StepNumber),
+                    New.Do(() => stepNum += Kernel.StepNumber)
                 )
             );
             Step(3);
@@ -24,11 +24,11 @@ namespace Flow.Test
         public void TestParallel()
         {
             var stepNum = 0;
-            _root.Add(
-                _flow.Node(
-                    _flow.Do(() => stepNum += _kernel.StepNumber),
-                    _flow.Do(() => stepNum += _kernel.StepNumber),
-                    _flow.Do(() => stepNum += _kernel.StepNumber)
+            Root.Add(
+                New.Node(
+                    New.Do(() => stepNum += Kernel.StepNumber),
+                    New.Do(() => stepNum += Kernel.StepNumber),
+                    New.Do(() => stepNum += Kernel.StepNumber)
                 )
             );
             Step(3);

@@ -1,29 +1,23 @@
 // (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
-using System.Diagnostics;
-using Flow.Logger;
 
 namespace Flow.Impl
 {
     public class Kernel : Generator<bool>, IKernel
     {
         public EDebugLevel DebugLevel { get; set; }
-        public Logger.ILogger Trace { get; set; }
+        public ILogger Log { get; set; }
         public INode Root { get; set; }
         public new IFactory Factory { get; internal set; }
 
         internal Kernel()
         {
-            var level = ELogEntryType.Everything;
-
-            Trace = new Logger.Logger(level, "Kernel");
+            Log = new Logger("FLOW") {Verbosity = 20};
 #if UNITY3D
-			Trace.AddLogger(new UnityLogger(eLevel));
-#endif
-
-#if DOTNET
-			Trace.AddLogger(new ConsoleLogger(entryType));
+			Log.AddLogger(new UnityLogger(eLevel));
+#else
+			//Log.AddLogger(new Logger.ConsoleLogger(entryType));
 #endif
 
             _time.Now = DateTime.Now;

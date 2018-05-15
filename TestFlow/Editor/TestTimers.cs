@@ -10,8 +10,8 @@ namespace Flow.Test
         public void TestOneShot(float span, float runTime, bool shouldBeCompleted)
         {
             var elapsed = false;
-            var oneShotTimer = _flow.OneShotTimer(TimeSpan.FromSeconds(span), (timer) => elapsed = true);
-            _root.Add(oneShotTimer);
+            var oneShotTimer = New.OneShotTimer(TimeSpan.FromSeconds(span), (timer) => elapsed = true);
+            Root.Add(oneShotTimer);
             RunKernel(runTime);
 
             if (shouldBeCompleted)
@@ -31,12 +31,12 @@ namespace Flow.Test
         [TestCase(0.1f, 0.0f, 0)]
         public void TestPeriodic(float interval, float runTime, int numElapsed)
         {
-            var timer = _flow.PeriodicTimer(TimeSpan.FromSeconds(interval));
+            var timer = New.PeriodicTimer(TimeSpan.FromSeconds(interval));
 
             int elapsed = 0;
             timer.Elapsed += (sender) => ++elapsed;
 
-            _root.Add(timer);
+            Root.Add(timer);
             RunKernel(runTime);
 
             Assert.AreEqual(numElapsed, elapsed);
@@ -47,31 +47,11 @@ namespace Flow.Test
         public void TestTimedFuture(float futureLifetime, float runTime, bool result)
         {
             var span = TimeSpan.FromSeconds(futureLifetime);
-            var future = _flow.TimedFuture<int>(span);
+            var future = New.TimedFuture<int>(span);
 
             Assert.IsFalse(future.Available);
 
-            _root.Add(future);
-            RunKernel(runTime);
-
-            Step();
-
-            Assert.AreEqual(result, future.HasTimedOut);
-        }
-
-        [TestCase]
-        public void TestTimedFuture2()//float futureLifetime, float runTime, bool result)
-        {
-            float futureLifetime =  0.1f;
-            float runTime = 0.2f;
-            bool result = false;
-
-            var span = TimeSpan.FromSeconds(futureLifetime);
-            var future = _flow.TimedFuture<int>(span);
-
-            Assert.IsFalse(future.Available);
-
-            _root.Add(future);
+            Root.Add(future);
             RunKernel(runTime);
 
             Step();

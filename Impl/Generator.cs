@@ -19,7 +19,7 @@ namespace Flow.Impl
 
         public int StepNumber { get; protected set; }
 
-        public IGenerator Named(string name)
+        public new IGenerator Named(string name)
         {
             Name = name;
             return this;
@@ -27,6 +27,8 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
+            Kernel.Log.Verbose(10, $"{Name} Stepped #{StepNumber}");
+
             if (!Active)
                 return;
 

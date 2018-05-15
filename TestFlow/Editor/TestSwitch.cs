@@ -10,11 +10,11 @@ namespace Flow.Test
         [TestCase(3, 12)]
         public void TestSwitchStatement(int val, int expect)
         {
-            _root.Add(
-                _flow.Switch(_flow.Value(val),
-                    _flow.Case(1, _flow.Do(() => val *= 2)),
-                    _flow.Case(2, _flow.Do(() => val *= 3)),
-                    _flow.Case(3, _flow.Do(() => val *= 4))
+            Root.Add(
+                New.Switch(New.Value(val),
+                    New.Case(1, New.Do(() => val *= 2)),
+                    New.Case(2, New.Do(() => val *= 3)),
+                    New.Case(3, New.Do(() => val *= 4))
                 )
             );
 

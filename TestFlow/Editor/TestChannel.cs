@@ -8,7 +8,7 @@ namespace Flow.Test
         [Test()]
         public void TestInsertExtract()
         {
-            var chan = _flow.Channel<int>();
+            var chan = New.Channel<int>();
 
             chan.Insert(1);
             chan.Insert(2);
@@ -19,7 +19,7 @@ namespace Flow.Test
             var f2 = chan.Extract();
             var f3 = chan.Extract();
 
-            _root.Add(chan);
+            Root.Add(chan);
             Step(5);
 
             Assert.IsTrue(f0.Available);
@@ -35,7 +35,7 @@ namespace Flow.Test
         [Test()]
         public void TestExtractInsert()
         {
-            var chan = _kernel.Factory.Channel<int>();
+            var chan = New.Channel<int>();
 
             var f0 = chan.Extract();
             var f1 = chan.Extract();
@@ -45,7 +45,7 @@ namespace Flow.Test
             chan.Insert(2);
             chan.Insert(3);
 
-            _root.Add(chan);
+            Root.Add(chan);
             Step(5);
 
             Assert.AreEqual(1, f0.Value);
@@ -59,10 +59,10 @@ namespace Flow.Test
         [Test()]
         public void TestProducerConsumer()
         {
-            var channel = _kernel.Factory.Channel<int>();
-            var con = new Consumer(_kernel, channel);
+            var channel = Kernel.Factory.Channel<int>();
+            var con = new Consumer(Kernel, channel);
 
-            _root.Add(channel);
+            Root.Add(channel);
             channel.Insert(1);
             Step(5);
             Assert.AreEqual(1, con.Sum);

@@ -27,7 +27,7 @@ namespace Flow
         void Post();
         void Suspend();
 
-        IGenerator Named(string name);
+        new IGenerator Named(string name);
         IGenerator SuspendAfter(ITransient other);
         IGenerator SuspendAfter(TimeSpan span);
         IGenerator ResumeAfter(ITransient other);

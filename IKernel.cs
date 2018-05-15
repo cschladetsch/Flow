@@ -5,6 +5,16 @@ using Flow.Logger;
 
 namespace Flow
 {
+    public enum EDebugLevel
+    {
+        None,
+        Low,
+        Medium,
+        High,
+        Verbose,
+    }
+
+    /// <inheritdoc />
     /// <summary>
     /// A Kernel contains a top-entryType root Node, and a local TimeFrame.
     /// <para>
@@ -15,8 +25,7 @@ namespace Flow
     public interface IKernel : IGenerator
     {
         EDebugLevel DebugLevel { get; set; }
-
-        ILogger Trace { get; set; }
+        ILogger Log { get; set; }
 
         /// <summary>
         /// Gets or sets the root of the kernel. When the Kernel is stepped, it will first Step() every generator reachable
@@ -48,12 +57,4 @@ namespace Flow
         void ContinueFlow();
     }
 
-    public enum EDebugLevel
-    {
-        None,
-        Low,
-        Medium,
-        High,
-        Verbose,
-    }
 }

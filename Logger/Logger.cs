@@ -1,147 +1,94 @@
-﻿//#define UNITY
+﻿using System;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
-using System;
-using System.IO;
-using System.Collections.Generic;
-
-namespace Flow.Logger
+namespace Flow.Impl
 {
+    /// <summary>
+    /// Log system used by Models.
+    /// </summary>
     public class Logger : ILogger
     {
-        public ELogEntryType LogEntries { get; set; }
+        #region Public Fields
+        public string Prefix { get;set; }
         public int Verbosity { get; set; }
+        public static string LogFileName;
+        public static ELogLevel MaxLevel;
         public string Name { get; set; }
+        #endregion
 
-        public Logger(ELogEntryType entryType, string name = "")
+        #region Public Methods
+        public Logger()
         {
-            LogEntries = entryType;
-            Name = name;
         }
-
-        public void Log(string fmt, params object[] args)
+        public Logger(string name)
         {
-            WriteEntry(ELogEntryType.Log, fmt, args);
+            Prefix = name;
         }
-
-        public void Warn(string fmt, params object[] args)
+        public static void Initialise()
         {
-            WriteEntry(ELogEntryType.Warn, fmt, args);
-        }
-
-        public void Error(string fmt, params object[] args)
-        {
-            WriteEntry(ELogEntryType.Error, fmt, args);
-        }
-
-        public void Log(int verbosity, string fmt, params object[] args)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Warn(int verbosity, string fmt, params object[] args)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Error(int verbosity, string fmt, params object[] args)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteEntry(ELogEntryType entryType, string fmt, params object[] args)
-        {
-            if (ShouldWrite(entryType))
-                AddEntry(DateTime.Now, entryType, MakeMessageText(fmt, args));
-
-            foreach (var log in _logs)
-                log.WriteEntry(entryType, fmt, args);
-        }
-
-        private bool ShouldWrite(ELogEntryType entryType)
-        {
-            return (LogEntries & entryType) == entryType;
-        }
-
-        public void AddStream(StreamWriter writer)
-        {
-            if (writer == null || !writer.BaseStream.CanWrite)
-            {
-                Error("Cannot add stream {0} for log writing", writer);
-                return;
-            }
-            _streams.Add(writer);
-        }
-
-        public void AddFile(string name)
-        {
-            var file = new StreamWriter(name) { AutoFlush = true };
-            if (!file.BaseStream.CanWrite)
-            {
-                Error("Cannot open log file '{0} for writing", name);
-                return;
-            }
-            _streams.Add(file);
-        }
-
-        public void AddLogger(ILogger logger)
-        {
-            _logs.Add(logger);
-        }
-
-        public void Close()
-        {
-            Flush();
-            foreach (var stream in _streams)
-                stream.Close();
-            _streams.Clear();
-        }
-
-        public void Flush()
-        {
-            foreach (var stream in _streams)
-                stream.Flush();
-        }
-
-        #region Overridable for customisation from base implementation
-        /// <summary>
-        /// Make the body message text of the log entry
-        /// </summary>
-        protected virtual string MakeMessageText(string fmt, object[] args)
-        {
-            return string.Format(fmt, args);
-        }
-
-        /// <summary>
-        /// Make the entire formatted entry text for a log entry
-        /// </summary>
-        protected virtual string MakeEntryText(DateTime dateTime, ELogEntryType entryType, string message)
-        {
-            var entry = string.Format("{0}: {1}: #{2}: {3}: {4}", entryType.ToString(), MakeTimeString(dateTime),
-#if UNITY
-                UnityEngine.Time.frameCount
-#else
-				0
-#endif
-                , Name, message);
-            return entry;
-        }
-
-        protected virtual void AddEntry(DateTime dateTime, ELogEntryType entryType, string message)
-        {
-            var entry = MakeEntryText(dateTime, entryType, message);
-            foreach (var stream in _streams)
-            {
-                stream.WriteLine(entry);
-            }
-        }
-
-        protected virtual string MakeTimeString(DateTime dateTime)
-        {
-            return dateTime.ToShortTimeString();
         }
         #endregion
 
-        private readonly List<StreamWriter> _streams = new List<StreamWriter>();
-        private readonly List<ILogger> _logs = new List<ILogger>();
+        #region Protected Methods
+        public void Info(string fmt, params object[] args)
+        {
+            Log(ELogLevel.Info, string.Format(fmt, args));
+        }
+        public void Warn(string fmt, params object[] args)
+        {
+            Log(ELogLevel.Warn, string.Format(fmt, args));
+        }
+        public void Error(string fmt, params object[] args)
+        {
+            Log(ELogLevel.Error, string.Format(fmt, args));
+        }
+        public void Verbose(int level, string fmt, params object[] args)
+        {
+            if (level > Verbosity)
+                return;
+            Log(ELogLevel.Verbose, string.Format(fmt, args));
+        }
+        #endregion
+
+        #region Private
+        private void Log(ELogLevel level, string text)
+        {
+            Action<string> log = Debug.Log;
+            if (level == ELogLevel.None)
+                level = ELogLevel.Error;
+#if TRACE
+            var entry = MakeEntry(level, text);
+            Console.WriteLine(entry);
+            Trace.WriteLine(entry);
+#else
+            // TODO: use bitmasks as intended
+            switch (level)
+            {
+                case ELogLevel.Info:
+                    log = Debug.Log;
+                    break;
+                case ELogLevel.Warn:
+                    log = Debug.LogWarning;
+                    break;
+                case ELogLevel.Error:
+                    log = Debug.LogError;
+                    break;
+                case ELogLevel.Verbose:
+                    log = Debug.Log;
+                    break;
+            }
+            log(MakeEntry(level, text));
+#endif
+        }
+        private string MakeEntry(ELogLevel level, string text)
+        {
+            return $"{Prefix}: type:{GetType()} name: {Name}: t'{text}'";
+        }
+        #endregion
+
+        #region Protected Fields
+        protected ELogLevel _logLevel;
+        #endregion
     }
 }

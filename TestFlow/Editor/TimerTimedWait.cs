@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 namespace Flow.Test
@@ -16,9 +13,9 @@ namespace Flow.Test
         //public void TestBreak(float timeOut)
         //{
         //    _root.Add(
-        //        _flow.Node(
-        //            _flow.While(() => true,
-        //                _flow.OneShotTimer(TimeSpan.FromSeconds(timeOut), (self) => self.Kernel.BreakFlow())
+        //        New.Node(
+        //            New.While(() => true,
+        //                New.OneShotTimer(TimeSpan.FromSeconds(timeOut), (self) => self.Kernel.BreakFlow())
         //            )
         //        )
         //    );
@@ -33,12 +30,12 @@ namespace Flow.Test
         [TestCase(1.5f, 1.0f, 1.0f)]
         public void TestTimedWait(float timerLen, float timeOut, float kernelRunTime)
         {
-            _root.Add(
-                _flow.WaitFor(
-                    _flow.Trigger(_flow.OneShotTimer(TimeSpan.FromSeconds(timerLen))),
+            Root.Add(
+                New.WaitFor(
+                    New.Trigger(New.OneShotTimer(TimeSpan.FromSeconds(timerLen))),
                     TimeSpan.FromSeconds(timeOut)
                 ),
-                _flow.Break()
+                New.Break()
             );
 
             var delta = timerLen - RunKernel(kernelRunTime);

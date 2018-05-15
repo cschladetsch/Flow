@@ -72,7 +72,7 @@ namespace Flow.Impl
 
         public IGenerator Do(Action act)
         {
-            return Prepare(new Subroutine() { Sub = (tr) => act() });
+            return Prepare(new Subroutine(true) { Sub = (tr) => act() });
         }
 
         public IGenerator If(Func<bool> pred, IGenerator body)
@@ -222,17 +222,17 @@ namespace Flow.Impl
 
         public IGenerator Log(string fmt, params object[] objs)
         {
-            return Do(() => { Kernel.Trace.Log(fmt, objs); });
+            return Do(() => { Kernel.Log.Info(fmt, objs); });
         }
 
         public IGenerator Warn(string fmt, params object[] objs)
         {
-            return Do(() => { Kernel.Trace.Warn(fmt, objs); });
+            return Do(() => { Kernel.Log.Warn(fmt, objs); });
         }
 
         public IGenerator Error(string fmt, params object[] objs)
         {
-            return Do(() => { Kernel.Trace.Error(fmt, objs); });
+            return Do(() => { Kernel.Log.Error(fmt, objs); });
         }
 
         public ITransient ActionSequence(params Action[] actions)
@@ -459,13 +459,19 @@ namespace Flow.Impl
             return obj;
         }
 
+        public IFuture<T> NamedFuture<T>(string name, T val)
+        {
+            var fut = Future<T>();
+            fut.Name = name;
+            fut.Value = val;
+            return Prepare(fut);
+        }
+
         public IFuture<T> NamedFuture<T>(string name)
         {
             var fut = Future<T>();
             fut.Name = name;
-            return fut;
+            return Prepare(fut);
         }
     }
-
-
 }

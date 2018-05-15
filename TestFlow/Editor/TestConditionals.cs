@@ -8,25 +8,25 @@ namespace Flow.Test
         [Test]
         public void TestIf()
         {
-            _kernel.DebugLevel = Flow.EDebugLevel.Verbose;
+            Kernel.DebugLevel = Flow.EDebugLevel.Verbose;
             var executed = false;
-            var exp = _flow.If(
+            var exp = New.If(
                 () => true,
-                _flow.Do(() => executed = true)
+                New.Do(() => executed = true)
             );//.Named("IF1");
 
-            _root.Add(exp);
+            Root.Add(exp);
             Step(2);
             Assert.IsTrue(executed);
 
             executed = false;
-            var exp2 = _flow.If(
+            var exp2 = New.If(
                 () => false,
-                _flow.Do(() => executed = true)
+                New.Do(() => executed = true)
             );//.Named("If2");
 
-            _root.Remove(exp);
-            _root.Add(exp2);
+            Root.Remove(exp);
+            Root.Add(exp2);
 
             Step(2);
             Assert.IsFalse(executed);
