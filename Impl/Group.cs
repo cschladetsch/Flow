@@ -133,7 +133,7 @@ namespace Flow.Impl
             foreach (var tr in Additions)
             {
                 _contents.Add(tr);
-                Kernel.Log.Info("Adding {0} to Node {1}", tr, Name);
+                Info($"Adding {tr}");
                 tr.Completed += Remove;
                 Added?.Invoke(this, tr);
             }

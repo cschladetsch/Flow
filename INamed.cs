@@ -7,7 +7,7 @@ namespace Flow
     /// Fires its Renamed event when its Name property is changed.
     public interface INamed
     {
-        event NameChangeHandler Renamed;
-        string Name { get; set; }
+        //event NameChangeHandler Renamed;
+        string Name { get; }//
     }
 }

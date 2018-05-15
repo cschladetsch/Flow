@@ -26,6 +26,7 @@ namespace Flow
 
         public PrettyPrinter(ITransient trans)
         {
+            _sb.Append("# ");
             Print(trans, 0);
         }
 

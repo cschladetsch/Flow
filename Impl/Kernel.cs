@@ -1,4 +1,5 @@
 // (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 
@@ -13,7 +14,11 @@ namespace Flow.Impl
 
         internal Kernel()
         {
-            Log = new Logger("FLOW") {Verbosity = 20};
+            Log = this;
+            Log.Subject = this;
+            Kernel = this;
+            Log.LogPrefix = "FLOW";
+
 #if UNITY3D
 			Log.AddLogger(new UnityLogger(eLevel));
 #else

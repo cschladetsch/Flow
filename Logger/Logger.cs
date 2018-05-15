@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using Debug = UnityEngine.Debug;
 
 namespace Flow.Impl
@@ -10,20 +11,24 @@ namespace Flow.Impl
     public class Logger : ILogger
     {
         #region Public Fields
-        public string Prefix { get;set; }
+        public string LogPrefix { get;set; }
+        public object Subject { get; set; }
         public int Verbosity { get; set; }
+
         public static string LogFileName;
         public static ELogLevel MaxLevel;
-        public string Name { get; set; }
         #endregion
 
         #region Public Methods
         public Logger()
         {
+            Subject = this;
         }
-        public Logger(string name)
+
+        public Logger(string pre)
+            : this()
         {
-            Prefix = name;
+            LogPrefix = pre;
         }
         public static void Initialise()
         {
@@ -83,12 +88,25 @@ namespace Flow.Impl
         }
         private string MakeEntry(ELogLevel level, string text)
         {
-            return $"{Prefix}: type:{GetType()} name: {Name}: t'{text}'";
+            text = text.Trim();
+            var named = Subject as INamed;
+            var name = named == null ? "" : named.Name;
+            var dt = DateTime.Now - _startTime;
+            var ms = dt.ToString(@"fff");
+            var time = dt.ToString(@"\mm\:ss\:") + ms;
+            var prefix = string.IsNullOrEmpty(LogPrefix) ? "" : $"{LogPrefix}: ";
+            var from = string.IsNullOrEmpty(name) ? "" : $" {name}:";
+            var gen = Subject as IGenerator;
+            var step = gen == null ? "" : $"#{gen.StepNumber}/{gen.Kernel.StepNumber}: ";
+            return $"> {prefix}{time} {step}{Subject.GetType()}{from}\n\t`{text}`";
         }
         #endregion
 
         #region Protected Fields
         protected ELogLevel _logLevel;
+
         #endregion
+
+        private static DateTime _startTime = DateTime.Now;
     }
 }
