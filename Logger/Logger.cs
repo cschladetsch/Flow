@@ -98,7 +98,26 @@ namespace Flow.Impl
             var from = string.IsNullOrEmpty(name) ? "" : $" {name}:";
             var gen = Subject as IGenerator;
             var step = gen == null ? "" : $"#{gen.StepNumber}/{gen.Kernel.StepNumber}: ";
-            return $"> {prefix}{time} {step}{Subject.GetType()}{from}\n\t`{text}`";
+            var openTick = "`";
+            switch (level)
+            {
+                case ELogLevel.None:
+                    break;
+                case ELogLevel.Info:
+                    break;
+                case ELogLevel.Warn:
+                    openTick = "``";
+                    break;
+                case ELogLevel.Verbose:
+                    openTick = "``";
+                    break;
+                case ELogLevel.Error:
+                    openTick = "```";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
+            }
+            return $"> {prefix}{time} {step}{Subject.GetType()}{from}\n\t{openTick}{text}`";
         }
         #endregion
 
