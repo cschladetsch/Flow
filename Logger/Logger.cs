@@ -109,7 +109,7 @@ namespace Flow.Impl
                     openTick = "``";
                     break;
                 case ELogLevel.Verbose:
-                    openTick = "``";
+                    openTick = "````";
                     break;
                 case ELogLevel.Error:
                     openTick = "```";
@@ -117,7 +117,7 @@ namespace Flow.Impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
-            return $"> {prefix}{time} {step}{Subject.GetType()}{from}\n\t{openTick}{text}`";
+            return $"> {level}: {prefix}{time} {step}{Subject.GetType()}{from}\n\t{openTick}{text}`";
         }
         #endregion
 
