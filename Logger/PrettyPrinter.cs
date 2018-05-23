@@ -109,27 +109,22 @@ namespace Flow
             }
             if (typeof(ITrigger).IsAssignableFrom(ty))
             {
-                var group = (IGroup) trans;
                 return _sb.AppendFormat($"Trigger: {name}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(IBarrier).IsAssignableFrom(ty))
             {
-                var group = (IGroup) trans;
                 return _sb.AppendFormat($"Barrier: {name}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(ISequence).IsAssignableFrom(ty))
             {
-                var g = (IGroup) trans;
                 return _sb.AppendFormat($"Sequence {name}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(INode).IsAssignableFrom(ty))
             {
-                var g = (IGroup) trans;
                 return _sb.AppendFormat($"Node {name}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(IGroup).IsAssignableFrom(ty))
             {
-                var g = (IGroup) trans;
                 return _sb.AppendFormat($"Group: {name}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(ICoroutine).IsAssignableFrom(ty))
