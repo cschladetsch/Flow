@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using UnityEngine.Assertions.Must;
 using Debug = UnityEngine.Debug;
 
 namespace Flow.Impl
@@ -14,6 +16,8 @@ namespace Flow.Impl
         public string LogPrefix { get;set; }
         public object Subject { get; set; }
         public int Verbosity { get; set; }
+        public bool ShowSource { get; set; } = true;
+        public bool ShowStack { get; set; } = true;
 
         public static string LogFileName;
         public static ELogLevel MaxLevel;
@@ -25,14 +29,23 @@ namespace Flow.Impl
             Subject = this;
         }
 
+        public Logger(string pre, bool src, bool st)
+            : this(pre)
+        {
+            ShowSource = src;
+            ShowStack = st;
+        }
+
         public Logger(string pre)
             : this()
         {
             LogPrefix = pre;
         }
+
         public static void Initialise()
         {
         }
+
         #endregion
 
         #region Protected Methods
@@ -57,15 +70,59 @@ namespace Flow.Impl
         #endregion
 
         #region Private
+
+        void OutputLine(string text)
+        {
+            Console.WriteLine(text);
+            Trace.WriteLine(text);
+        }
+        void Output(string text)
+        {
+            Console.Write(text);
+            Trace.Write(text);
+        }
+
+        readonly string[] _logNames = {"Info", "Warn", "Error", "Verbose"};
+
         private void Log(ELogLevel level, string text)
         {
             Action<string> log = Debug.Log;
             if (level == ELogLevel.None)
                 level = ELogLevel.Error;
 #if TRACE
-            var entry = MakeEntry(level, text);
-            Console.WriteLine(entry);
-            Trace.WriteLine(entry);
+            Output(MakeEntry(level, text));
+            if (ShowSource)
+            {
+                OutputLine("");
+                var lead = "\t";
+                var st = new StackTrace(true);
+                var foundTop = false;
+                foreach (var fr in st.GetFrames())
+                {
+                    if (!foundTop)
+                    {
+                        var name = fr.GetMethod().Name;
+                        if (_logNames.Contains(name))
+                        {
+                            foundTop = true;
+                            continue;
+                        }
+                    }
+                    if (!foundTop)
+                        continue;
+
+                    //if (!fr.HasSource())
+                    //    break;
+                    if (string.IsNullOrEmpty(fr.GetFileName()))
+                        break;
+
+                    OutputLine($"{lead}{fr.GetFileName()}({fr.GetFileLineNumber()},{fr.GetFileColumnNumber()}): from: {fr.GetMethod().Name}");
+                    if (!ShowStack)
+                        break;
+                    lead += "\t";
+                }
+            }
+
 #else
             // TODO: use bitmasks as intended
             switch (level)
@@ -117,7 +174,7 @@ namespace Flow.Impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
-            return $"> {level}: {prefix}{time} {step}{Subject.GetType()}{from}\n\t{openTick}{text}`";
+            return $"{level}: {prefix}{time} {step}{Subject.GetType()}{from}\n{openTick}{text}`";
         }
         #endregion
 
