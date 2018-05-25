@@ -94,7 +94,7 @@ namespace Flow.Impl
             if (ShowSource)
             {
                 OutputLine("");
-                var lead = "\t";
+                var lead = "\t\t";
                 var st = new StackTrace(true);
                 var foundTop = false;
                 foreach (var fr in st.GetFrames())
@@ -116,15 +116,18 @@ namespace Flow.Impl
                     if (string.IsNullOrEmpty(fr.GetFileName()))
                         break;
 
-                    OutputLine($"{lead}{fr.GetFileName()}({fr.GetFileLineNumber()},{fr.GetFileColumnNumber()}): from: {fr.GetMethod().Name}");
+                    OutputLine(
+                        $"{lead}{fr.GetFileName()}({fr.GetFileLineNumber()},{fr.GetFileColumnNumber()}): from: {fr.GetMethod().Name}");
                     if (!ShowStack)
                         break;
                     lead += "\t";
                 }
             }
-
-#else
-            // TODO: use bitmasks as intended
+            else
+            {
+                OutputLine("");
+            }
+#else // TODO: use bitmasks as intended
             switch (level)
             {
                 case ELogLevel.Info:
@@ -143,6 +146,7 @@ namespace Flow.Impl
             log(MakeEntry(level, text));
 #endif
         }
+
         private string MakeEntry(ELogLevel level, string text)
         {
             text = text.Trim();
@@ -174,7 +178,7 @@ namespace Flow.Impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
-            return $"{level}: {prefix}{time} {step}{Subject.GetType()}{from}\n{openTick}{text}`";
+            return $"{level}: {prefix}{time} {step}{Subject.GetType()}{from}\n\t{openTick}{text}`";
         }
         #endregion
 
