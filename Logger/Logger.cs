@@ -154,7 +154,7 @@ namespace Flow.Impl
             var name = named == null ? "" : named.Name;
             var dt = DateTime.Now - _startTime;
             var ms = dt.ToString(@"fff");
-            var time = dt.ToString(@"\mm\:ss\:") + ms;
+            var time = dt.ToString(@"mm\:ss\:") + ms;
             var prefix = string.IsNullOrEmpty(LogPrefix) ? "" : $"{LogPrefix}: ";
             var from = string.IsNullOrEmpty(name) ? "" : $" {name}:";
             var gen = Subject as IGenerator;
