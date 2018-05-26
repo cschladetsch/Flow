@@ -15,7 +15,7 @@ namespace Flow.Impl
         internal Kernel()
         {
             Log = this;
-            Log.Subject = this;
+            Log.LogSubject = this;
             Kernel = this;
             Log.LogPrefix = "FLOW";
 

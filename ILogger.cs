@@ -12,7 +12,7 @@
     public interface ILogger
     {
         string LogPrefix { get; set; }
-        object Subject { get; set; }
+        object LogSubject { get; set; }
         int Verbosity { get; set; }
         void Info(string fmt, params object[] args);
         void Warn(string fmt, params object[] args);
@@ -24,7 +24,7 @@
         ILogger where TLogger : class, ILogger, new()
     {
         public string LogPrefix { get { return _log.LogPrefix; } set { _log.LogPrefix = value; }}
-        public object Subject { get; set; }
+        public object LogSubject { get; set; }
         public int Verbosity { get; set; }
 
         public LoggerFacade(string pre)

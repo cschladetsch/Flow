@@ -14,7 +14,7 @@ namespace Flow.Impl
     {
         #region Public Fields
         public string LogPrefix { get;set; }
-        public object Subject { get; set; }
+        public object LogSubject { get; set; }
         public int Verbosity { get; set; }
         public bool ShowSource { get; set; } = true;
         public bool ShowStack { get; set; } = true;
@@ -26,7 +26,7 @@ namespace Flow.Impl
         #region Public Methods
         public Logger()
         {
-            Subject = this;
+            LogSubject = this;
         }
 
         public Logger(string pre, bool src, bool st)
@@ -150,14 +150,14 @@ namespace Flow.Impl
         private string MakeEntry(ELogLevel level, string text)
         {
             text = text.Trim();
-            var named = Subject as INamed;
+            var named = LogSubject as INamed;
             var name = named == null ? "" : named.Name;
             var dt = DateTime.Now - _startTime;
             var ms = dt.ToString(@"fff");
             var time = dt.ToString(@"mm\:ss\:") + ms;
             var prefix = string.IsNullOrEmpty(LogPrefix) ? "" : $"{LogPrefix}: ";
             var from = string.IsNullOrEmpty(name) ? "" : $" {name}:";
-            var gen = Subject as IGenerator;
+            var gen = LogSubject as IGenerator;
             var step = gen == null ? "" : $"#{gen.StepNumber}/{gen.Kernel.StepNumber}: ";
             var openTick = "`";
             switch (level)
@@ -178,7 +178,7 @@ namespace Flow.Impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
-            return $"{level}: {prefix}{time} {step}{Subject.GetType()}{from}\n\t{openTick}{text}`";
+            return $"{level}: {prefix}{time} {step}{LogSubject.GetType()}{from}\n\t{openTick}{text}`";
         }
         #endregion
 
