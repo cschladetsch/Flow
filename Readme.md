@@ -10,7 +10,7 @@ The original post was on [AltDevBlogADay](http://www.altdevblogaday.com/2012/09/
 
 ## Tests
 
-The tests reside in TestFlow/Editor so they can be used from Unity3d as well.
+The [tests](TestFlow/Editor) reside in _TestFlow/Editor_ so they can be used from Unity3d as well.
 
 ## Example
 
