@@ -18,34 +18,23 @@ namespace Flow
         IKernel Kernel { get; set; }
 
         ITransient Transient();
-        ITransient Transient(string name);
 
         IGroup Group(params ITransient[] gens);
-        IGroup Group(string name, params ITransient[] contents);
-
         INode Node(params IGenerator[] gens);
-        INode Node(string name, params IGenerator[] gens);
 
         IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans);
-
         ITimer OneShotTimer(TimeSpan interval);
         ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed);
         IPeriodic PeriodicTimer(TimeSpan interval);
 
         IBarrier Barrier(params ITransient[] args);
-        IBarrier Barrier(string name, params ITransient[] args);
         IBarrier TimedBarrier(TimeSpan span, params ITransient[] args);
-        IBarrier TimedBarrier(string name, TimeSpan span, params ITransient[] args);
 
         ITrigger Trigger(params ITransient[] args);
-        ITrigger Trigger(string name, params ITransient[] args);
         ITimedTrigger TimedTrigger(TimeSpan span, params ITransient[] args);
-        ITimedTrigger TimedTrigger(string name, TimeSpan span, params ITransient[] args);
 
         IFuture<T> Future<T>();
         IFuture<T> Future<T>(T val);
-        IFuture<T> NamedFuture<T>(string name);
-        IFuture<T> NamedFuture<T>(string name, T val);
         ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut);
         ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut, T val);
 

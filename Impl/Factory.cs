@@ -23,13 +23,6 @@ namespace Flow.Impl
 
         public bool AutoAdd { get; set; }
 
-        public INode Node(string name, params IGenerator[] gens)
-        {
-            var node = Node(gens);
-            node.Name = name;
-            return node;
-        }
-
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
             var timed = TimedFuture<TR>(span);
@@ -51,23 +44,9 @@ namespace Flow.Impl
             return group;
         }
 
-        public IGroup Group(string name, params ITransient[] contents)
-        {
-            var group = Group(contents);
-            group.Name = name;
-            return group;
-        }
-
         public ITransient Transient()
         {
             return Prepare(new Transient());
-        }
-
-        public ITransient Transient(string name)
-        {
-            var trans = Transient();
-            trans.Name = name;
-            return trans;
         }
 
         public IGenerator Do(Action act)
@@ -263,24 +242,10 @@ namespace Flow.Impl
             return Prepare(barrier);
         }
 
-        public IBarrier Barrier(string name, params ITransient[] contents)
-        {
-            var barrier = Barrier(contents);
-            barrier.Name = name;
-            return barrier;
-        }
-
         public IBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
         {
             var barrier = new TimedBarrier(Kernel, span, args);
             return Prepare(barrier);
-        }
-
-        public IBarrier TimedBarrier(string name, TimeSpan span, params ITransient[] args)
-        {
-            var barrier = TimedBarrier(span, args);
-            barrier.Name = name;
-            return barrier;
         }
 
         public ITrigger Trigger(params ITransient[] args)
@@ -290,25 +255,11 @@ namespace Flow.Impl
             return Prepare(trigger);
         }
 
-        public ITrigger Trigger(string name, params ITransient[] args)
-        {
-            var trigger = Trigger(args);
-            trigger.Name = name;
-            return trigger;
-        }
-
         public ITimedTrigger TimedTrigger(TimeSpan span, params ITransient[] args)
         {
             var timedTrigger = new TimedTrigger(Kernel, span);
             timedTrigger.Add(args);
             return Prepare(timedTrigger);
-        }
-
-        public ITimedTrigger TimedTrigger(string name, TimeSpan span, params ITransient[] args)
-        {
-            var trigger = TimedTrigger(span, args);
-            trigger.Name = name;
-            return trigger;
         }
 
         public IGenerator Nop()
@@ -457,21 +408,6 @@ namespace Flow.Impl
             obj.Kernel = Kernel;
             (obj as IGenerator)?.Resume();
             return obj;
-        }
-
-        public IFuture<T> NamedFuture<T>(string name, T val)
-        {
-            var fut = Future<T>();
-            fut.Name = name;
-            fut.Value = val;
-            return Prepare(fut);
-        }
-
-        public IFuture<T> NamedFuture<T>(string name)
-        {
-            var fut = Future<T>();
-            fut.Name = name;
-            return Prepare(fut);
         }
     }
 }
