@@ -91,7 +91,9 @@ namespace Flow.Impl
                 level = ELogLevel.Error;
 #if TRACE
             Output(MakeEntry(level, text));
-            if (ShowSource)
+            var error = level == ELogLevel.Error;
+            var showFrames = ShowStack || error;
+            if (ShowSource || error)
             {
                 OutputLine("");
                 var lead = "\t\t";
@@ -118,7 +120,7 @@ namespace Flow.Impl
 
                     OutputLine(
                         $"{lead}{fr.GetFileName()}({fr.GetFileLineNumber()},{fr.GetFileColumnNumber()}): from: {fr.GetMethod().Name}");
-                    if (!ShowStack)
+                    if (!showFrames)
                         break;
                     lead += "\t";
                 }
