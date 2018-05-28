@@ -12,13 +12,12 @@ namespace Flow
     /// it has no more work to do and its internal state will not change without external influence.
     /// flow-control.
     /// </summary>
-    public interface ITransient
+    public interface ITransient : INamed
     {
         event TransientHandler Completed;
 
         bool Active { get; }
         IKernel Kernel { get; /*internal*/ set; }
-        string Name { get; set; }
 
         ITransient Named(string name);
         void Complete();

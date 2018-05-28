@@ -8,6 +8,6 @@ namespace Flow
     public interface INamed
     {
         //event NameChangeHandler Renamed;
-        string Name { get; }//
+        string Name { get; set; }//
     }
 }
