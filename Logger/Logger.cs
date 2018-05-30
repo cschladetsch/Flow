@@ -180,7 +180,9 @@ namespace Flow.Impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
-            return $"{level}: {prefix}{time} {step}{LogSubject.GetType()}{from}\n\t{openTick}{text}`";
+            // this trace includes the source type: it's a bit "verbose"
+            //return $"{level}: {prefix}{time} {step}{LogSubject.GetType()}{from}\n\t{openTick}{text}`";
+            return $"{level}: {prefix}{time} {step}{from}\n\t{openTick}{text}`";
         }
         #endregion
 
