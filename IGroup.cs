@@ -27,6 +27,7 @@ namespace Flow
         event GroupHandler Removed;
 
         // Add the specified transient to this group if it is not already a member of this group.
+        void Add(IEnumerable<ITransient> trans);
         void Add(params ITransient[] trans);
 
         // Remove the specified transient from this group.

@@ -23,6 +23,11 @@ namespace Flow.Impl
 
         public bool AutoAdd { get; set; }
 
+        public INode Node(params IGenerator[] gens)
+        {
+            throw new NotImplementedException();
+        }
+
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
             var timed = TimedFuture<TR>(span);
@@ -30,7 +35,7 @@ namespace Flow.Impl
             return Prepare(timed);
         }
 
-        public INode Node(params IGenerator[] gens)
+        public INode Node(IEnumerable<IGenerator> gens)
         {
             var node = Prepare(new Node());
             node.Add(gens);
@@ -38,6 +43,13 @@ namespace Flow.Impl
         }
 
         public IGroup Group(params ITransient[] trans)
+        {
+            var group = Prepare(new Group());
+            group.Add(trans);
+            return group;
+        }
+
+        public IGroup Group(IEnumerable<ITransient> trans)
         {
             var group = Prepare(new Group());
             group.Add(trans);
@@ -125,6 +137,11 @@ namespace Flow.Impl
             return Prepare(new Subroutine<T> { Sub = s => act() });
         }
 
+        public IGenerator Sequence(IEnumerable<ITransient> transients)
+        {
+            throw new NotImplementedException();
+        }
+
         public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
         {
             gen.Step();
@@ -159,6 +176,11 @@ namespace Flow.Impl
         public IPeriodic PeriodicTimer(TimeSpan interval)
         {
             return Prepare(new Periodic(Kernel, interval));
+        }
+
+        public IBarrier Barrier(params ITransient[] args)
+        {
+            throw new NotImplementedException();
         }
 
         public IBarrier Barrier()
@@ -232,20 +254,34 @@ namespace Flow.Impl
             return Prepare(seq);
         }
 
-        public IBarrier Barrier(params ITransient[] args)
+        //public IBarrier Barrier(params ITransient[] args)
+        //{
+        //    var barrier = Barrier();
+        //    foreach (var tr in args)
+        //    {
+        //        barrier.Add(tr);
+        //    }
+        //    return Prepare(barrier);
+        //}
+
+        public IBarrier Barrier(IEnumerable<ITransient> args)
         {
             var barrier = Barrier();
             foreach (var tr in args)
             {
                 barrier.Add(tr);
             }
-            return Prepare(barrier);
-        }
+            return Prepare(barrier);        }
 
         public IBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
         {
             var barrier = new TimedBarrier(Kernel, span, args);
             return Prepare(barrier);
+        }
+
+        public IBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
+        {
+            throw new NotImplementedException();
         }
 
         public ITrigger Trigger(params ITransient[] args)

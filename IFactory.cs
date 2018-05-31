@@ -19,7 +19,9 @@ namespace Flow
 
         ITransient Transient();
 
+        IGroup Group(IEnumerable<ITransient> gens);
         IGroup Group(params ITransient[] gens);
+        INode Node(IEnumerable<IGenerator> gens);
         INode Node(params IGenerator[] gens);
 
         IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans);
@@ -28,7 +30,9 @@ namespace Flow
         IPeriodic PeriodicTimer(TimeSpan interval);
 
         IBarrier Barrier(params ITransient[] args);
+        IBarrier Barrier(IEnumerable<ITransient> args);
         IBarrier TimedBarrier(TimeSpan span, params ITransient[] args);
+        IBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args);
 
         ITrigger Trigger(params ITransient[] args);
         ITimedTrigger TimedTrigger(TimeSpan span, params ITransient[] args);
@@ -62,6 +66,7 @@ namespace Flow
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
         IGenerator While(Func<bool> pred, params IGenerator[] body);
         IGenerator Sequence(params ITransient[] transients);
+        IGenerator Sequence(IEnumerable<ITransient> transients);
 
         IGenerator Switch<T>(IGenerator<T> val, params ICase<T>[] cases) where T : IComparable<T>;
         ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;

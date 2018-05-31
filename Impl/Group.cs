@@ -55,12 +55,17 @@ namespace Flow.Impl
             }
         }
 
-        public void Add(params ITransient[] others)
+        public void Add(IEnumerable<ITransient> others)
         {
             foreach (var other in others)
             {
                 DeferAdd(other);
             }
+        }
+
+        public void Add(params ITransient[] others)
+        {
+            Add(others.ToList());
         }
 
         protected void DeferAdd(ITransient other)

@@ -7,7 +7,7 @@ namespace Flow.Impl
 {
     internal class Node : Group, INode
     {
-        public new void Add(params ITransient[] trans)
+        public void Add(params ITransient[] trans)
         {
             base.Add(trans);
         }
