@@ -25,14 +25,7 @@ namespace Flow.Impl
 
         public INode Node(params IGenerator[] gens)
         {
-            throw new NotImplementedException();
-        }
-
-        public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
-        {
-            var timed = TimedFuture<TR>(span);
-            timed.TimedOut += (tr) => trans.Complete();
-            return Prepare(timed);
+            return Node(gens.ToList());
         }
 
         public INode Node(IEnumerable<IGenerator> gens)
@@ -64,6 +57,13 @@ namespace Flow.Impl
         public IGenerator Do(Action act)
         {
             return Prepare(new Subroutine(true) { Sub = (tr) => act() });
+        }
+
+        public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
+        {
+            var timed = TimedFuture<TR>(span);
+            timed.TimedOut += (tr) => trans.Complete();
+            return Prepare(timed);
         }
 
         public IGenerator If(Func<bool> pred, IGenerator body)
@@ -178,11 +178,6 @@ namespace Flow.Impl
             return Prepare(new Periodic(Kernel, interval));
         }
 
-        public IBarrier Barrier(params ITransient[] args)
-        {
-            throw new NotImplementedException();
-        }
-
         public IBarrier Barrier()
         {
             return Prepare(new Barrier());
@@ -254,15 +249,10 @@ namespace Flow.Impl
             return Prepare(seq);
         }
 
-        //public IBarrier Barrier(params ITransient[] args)
-        //{
-        //    var barrier = Barrier();
-        //    foreach (var tr in args)
-        //    {
-        //        barrier.Add(tr);
-        //    }
-        //    return Prepare(barrier);
-        //}
+        public IBarrier Barrier(params ITransient[] args)
+        {
+            return Barrier(args.ToList());
+        }
 
         public IBarrier Barrier(IEnumerable<ITransient> args)
         {
@@ -271,7 +261,8 @@ namespace Flow.Impl
             {
                 barrier.Add(tr);
             }
-            return Prepare(barrier);        }
+            return Prepare(barrier);
+        }
 
         public IBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
         {
