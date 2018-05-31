@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+#if UNITY
 using UnityEngine.Assertions.Must;
 using Debug = UnityEngine.Debug;
+#endif
 
 namespace Flow.Impl
 {
@@ -13,7 +15,7 @@ namespace Flow.Impl
     public class Logger : ILogger
     {
         #region Public Fields
-        public string LogPrefix { get;set; }
+        public string LogPrefix { get; set; }
         public object LogSubject { get; set; }
         public int Verbosity { get; set; }
         public bool ShowSource { get; set; } = true;
@@ -82,11 +84,15 @@ namespace Flow.Impl
             Trace.Write(text);
         }
 
-        readonly string[] _logNames = {"Info", "Warn", "Error", "Verbose"};
+        readonly string[] _logNames = { "Info", "Warn", "Error", "Verbose" };
 
         private void Log(ELogLevel level, string text)
         {
+#if UNITY
             Action<string> log = Debug.Log;
+#else
+            Action<string> log = Console.WriteLine;
+#endif
             if (level == ELogLevel.None)
                 level = ELogLevel.Error;
 #if TRACE
@@ -184,12 +190,12 @@ namespace Flow.Impl
             //return $"{level}: {prefix}{time} {step}{LogSubject.GetType()}{from}\n\t{openTick}{text}`";
             return $"{level}: {prefix}{time} {step}{from}\n\t{openTick}{text}`";
         }
-        #endregion
+#endregion
 
-        #region Protected Fields
+#region Protected Fields
         protected ELogLevel _logLevel;
 
-        #endregion
+#endregion
 
         private static DateTime _startTime = DateTime.Now;
     }
