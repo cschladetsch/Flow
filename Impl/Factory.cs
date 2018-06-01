@@ -137,9 +137,16 @@ namespace Flow.Impl
             return Prepare(new Subroutine<T> { Sub = s => act() });
         }
 
-        public IGenerator Sequence(IEnumerable<ITransient> transients)
+        public IGenerator Sequence(params IGenerator[] gens)
         {
-            throw new NotImplementedException();
+            return Sequence(gens.ToList());
+        }
+
+        public IGenerator Sequence(IEnumerable<IGenerator> gens)
+        {
+            var seq = new Sequence();
+            seq.Add(gens);
+            return Prepare(seq);
         }
 
         public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
@@ -259,6 +266,8 @@ namespace Flow.Impl
             var barrier = Barrier();
             foreach (var tr in args)
             {
+                if (tr == null)
+                    continue;
                 barrier.Add(tr);
             }
             return Prepare(barrier);
@@ -272,7 +281,8 @@ namespace Flow.Impl
 
         public IBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
         {
-            throw new NotImplementedException();
+            // TODO:
+            return Barrier(args);
         }
 
         public ITrigger Trigger(params ITransient[] args)
