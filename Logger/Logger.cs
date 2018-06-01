@@ -99,6 +99,11 @@ namespace Flow.Impl
             Output(MakeEntry(level, text));
             var error = level == ELogLevel.Error;
             var showFrames = ShowStack || error;
+
+
+            // HACK!
+            showFrames = error;
+
             if (ShowSource || error)
             {
                 OutputLine("");

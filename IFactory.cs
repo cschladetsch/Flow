@@ -31,8 +31,8 @@ namespace Flow
 
         IBarrier Barrier(params ITransient[] args);
         IBarrier Barrier(IEnumerable<ITransient> args);
-        IBarrier TimedBarrier(TimeSpan span, params ITransient[] args);
-        IBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args);
+        ITimedBarrier TimedBarrier(TimeSpan span, params ITransient[] args);
+        ITimedBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args);
 
         ITrigger Trigger(params ITransient[] args);
         ITimedTrigger TimedTrigger(TimeSpan span, params ITransient[] args);

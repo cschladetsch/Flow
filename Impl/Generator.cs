@@ -27,7 +27,7 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
-            Kernel.Log.Verbose(10, $"{Name} Stepped #{StepNumber}");
+            Kernel.Log.Verbose(10, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
 
             if (!Active)
                 return;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Flow.Impl
 {
@@ -13,7 +14,7 @@ namespace Flow.Impl
 
         public bool HasTimedOut { get; set; }
 
-        public TimedBarrier(IKernel kernel, TimeSpan span, params ITransient[] contents)
+        public TimedBarrier(IKernel kernel, TimeSpan span, IEnumerable<ITransient> contents)
         {
             Timer = kernel.Factory.OneShotTimer(span);
             Timer.Elapsed += (tr) =>
@@ -22,6 +23,9 @@ namespace Flow.Impl
                 TimedOut?.Invoke(this);
                 Complete();
             };
+
+            foreach (var tr in contents)
+                Add(tr);
         }
     }
 }

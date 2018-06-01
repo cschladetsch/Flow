@@ -13,6 +13,8 @@
     {
         string LogPrefix { get; set; }
         object LogSubject { get; set; }
+        bool ShowSource { get; set; }
+        bool ShowStack { get; set; }
         int Verbosity { get; set; }
         void Info(string fmt, params object[] args);
         void Warn(string fmt, params object[] args);
@@ -25,11 +27,15 @@
     {
         public string LogPrefix { get { return _log.LogPrefix; } set { _log.LogPrefix = value; }}
         public object LogSubject { get; set; }
+        public bool ShowSource { get; set; }
+        public bool ShowStack { get; set; }
         public int Verbosity { get; set; }
 
         public LoggerFacade(string pre)
         {
             _log.LogPrefix = pre;
+            _log.ShowStack = false;
+            _log.ShowSource = true;
         }
 
         public void Info(string fmt, params object[] args)

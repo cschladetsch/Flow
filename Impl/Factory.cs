@@ -273,16 +273,15 @@ namespace Flow.Impl
             return Prepare(barrier);
         }
 
-        public IBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
+        public ITimedBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
+        {
+            return TimedBarrier(span, args.ToList());
+        }
+
+        public ITimedBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
         {
             var barrier = new TimedBarrier(Kernel, span, args);
             return Prepare(barrier);
-        }
-
-        public IBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
-        {
-            // TODO:
-            return Barrier(args);
         }
 
         public ITrigger Trigger(params ITransient[] args)
