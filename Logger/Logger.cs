@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define UNITY
+#undef TRACE
+
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
