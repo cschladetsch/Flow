@@ -165,6 +165,9 @@ namespace Flow.Impl
 
         private string MakeEntry(ELogLevel level, string text)
         {
+#if UNITY
+            return text;
+#else
             text = text.Trim();
             var named = LogSubject as INamed;
             var name = named == null ? "" : named.Name;
@@ -197,6 +200,7 @@ namespace Flow.Impl
             // this trace includes the source type: it's a bit "verbose"
             //return $"{level}: {prefix}{time} {step}{LogSubject.GetType()}{from}\n\t{openTick}{text}`";
             return $"{level}: {prefix}{time} {step}{from}\n\t{openTick}{text}`";
+#endif
         }
 #endregion
 
