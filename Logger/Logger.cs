@@ -1,10 +1,16 @@
-﻿#define UNITY
-#undef TRACE
+﻿// TODO: This whole thing is a complete mess.
+// This is a classic case of trying to do too much with too little.
+// The main problem is that the standalone unit-tests do not reference
+// the Unity assemblies.
+// But, the same code file is used for both Unity and non-Unity debugging.
+// This has to be fixed and soon.
+
+#define UNITY
+//#undef TRACE
 
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 #if UNITY
 using UnityEngine.Assertions.Must;
 using Debug = UnityEngine.Debug;
@@ -17,7 +23,6 @@ namespace Flow.Impl
     /// </summary>
     public class Logger : ILogger
     {
-        #region Public Fields
         public string LogPrefix { get; set; }
         public object LogSubject { get; set; }
         public int Verbosity { get; set; }
@@ -26,9 +31,7 @@ namespace Flow.Impl
 
         public static string LogFileName;
         public static ELogLevel MaxLevel;
-        #endregion
 
-        #region Public Methods
         public Logger()
         {
             LogSubject = this;
@@ -50,10 +53,6 @@ namespace Flow.Impl
         public static void Initialise()
         {
         }
-
-        #endregion
-
-        #region Protected Methods
         public void Info(string fmt, params object[] args)
         {
             Log(ELogLevel.Info, string.Format(fmt, args));
@@ -72,9 +71,6 @@ namespace Flow.Impl
                 return;
             Log(ELogLevel.Verbose, string.Format(fmt, args));
         }
-        #endregion
-
-        #region Private
 
         void OutputLine(string text)
         {
@@ -91,18 +87,18 @@ namespace Flow.Impl
 
         private void Log(ELogLevel level, string text)
         {
+            if (level == ELogLevel.None)
+                level = ELogLevel.Error;
 #if UNITY
             Action<string> log = Debug.Log;
 #else
             Action<string> log = Console.WriteLine;
 #endif
-            if (level == ELogLevel.None)
-                level = ELogLevel.Error;
-#if TRACE
+
+#if !UNITY
             Output(MakeEntry(level, text));
             var error = level == ELogLevel.Error;
             var showFrames = ShowStack || error;
-
 
             // HACK!
             showFrames = error;
@@ -202,13 +198,10 @@ namespace Flow.Impl
             return $"{level}: {prefix}{time} {step}{from}\n\t{openTick}{text}`";
 #endif
         }
-#endregion
 
-#region Protected Fields
         protected ELogLevel _logLevel;
-
-#endregion
-
-        private static DateTime _startTime = DateTime.Now;
+#if !UNITY
+        private static readonly DateTime _startTime = DateTime.Now;
+#endif
     }
 }
