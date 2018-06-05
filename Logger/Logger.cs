@@ -5,7 +5,8 @@
 // But, the same code file is used for both Unity and non-Unity debugging.
 // This has to be fixed and soon.
 
-#define UNITY
+//#define UNITY
+#undef UNITY
 //#undef TRACE
 
 using System;
