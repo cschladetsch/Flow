@@ -15,8 +15,8 @@ namespace Flow.Impl
         {
             Log = this;
             Log.LogSubject = this;
-            Log.LogPrefix = "FLOW";
-            Verbosity = 100;
+            Log.LogPrefix = "Flow";
+            Verbosity = 5;
             ShowStack = false;
             ShowSource = true;
             Kernel = this;

@@ -138,7 +138,7 @@ namespace Flow.Impl
             foreach (var tr in Additions)
             {
                 _contents.Add(tr);
-                Info($"Adding {tr}");
+                Verbose(30, $"Adding {tr} to {this}");
                 tr.Completed += Remove;
                 Added?.Invoke(this, tr);
             }

@@ -27,28 +27,12 @@ namespace Flow
         EDebugLevel DebugLevel { get; set; }
         ILogger Log { get; set; }
 
-        /// <summary>
-        /// Gets or sets the root of the kernel. When the Kernel is stepped, it will first Step() every generator reachable
-        /// from Root,
-        /// then call Stepped() on all nodes reachable from the Root.
-        /// </summary>
-        /// <value>
-        /// The root group.
-        /// </value>
-        INode Root { get; set; }
-
-        IFactory Factory { get; }
-
-        /// <summary>
-        /// Gets the time to use for this update.
-        /// </summary>
-        /// <value>
-        /// The time to use for this update
-        /// </value>
-        ITimeFrame Time { get; }
-
+        // true to break out of loops
         bool Break { get; }
 
+        INode Root { get; set; }
+        IFactory Factory { get; }
+        ITimeFrame Time { get; }
         void Update(float deltaSeconds);
         void Wait(TimeSpan end);
         void WaitSteps(int numSteps);
@@ -56,5 +40,4 @@ namespace Flow
         void StepTime();
         void ContinueFlow();
     }
-
 }
