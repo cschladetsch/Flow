@@ -85,7 +85,9 @@ namespace Flow.Impl
             Trace.Write(text);
         }
 
+ #if !UNITY
         readonly string[] _logNames = { "Info", "Warn", "Error", "Verbose" };
+#endif
 
         private void Log(ELogLevel level, string text)
         {
