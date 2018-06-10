@@ -123,7 +123,7 @@ namespace Flow.Impl
                 if (!node.Active || node.Empty)
                     yield break;
 
-                yield return self;
+                yield return null;
             }
         }
 
