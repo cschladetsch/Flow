@@ -8,9 +8,9 @@ namespace Flow.Impl
     {
         internal Action<IGenerator> Sub;
 
-        internal Subroutine(bool once = false)
+        internal Subroutine()//bool once = false)
         {
-            _once = once;
+            //_once = once;
         }
 
         public override void Step()
@@ -28,11 +28,11 @@ namespace Flow.Impl
 
             base.Step();
 
-            if (_once)
-                Complete();
+            //if (_once)
+            //    Complete();
         }
 
-        private readonly bool _once;
+        //private readonly bool _once;
     }
 
     internal class Subroutine<TR> : Generator<TR>, ISubroutine<TR>

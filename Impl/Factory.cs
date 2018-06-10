@@ -56,7 +56,7 @@ namespace Flow.Impl
 
         public IGenerator Do(Action act)
         {
-            return Prepare(new Subroutine(true) { Sub = (tr) => act() });
+            return Prepare(new Subroutine() { Sub = (tr) => act() });
         }
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
