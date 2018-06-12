@@ -54,11 +54,8 @@ namespace Flow
 
         private StringBuilder Header(ITransient trans)
         {
-            //Assert.IsNotNull(trans);
-
-            var name = trans.Name ?? "anon";
+            var name = trans.Name ?? "";
             var tyName = trans.GetType().Name;
-
             var ty = trans.GetType();
 
             // test for generics
@@ -87,25 +84,17 @@ namespace Flow
                 }
             }
 
-            //Type[] types =
-            //{
-            //    typeof(ITrigger), typeof(ITimedTrigger), typeof(IBarrier), typeof(ITimedBarrier),
-            //    typeof(IGroup), typeof(INode)
-            //};
-
             if (typeof(ITimer).IsAssignableFrom(ty))
             {
-                var started = (DateTime) ty.GetProperty("TimeStarted")?.GetValue(trans);
-                var ends = (DateTime) ty.GetProperty("TimeEnds")?.GetValue(trans);
-                return _sb.AppendFormat($"Timer: {name}, started={started}, ends={ends}: {GeneratorInfo(trans)}\n");
+                var timer = (ITimer) trans;
+                var ends = timer.TimeEnds;
+                return _sb.AppendFormat($"Timer: {name} ends in {(ends - timer.Kernel.Time.Now).TotalSeconds:N2}s, {GeneratorInfo(trans)}\n");
             }
             if (typeof(IPeriodic).IsAssignableFrom(ty))
             {
-                var started = (DateTime) ty.GetProperty("TimeStarted")?.GetValue(trans);
-                var interval = (TimeSpan) ty.GetProperty("Interval")?.GetValue(trans);
-                var remaining = (TimeSpan) ty.GetProperty("TimeRemaining")?.GetValue(trans);
+                var p = (IPeriodic) trans;
                 return _sb.AppendFormat(
-                    $"Periodic: {name}, started={started}, interval={interval}, remaining={remaining}: {GeneratorInfo(trans)}\n");
+                    $"Periodic: {name}, started={p.TimeStarted}, interval={p.Interval}, remaining={p.TimeRemaining}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(ITrigger).IsAssignableFrom(ty))
             {
@@ -129,7 +118,7 @@ namespace Flow
             }
             if (typeof(ICoroutine).IsAssignableFrom(ty))
             {
-                return _sb.AppendFormat($"Coroutine {name}: {GeneratorInfo(trans)}");
+                return _sb.AppendFormat($"Coroutine {name}: {GeneratorInfo(trans)}\n");
             }
             if (typeof(ITransient).IsAssignableFrom(ty))
                 return _sb.AppendFormat($"{tyName}={name}:\n");
@@ -150,14 +139,7 @@ namespace Flow
         string GeneratorInfo(ITransient trans)
         {
             var gen = trans as IGenerator;
-            if (gen == null)
-                return "";
-            var ty = gen.GetType();
-            var running = (bool) ty.GetProperty("Running")?.GetValue(gen);
-            var step = (int) ty.GetProperty("StepNumber")?.GetValue(gen);
-            //var val = (object) ty.GetProperty("Value")?.GetValue(gen); // ambiguous
-            //return $"running={running}, step={step}, val={val}";
-            return $"running={running}, step={step}";
+            return gen == null ? "" : $"running={gen.Running}, step={gen.StepNumber}";
         }
 
         private readonly StringBuilder _sb = new StringBuilder();
