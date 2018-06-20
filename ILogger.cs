@@ -42,14 +42,17 @@
         {
             _log.Info(fmt, args);
         }
+
         public void Warn(string fmt, params object[] args)
         {
             _log.Warn(fmt, args);
         }
+
         public void Error(string fmt, params object[] args)
         {
             _log.Error(fmt, args);
         }
+
         public void Verbose(int level, string fmt, params object[] args)
         {
             _log.Verbose(level, fmt, args);
