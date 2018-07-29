@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 using Flow;
 using NUnit.Framework;
-using App.Common;
 
 namespace Flow.Test
 {
@@ -48,38 +47,38 @@ namespace Flow.Test
                 gen.Step();
         }
 
-        [Test]
-        public void TestFlowSequence()
-        {
-            var k = Flow.Create.Kernel();
-            var f = k.Factory;
-            var r = k.Root;
-            r.Add(f.Sequence(
-                f.Coroutine(StartGame).Named("GameLoop"),
-                f.Coroutine(PlayerTurn, EColor.White),
-                f.Coroutine(EndGame))
-            );
+        //[Test]
+        //public void TestFlowSequence()
+        //{
+        //    var k = Flow.Create.Kernel();
+        //    var f = k.Factory;
+        //    var r = k.Root;
+        //    r.Add(f.Sequence(
+        //        f.Coroutine(StartGame).Named("GameLoop"),
+        //        f.Coroutine(PlayerTurn, EColor.White),
+        //        f.Coroutine(EndGame))
+        //    );
 
-            k.Step();
-            Trace.WriteLine(r);
-            k.Step();
-            Trace.WriteLine(r);
-            k.Step();
-            Trace.WriteLine(r);
-            k.Step();
-            Trace.WriteLine(r);
-            k.Step();
-            Trace.WriteLine(r);
-        }
+        //    k.Step();
+        //    Trace.WriteLine(r);
+        //    k.Step();
+        //    Trace.WriteLine(r);
+        //    k.Step();
+        //    Trace.WriteLine(r);
+        //    k.Step();
+        //    Trace.WriteLine(r);
+        //    k.Step();
+        //    Trace.WriteLine(r);
+        //}
 
-        static IEnumerator PlayerTurn(IGenerator self, EColor color)
-        {
-            Trace.WriteLine($"PlayerTurn: {color}");
-            yield return null;
-            Trace.WriteLine($"PlayerTurn: Again {color}");
-            yield return null;
-            Trace.WriteLine($"PlayerTurn: Again Again {color}");
-        }
+        //static IEnumerator PlayerTurn(IGenerator self, EColor color)
+        //{
+        //    Trace.WriteLine($"PlayerTurn: {color}");
+        //    yield return null;
+        //    Trace.WriteLine($"PlayerTurn: Again {color}");
+        //    yield return null;
+        //    Trace.WriteLine($"PlayerTurn: Again Again {color}");
+        //}
 
         static IEnumerator EndGame(IGenerator self)
         {
