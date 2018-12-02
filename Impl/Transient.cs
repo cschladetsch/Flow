@@ -28,7 +28,7 @@ namespace Flow.Impl
 
         public override string ToString()
         {
-            return Flow.Print.Object(this);
+            return Print.Object(this);
         }
 
         public ITransient Named(string name)

@@ -1,11 +1,11 @@
-﻿using System;
+﻿#if DOTNET
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Flow.Logger
 {
-#if DOTNET
 	public class ConsoleLogger : Logger
 	{
 		public ConsoleLogger() : base(ELogEntryType.Everything)
@@ -21,5 +21,5 @@ namespace Flow.Logger
 			Console.WriteLine("{0}: {1}: {2}", MakeTimeString(dateTime), entryType, message);
 		}
 	}
-#endif
 }
+#endif
