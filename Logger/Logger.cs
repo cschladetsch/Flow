@@ -5,13 +5,14 @@
 // But, the same code file is used for both Unity and non-Unity debugging.
 // This has to be fixed and soon.
 
-#define UNITY
+//#define UNITY
 //#undef UNITY
 //#define UNITY
 //#undef TRACE
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 #if UNITY
 using UnityEngine.Assertions.Must;

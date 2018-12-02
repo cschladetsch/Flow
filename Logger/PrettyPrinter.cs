@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-// There are a lot of accessess to properties that could return null, but won't
+// There are a lot of accesses to properties that could return null, but won't
 // ReSharper disable PossibleNullReferenceException
 
 namespace Flow
