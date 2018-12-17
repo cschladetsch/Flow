@@ -1,0 +1,102 @@
+{
+  "EnableStopOnBuildError": false,
+  "ShowElapsedBuildTime": false,
+  "ShowBuildReport": false,
+  "ShowDebugWindowOnDebug": false,
+  "HighlightFindResults": true,
+  "ShowTimeStamps": false,
+  "SuppressDonation": false,
+  "Patterns": [
+    {
+      "ClassificationType": 6,
+      "IgnoreCase": false,
+      "RegExPattern": "\\> .*"
+    },
+    {
+      "ClassificationType": 5,
+      "IgnoreCase": false,
+      "RegExPattern": "~.*~"
+    },
+    {
+      "ClassificationType": 7,
+      "IgnoreCase": false,
+      "RegExPattern": "`.*`"
+    },
+    {
+      "ClassificationType": 8,
+      "IgnoreCase": false,
+      "RegExPattern": "# .*"
+    }
+  ],
+  "BuildMessageColor": {
+    "knownColor": 79,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "BuildTextColor": {
+    "knownColor": 78,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "ErrorTextColor": {
+    "knownColor": 141,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "WarningTextColor": {
+    "knownColor": 125,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "InformationTextColor": {
+    "knownColor": 49,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "CustomTextColor1": {
+    "knownColor": 51,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "CustomTextColor2": {
+    "knownColor": 96,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "CustomTextColor3": {
+    "knownColor": 106,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "CustomTextColor4": {
+    "knownColor": 73,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "FindSearchTermColor": {
+    "knownColor": 79,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "FindFileNameColor": {
+    "knownColor": 78,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "TimeStampColor": {
+    "knownColor": 45,
+    "name": null,
+    "state": 1,
+    "value": 0
+  }}
