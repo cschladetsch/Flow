@@ -1,12 +1,9 @@
-﻿#if DOTNET
+﻿#if asdasdasd//DOTNET
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Flow.Logger
 {
-	public class ConsoleLogger : Logger
+	public class ConsoleLogger : Impl.Logger
 	{
 		public ConsoleLogger() : base(ELogEntryType.Everything)
 		{
