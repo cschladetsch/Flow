@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 *.meta
+=======
+>>>>>>> 2156678... Updated to .Net4.5
 obj/
 bin/
 

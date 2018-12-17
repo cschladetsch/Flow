@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+=======
+// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+>>>>>>> 2156678... Updated to .Net4.5
 
 using System;
 using System.Collections;
@@ -61,7 +65,11 @@ namespace Flow
 
         IGenerator Do(Action act);
         IGenerator<T> Value<T>(T val);
+<<<<<<< HEAD
         IGenerator<T> Expression<T>(Func<T> action);
+=======
+        IGenerator<T> Expression<T>(Func<T> act);
+>>>>>>> 2156678... Updated to .Net4.5
         IGenerator If(Func<bool> pred, IGenerator @if);
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
         IGenerator While(Func<bool> pred, params IGenerator[] body);
@@ -73,7 +81,11 @@ namespace Flow
         IGenerator Break();
 
         ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
+<<<<<<< HEAD
         ITransient Wait(TimeSpan duration);
+=======
+        ITransient Wait(TimeSpan span);
+>>>>>>> 2156678... Updated to .Net4.5
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 
         IGenerator SetDebugLEvel(EDebugLevel level);

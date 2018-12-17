@@ -2,9 +2,13 @@ using System;
 
 namespace Flow.Impl
 {
+<<<<<<< HEAD
     public class Generator
         : Transient
         , IGenerator
+=======
+    public class Generator : Transient, IGenerator
+>>>>>>> 2156678... Updated to .Net4.5
     {
         public event GeneratorHandler Suspended;
         public event GeneratorHandler Resumed;
@@ -29,7 +33,11 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
+<<<<<<< HEAD
             Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
+=======
+            Kernel.Log.Verbose(90, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
+>>>>>>> 2156678... Updated to .Net4.5
 
             if (!Active)
                 return;
@@ -76,6 +84,7 @@ namespace Flow.Impl
 
             // thanks to https://github.com/innostory for reporting an issue
             // where a dangling reference to 'other' resulted in memory leaks.
+<<<<<<< HEAD
             void Action(ITransient tr)
             {
                 other.Completed -= Action;
@@ -83,6 +92,16 @@ namespace Flow.Impl
             }
 
             other.Completed += Action;
+=======
+            TransientHandler action = null;
+            action = tr =>
+            {
+                other.Completed -= action;
+                Suspend();
+            };
+
+            other.Completed += action;
+>>>>>>> 2156678... Updated to .Net4.5
 
             return this;
         }
@@ -104,6 +123,7 @@ namespace Flow.Impl
 
             // thanks to https://github.com/innostory for reporting an issue
             // where a dangling reference to 'other' resulted in memory leaks.
+<<<<<<< HEAD
             void OnCompleted(ITransient tr)
             {
                 other.Completed -= OnCompleted;
@@ -111,6 +131,16 @@ namespace Flow.Impl
             }
 
             other.Completed += OnCompleted;
+=======
+            TransientHandler onCompleted = null;
+            onCompleted = tr =>
+            {
+                other.Completed -= onCompleted;
+                Resume();
+            };
+
+            other.Completed += onCompleted;
+>>>>>>> 2156678... Updated to .Net4.5
 
             return this;
         }
@@ -126,6 +156,7 @@ namespace Flow.Impl
         }
     }
 
+<<<<<<< HEAD
     public delegate void WhyTypedGeneratorCompleted<in TResult>(IGenerator<TResult> self);
 
     public class Generator<TResult>
@@ -139,15 +170,35 @@ namespace Flow.Impl
         }
 
         //public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
+=======
+    public delegate void WhyTypedGeneratorCompleted<TR>(Generator<TR> self);
+
+    public class Generator<TR> : Generator, IGenerator<TR>
+    {
+        public new TR Value
+        {
+            get { return (TR)base.Value; }
+            set { base.Value = value; }
+        }
+
+        public event WhyTypedGeneratorCompleted<TR> TypedCompleted;
+>>>>>>> 2156678... Updated to .Net4.5
 
         protected static void CannotStart()
         {
             throw new Exception("Can't start typed gen");
         }
 
+<<<<<<< HEAD
         //protected void InvokeTypedCompleted()
         //{
         //    TypedCompleted?.Invoke(this);
         //}
+=======
+        protected void InvokeTypedCompleted()
+        {
+            TypedCompleted?.Invoke(this);
+        }
+>>>>>>> 2156678... Updated to .Net4.5
     }
 }

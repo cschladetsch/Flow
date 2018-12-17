@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 namespace Flow.Impl
@@ -5,6 +6,13 @@ namespace Flow.Impl
     internal class Future<T>
         : Transient
         , IFuture<T>
+=======
+// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+
+namespace Flow.Impl
+{
+    internal class Future<T> : Transient, IFuture<T>
+>>>>>>> 2156678... Updated to .Net4.5
     {
         private T _value;
 
