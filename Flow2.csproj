@@ -8,7 +8,7 @@
     <ProjectGuid>{18326C80-2CC4-417D-8FEE-EA608ED85636}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Flow2</RootNamespace>
+    <RootNamespace>Flow</RootNamespace>
     <AssemblyName>Flow2</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
