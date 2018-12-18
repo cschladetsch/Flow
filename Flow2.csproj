@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IBarrier.cs" />
     <Compile Include="IBreak.cs" />
     <Compile Include="ICase.cs" />
