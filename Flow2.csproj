@@ -111,7 +111,7 @@
     <Error Condition="!Exists('..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit.3.11.0\build\NUnit.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy /y $(SolutionDir)\Bin\$(Configuration)\$(AssemblyName).dll $(SolutionDir)\Unity3d\DriverProject\Assets\Liminal\Assemblies
+    <PostBuildEvent>copy /y $(SolutionDir)\Bin\$(Configuration)\$(AssemblyName).dll $(SolutionDir)\Unity3d\DiverProject\Assets\Liminal\Assemblies
 
 </PostBuildEvent>
   </PropertyGroup>
