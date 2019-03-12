@@ -27,10 +27,10 @@ This library uses the external [CoLib](http://www.github.com) and [Flow](https:/
 
 ## Main Components
 
-* [Registry](Registry/Readme.md)
-* [Model](Model/Readme.md)
-* [Agent](Agent/Readme.md)
-* [View](View/Readme.md)
+* [Registry](Registry)
+* [Model](Model)
+* [Agent](Agent)
+* [View](View)
 
 ## Request/Response
 
