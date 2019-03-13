@@ -1,5 +1,4 @@
 ﻿using System;
-using App.Model;
 using UniRx;
 
 namespace Dekuple.Agent
@@ -23,7 +22,6 @@ namespace Dekuple.Agent
         public TModel Model => BaseModel as TModel;
         public IReadOnlyReactiveProperty<bool> Destroyed => _destroyed;
         public IReadOnlyReactiveProperty<IOwner> Owner => Model.Owner;
-        public IPlayerModel PlayerModel => Owner.Value as IPlayerModel;
 
         private readonly BoolReactiveProperty _destroyed = new BoolReactiveProperty(false);
         private bool _started = false;

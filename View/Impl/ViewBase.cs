@@ -1,5 +1,4 @@
 ﻿using System;
-using App.View;
 using UnityEngine;
 
 using UniRx;
