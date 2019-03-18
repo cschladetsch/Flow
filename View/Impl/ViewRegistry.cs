@@ -10,7 +10,7 @@ namespace Dekuple.View.Impl
     /// <summary>
     /// A registry of views. A view is a unity3d-space representation of
     /// and Agent which in turn has a Model.
-    /// This is similar to the MVVC/MVC pattern, but extended so that the
+    /// This is similar to the MVVM/MVC pattern, but extended so that the
     /// 'ViewController' or 'Controller' is an Agent, which has behavior
     /// defined over time since each Agent is a node in a Flow.Kernel
     /// process graph.
@@ -38,15 +38,15 @@ namespace Dekuple.View.Impl
             return Prepare(Prepare(typeof(TIView), view)) as TIView;
         }
 
-        public TIView FromPrefab<TIView, TIAgent, TModel>(IViewBase player, Object prefab, TModel model)
+        public TIView FromPrefab<TIView, TIAgent, TModel>(IViewBase owner, Object prefab, TModel model)
             where TIView : class , IViewBase
             where TIAgent : class, IAgent, IHasDestroyHandler<IAgent>
             where TModel : IModel
         {
             var view = FromPrefab<TIView>(prefab);
             Assert.IsNotNull(view);
-            var agent = player.AgentBase.Registry.New<TIAgent>(model);
-            view.SetAgent(player, agent);
+            var agent = owner.AgentBase.Registry.New<TIAgent>(model);
+            view.SetAgent(owner, agent);
             Assert.IsTrue(view.IsValid);
             return view;
         }

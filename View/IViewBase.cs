@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Dekuple.Model;
+using UnityEngine;
 
 namespace Dekuple.View
 {
@@ -16,6 +17,7 @@ namespace Dekuple.View
     {
         IAgent AgentBase { get; set; }
         GameObject GameObject { get; }
+        Transform Transform { get; }
 
         void SetAgent(IViewBase owner, IAgent agent);
     }

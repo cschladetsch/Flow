@@ -31,6 +31,7 @@ namespace Dekuple.View.Impl
         public IViewBase OwnerView { get; set; }
         public IModel OwnerModel => Owner.Value as IModel;
         public GameObject GameObject => gameObject;
+        public Transform Transform => gameObject.transform;
 
         // lazy create because most views won't need a queue or audio source
         protected CommandQueue _Queue => _queue ?? (_queue = new CommandQueue());
@@ -67,7 +68,6 @@ namespace Dekuple.View.Impl
         public virtual void SetAgent(IViewBase player, IAgent agent)
         {
             OwnerView = player;
-            Assert.IsNotNull(agent);
             AgentBase = agent;
         }
 

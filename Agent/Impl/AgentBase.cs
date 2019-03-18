@@ -69,18 +69,19 @@ namespace Dekuple.Agent
             return other.Owner.Value == Owner.Value;
         }
 
-        public virtual void StartGame()
-        {
-            Assert.IsFalse(_started);
-            _started = true;
-        }
+        // DK TODO Move to Chess2
+        //public virtual void StartGame()
+        //{
+        //    Assert.IsFalse(_started);
+        //    _started = true;
+        //}
 
-        public virtual void EndGame()
-        {
-            _started = false;
-        }
+        //public virtual void EndGame()
+        //{
+        //    _started = false;
+        //}
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             TransientCompleted();
 
@@ -89,5 +90,6 @@ namespace Dekuple.Agent
 
             OnDestroyed?.Invoke(this);
         }
+
     }
 }
