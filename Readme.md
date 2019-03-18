@@ -1,7 +1,5 @@
 ﻿# Dekuple
 
-[Christian Schladetsch](mailto:christian.schladetsch@gmail.com)
-
 A dependancy-injection and entity system designed from the ground up to support both rapid prototyping and long-term development and support of `Unity3d` based applications.
 
 The system also adds a `MVC` or `Model-View-Controller` pattern.
@@ -27,10 +25,10 @@ This library uses the external [CoLib](http://www.github.com) and [Flow](https:/
 
 ## Main Components
 
-* [Registry](Registry/Readme.md)
-* [Model](Model/Readme.md)
-* [Agent](Agent/Readme.md)
-* [View](View/Readme.md)
+* [Registry](Registry)
+* [Model](Model)
+* [Agent](Agent)
+* [View](View)
 
 ## Request/Response
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using App.Model;
 using UniRx;
 
 namespace Dekuple.Agent
@@ -23,7 +22,6 @@ namespace Dekuple.Agent
         public TModel Model => BaseModel as TModel;
         public IReadOnlyReactiveProperty<bool> Destroyed => _destroyed;
         public IReadOnlyReactiveProperty<IOwner> Owner => Model.Owner;
-        public IPlayerModel PlayerModel => Owner.Value as IPlayerModel;
 
         private readonly BoolReactiveProperty _destroyed = new BoolReactiveProperty(false);
         private bool _started = false;
@@ -71,18 +69,19 @@ namespace Dekuple.Agent
             return other.Owner.Value == Owner.Value;
         }
 
-        public virtual void StartGame()
-        {
-            Assert.IsFalse(_started);
-            _started = true;
-        }
+        // DK TODO Move to Chess2
+        //public virtual void StartGame()
+        //{
+        //    Assert.IsFalse(_started);
+        //    _started = true;
+        //}
 
-        public virtual void EndGame()
-        {
-            _started = false;
-        }
+        //public virtual void EndGame()
+        //{
+        //    _started = false;
+        //}
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             TransientCompleted();
 
@@ -91,5 +90,6 @@ namespace Dekuple.Agent
 
             OnDestroyed?.Invoke(this);
         }
+
     }
 }

@@ -24,6 +24,8 @@ namespace Dekuple.Agent
         public bool ShowStack { get; set; }
         public int Verbosity { get => _log.Verbosity; set => _log.Verbosity = value; }
 
+        protected readonly LoggerFacade<Flow.Impl.Logger> _log = new LoggerFacade<Flow.Impl.Logger>("Agent");
+
         public ITransient Named(string name)
         {
             Name = name;
@@ -68,8 +70,6 @@ namespace Dekuple.Agent
         {
             Completed?.Invoke(this);
         }
-
-        protected readonly LoggerFacade<Flow.Impl.Logger> _log = new LoggerFacade<Flow.Impl.Logger>("Agent");
     }
 
     public abstract class AgentLogger<TModel>

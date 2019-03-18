@@ -1,4 +1,6 @@
-﻿using Flow;
+﻿using System;
+using System.Collections;
+using Flow;
 
 namespace Dekuple.Agent
 {
@@ -14,10 +16,7 @@ namespace Dekuple.Agent
             : class
             , IModel
     {
-        protected AgentBaseCoro(TModel model)
-            : base(model)
-        {
-        }
+        private INode _node;
 
         protected INode _Node
         {
@@ -32,6 +31,23 @@ namespace Dekuple.Agent
             }
         }
 
-        private INode _node;
+        protected AgentBaseCoro(TModel model)
+            : base(model)
+        {
+        }
+
+        protected IGenerator NewCoro(Func<IGenerator, IEnumerator> fun)
+        {
+            var coro = Factory.Coroutine(fun);
+            _Node.Add(coro);
+            return coro;
+        }
+
+        protected IGenerator NewCoro<T0>(Func<IGenerator, T0, IEnumerator> fun, T0 t0)
+        {
+            var coro = Factory.Coroutine(fun, t0);
+            _Node.Add(coro);
+            return coro;
+        }
     }
 }
