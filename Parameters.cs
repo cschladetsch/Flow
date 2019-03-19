@@ -1,5 +1,5 @@
 ﻿// define this for some extra diagnostics
-#define LOG_TRACE_VERBOSE
+//#define LOG_TRACE_VERBOSE
 
 // ReSharper disable InconsistentNaming
 

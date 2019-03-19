@@ -271,7 +271,7 @@ namespace Dekuple.Registry
                     val = NewInstance(inject.ValueType, inject.Args);
                     if (val == null)
                     {
-                        Error($"Failed to resolve deferred dependancy {pi}");
+                        Error($"Failed to resolve deferred dependency {pi}");
                         continue;
                     }
                 }
@@ -364,7 +364,7 @@ namespace Dekuple.Registry
             return null;
         }
 
-        private static bool MatchingConstructor(IReadOnlyList<object> args, IReadOnlyCollection<ParameterInfo> pars)
+        private bool MatchingConstructor(IReadOnlyList<object> args, IReadOnlyCollection<ParameterInfo> pars)
         {
             if (args == null)
                 return pars.Count == 0;
@@ -381,14 +381,15 @@ namespace Dekuple.Registry
                     continue;
                 }
 
-                if (!param.IsAssignableFrom(args[n].GetType()))
+                if (!param.IsInstanceOfType(args[n]))
                 {
-                    Debug.Log($"Cannot assign {args[n]} to {param}");
-                    break;
+                    Error($"Cannot assign {args[n]} to {param}");
+                    return false;
                 }
 
                 ++n;
             }
+
             return n == args.Count;
         }
 
