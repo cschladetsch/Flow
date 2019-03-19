@@ -103,14 +103,13 @@ namespace Flow.Impl
 
             // thanks to https://github.com/innostory for reporting an issue
             // where a dangling reference to 'other' resulted in memory leaks.
-            TransientHandler onCompleted = null;
-            onCompleted = tr =>
+            void OnCompleted(ITransient tr)
             {
-                other.Completed -= onCompleted;
+                other.Completed -= OnCompleted;
                 Resume();
-            };
+            }
 
-            other.Completed += onCompleted;
+            other.Completed += OnCompleted;
 
             return this;
         }
@@ -132,8 +131,8 @@ namespace Flow.Impl
     {
         public new TR Value
         {
-            get { return (TR)base.Value; }
-            set { base.Value = value; }
+            get => (TR)base.Value;
+            set => base.Value = value;
         }
 
         public event WhyTypedGeneratorCompleted<TR> TypedCompleted;

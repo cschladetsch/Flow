@@ -6,7 +6,7 @@
 // This has to be fixed and soon.
 
 //#define UNITY
-//#undef UNITY
+#undef UNITY
 //#define UNITY
 //#undef TRACE
 

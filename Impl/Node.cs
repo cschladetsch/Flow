@@ -40,8 +40,7 @@ namespace Flow.Impl
 
                 foreach (var tr in Contents.ToList())
                 {
-                    var gen = tr as IGenerator;
-                    if (gen != null)
+                    if (tr is IGenerator gen)
                     {
                         if (Kernel.Break)
                             goto end;
@@ -54,13 +53,10 @@ namespace Flow.Impl
 
                         if (!gen.Running)
                         {
-                            break;
+                            continue;
                         }
 
                         gen.Step();
-                        //gen = gen.Value as IGenerator;
-
-                        //Kernel.StepTime();
                     }
 
                     if (_stepOne)
