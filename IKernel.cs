@@ -26,17 +26,15 @@ namespace Flow
         EDebugLevel DebugLevel { get; set; }
         ILogger Log { get; set; }
 
-        // true to break out of loops
         bool Break { get; }
-
         INode Root { get; set; }
         IFactory Factory { get; }
         ITimeFrame Time { get; }
         void Update(float deltaSeconds);
         void Wait(TimeSpan end);
-        void WaitSteps(int numSteps);
         void BreakFlow();
-        void StepTime();
-        void ContinueFlow();
+        //void WaitSteps(int numSteps);
+        //void StepTime();
+        //void ContinueFlow();
     }
 }

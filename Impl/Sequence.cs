@@ -4,7 +4,7 @@
     {
         internal Sequence()
         {
-            _stepOne = true;
+            _StepOne = true;
         }
     }
 }

@@ -6,11 +6,6 @@ namespace Flow.Impl
 {
     internal class Node : Group, INode
     {
-        //public void Add(params ITransient[] trans)
-        //{
-        //    base.Add(trans);
-        //}
-
         public void Add(params IGenerator[] gens)
         {
             foreach (var gen in gens)
@@ -59,7 +54,7 @@ namespace Flow.Impl
                         gen.Step();
                     }
 
-                    if (_stepOne)
+                    if (_StepOne)
                         break;
                 }
             }
@@ -83,6 +78,6 @@ namespace Flow.Impl
         }
 
         private bool _stepping;
-        protected bool _stepOne;
+        protected bool _StepOne;
     }
 }
