@@ -138,7 +138,7 @@ namespace Flow.Impl
             set => base.Value = value;
         }
 
-        public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
+        //public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
 
         protected static void CannotStart()
         {

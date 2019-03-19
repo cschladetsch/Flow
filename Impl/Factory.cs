@@ -55,75 +55,75 @@ namespace Flow.Impl
 
         public IGenerator Do(Action act)
         {
-            return Prepare(new Subroutine() { Sub = (tr) => act() });
+            return Prepare(new Subroutine() { Sub = tr => act() });
         }
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
             var timed = TimedFuture<TR>(span);
-            timed.TimedOut += (tr) => trans.Complete();
+            timed.TimedOut += tr => trans.Complete();
             return Prepare(timed);
         }
 
         public IGenerator If(Func<bool> pred, IGenerator body)
         {
-            return Prepare(Coroutine(IfCoro, pred, body));
-        }
-
-        private static IEnumerator IfCoro(IGenerator self, Func<bool> pred, IGenerator body)
-        {
-            while (true)
+            IEnumerator IfCoro(IGenerator self)
             {
-                if (!body.Active)
-                    yield break;
+                while (true)
+                {
+                    if (!body.Active)
+                        yield break;
 
-                if (pred())
-                    body.Step();
+                    if (pred())
+                        body.Step();
 
-                yield return 0;
+                    yield return 0;
+                }
             }
+
+            return Prepare(Coroutine(IfCoro));
         }
 
         public IGenerator IfElse(Func<bool> pred, IGenerator then, IGenerator elseBody)
         {
-            return Prepare(Coroutine(IfElseCoro, pred, then, elseBody));
-        }
-
-        private static IEnumerator IfElseCoro(IGenerator self, Func<bool> pred, IGenerator then, IGenerator elseBody)
-        {
-            while (true)
+            IEnumerator IfElseCoro(IGenerator self)
             {
-                if (pred())
+                while (true)
                 {
-                    if (!then.Active)
-                        yield break;
-                    then.Step();
-                }
-                else
-                {
-                    if (!elseBody.Active)
-                        yield break;
-                    elseBody.Step();
+                    if (pred())
+                    {
+                        if (!then.Active)
+                            yield break;
+                        then.Step();
+                    }
+                    else
+                    {
+                        if (!elseBody.Active)
+                            yield break;
+                        elseBody.Step();
+                    }
                 }
             }
+
+            return Prepare(Coroutine(IfElseCoro));
         }
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
         {
-            return Prepare(Coroutine(WhileCoro, pred, body));
-        }
-
-        private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
-        {
-            var node = Prepare(Node(gens));
-            while (pred())
+            IEnumerator WhileCoro(IGenerator self)
             {
-                node.Step();
-                if (!node.Active || node.Empty)
-                    yield break;
+                var node = Prepare(Node(body));
+                while (pred())
+                {
+                    node.Step();
+                    if (!node.Active || node.Empty)
+                        yield break;
 
-                yield return null;
+                    yield return null;
+                }
             }
+
+            return Prepare(Coroutine(WhileCoro));
         }
 
         public IGenerator<T> Value<T>(T val)
@@ -143,9 +143,7 @@ namespace Flow.Impl
 
         public IGenerator Sequence(IEnumerable<IGenerator> gens)
         {
-            var seq = new Sequence();
-            seq.Add(gens);
-            return Prepare(seq);
+            return Prepare(new Sequence(gens));
         }
 
         public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases)
@@ -153,21 +151,18 @@ namespace Flow.Impl
         {
             gen.Step();
             var val = gen.Value;
-            var coro = Coroutine(SwitchCoro, val, cases);
-            Prepare(coro);
-            return coro;
+            IEnumerator SwitchCoro(IGenerator self)
+            {
+                return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
+            }
+
+            return Prepare(Coroutine(SwitchCoro));
         }
 
         public ICase<T> Case<T>(T val, IGenerator statement)
             where T : IComparable<T>
         {
             return new Case<T>(val, statement);
-        }
-
-        private static IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases)
-            where T : IComparable<T>
-        {
-            return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
         }
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
