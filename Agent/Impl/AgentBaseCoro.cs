@@ -49,5 +49,12 @@ namespace Dekuple.Agent
             _Node.Add(coro);
             return coro;
         }
+
+        protected IGenerator NewCoro<T0, T1>(Func<IGenerator, T0, T1, IEnumerator> fun, T0 t0, T1 t1)
+        {
+            var coro = Factory.Coroutine(fun, t0, t1);
+            _Node.Add(coro);
+            return coro;
+        }
     }
 }
