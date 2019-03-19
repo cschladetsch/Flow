@@ -73,7 +73,7 @@ namespace Flow
         IGenerator Break();
 
         ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
-        ITransient Wait(TimeSpan span);
+        ITransient Wait(TimeSpan duration);
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 
         IGenerator SetDebugLEvel(EDebugLevel level);

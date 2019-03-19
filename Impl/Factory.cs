@@ -265,9 +265,8 @@ namespace Flow.Impl
         {
             var barrier = Barrier();
             foreach (var tr in args)
-            {
                 barrier.Add(tr);
-            }
+            
             return Prepare(barrier);
         }
 
@@ -278,8 +277,7 @@ namespace Flow.Impl
 
         public ITimedBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
         {
-            var barrier = new TimedBarrier(Kernel, span, args);
-            return Prepare(barrier);
+            return Prepare(new TimedBarrier(Kernel, span, args));
         }
 
         public ITrigger Trigger(params ITransient[] args)
@@ -313,9 +311,9 @@ namespace Flow.Impl
             return future;
         }
 
-        public ITransient Wait(TimeSpan span)
+        public ITransient Wait(TimeSpan duration)
         {
-            return Do(() => Kernel.Wait(span));
+            return Do(() => Kernel.Wait(duration));
         }
 
         public ITransient WaitFor(ITransient trans, TimeSpan timeOut)
@@ -430,14 +428,8 @@ namespace Flow.Impl
             return Prepare(new Channel<TR>(Kernel));
         }
 
-        public T Prepare<T>(T obj, bool add) where T : ITransient
-        {
-            var tr = Prepare(obj);
-            Kernel.Root.Add(tr);
-            return tr;
-        }
-
-        public T Prepare<T>(T obj) where T : ITransient
+        public T Prepare<T>(T obj)
+            where T : ITransient
         {
             obj.Kernel = Kernel;
             (obj as IGenerator)?.Resume();
