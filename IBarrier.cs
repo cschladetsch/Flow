@@ -4,11 +4,11 @@ using System;
 
 namespace Flow
 {
+    /// <inheritdoc />
     /// <summary>
     /// A Barrier is a Group that Completes itself when all added Transients have been Removed from it.
     /// </summary>
     public interface IBarrier : IGroup
     {
-        IBarrier ForEach<T>(Action<T> act) where T : class;
     }
 }

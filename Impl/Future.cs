@@ -2,7 +2,9 @@
 
 namespace Flow.Impl
 {
-    internal class Future<T> : Transient, IFuture<T>
+    internal class Future<T>
+        : Transient
+        , IFuture<T>
     {
         private T _value;
 

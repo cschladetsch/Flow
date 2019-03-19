@@ -6,23 +6,28 @@ using System.Linq;
 
 namespace Flow.Impl
 {
+    /// <inheritdoc cref="Generator" />
     /// <summary>
-    ///     A flow Group contains a collection of other Transients, and fires events when the contents
-    ///     of the group changes.
-    ///     Suspending a Group suspends all contained Generators, and Resuming a Group
-    ///     Resumes all contained Generators.
-    ///		Stepping a group does nothing.
+    /// A flow Group contains a collection of other Transients, and fires events when the contents
+    /// of the group changes.
+    /// Suspending a Group suspends all contained Generators, and Resuming a Group
+    /// Resumes all contained Generators.
+    /// Stepping a group does nothing.
     /// </summary>
-    internal class Group : Generator<bool>, IGroup
+    internal class Group
+        : Generator<bool>
+        , IGroup
     {
         public event GroupHandler Added;
         public event GroupHandler Removed;
 
-        public bool Empty => _contents.Count == 0;
-
-        public IEnumerable<ITransient> Contents => _contents;
-
+        public bool Empty => _Contents.Count == 0;
+        public IEnumerable<ITransient> Contents => _Contents;
         public IEnumerable<IGenerator> Generators => Contents.OfType<IGenerator>();
+
+        protected readonly List<ITransient> Additions = new List<ITransient>();
+        protected readonly List<ITransient> Deletions = new List<ITransient>();
+        protected readonly List<ITransient> _Contents = new List<ITransient>();
 
         internal Group()
         {
@@ -37,28 +42,30 @@ namespace Flow.Impl
 
             PerformPending();
 
-            // TODO: do we really need to copy?
+            // TODO: do we really need to copy? Answer: yes (?) because the Pre() may change contents of this
             foreach (var gen in Generators.ToArray())
-            {
                 gen.Pre();
-            }
         }
 
         public override void Post()
         {
             base.Post();
 
-            // TODO: do we really need to copy?
+            // TODO: do we really need to copy? Answer: yes (?) because the Pre() may change contents of this
             foreach (var gen in Generators.ToArray())
-            {
                 gen.Post();
-            }
         }
 
         public void Add(IEnumerable<ITransient> others)
         {
             foreach (var other in others)
             {
+                if (other == null)
+                {
+                    Warn($"Attempt to add null value to Barrier {this}");
+                    continue;
+                }
+
                 DeferAdd(other);
             }
         }
@@ -91,9 +98,7 @@ namespace Flow.Impl
             Additions.Clear();
 
             foreach (var tr in Contents)
-            {
                 Deletions.Add(tr);
-            }
 
             PerformRemoves();
         }
@@ -101,9 +106,7 @@ namespace Flow.Impl
         private void ForEachGenerator(Action<IGenerator> act)
         {
             foreach (var gen in Generators)
-            {
                 act(gen);
-            }
         }
 
         protected void PerformPending()
@@ -119,11 +122,11 @@ namespace Flow.Impl
 
             foreach (var tr in Deletions.ToList())
             {
-                _contents.RemoveRef(tr);
+                _Contents.RemoveRef(tr);
                 if (tr == null)
                     continue;
 
-                Kernel.Log.Info("Removing {0} from Node {1}", tr, Name);
+                Kernel.Log.Verbose(10, "Removing {0} from Node {1}", tr, Name);
 
                 tr.Completed -= Remove;
 
@@ -137,17 +140,13 @@ namespace Flow.Impl
         {
             foreach (var tr in Additions)
             {
-                _contents.Add(tr);
-                Verbose(30, $"Adding {tr} to {this}");
+                _Contents.Add(tr);
+                Verbose(10, $"Adding {tr} to {this}");
                 tr.Completed += Remove;
                 Added?.Invoke(this, tr);
             }
 
             Additions.Clear();
         }
-
-        protected readonly List<ITransient> Additions = new List<ITransient>();
-        protected readonly List<ITransient> Deletions = new List<ITransient>();
-        protected readonly List<ITransient> _contents = new List<ITransient>();
     }
 }

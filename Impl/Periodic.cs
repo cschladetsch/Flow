@@ -4,13 +4,17 @@ using System;
 
 namespace Flow.Impl
 {
-    internal class Periodic : Subroutine<bool>, IPeriodic
+    internal class Periodic
+        : Subroutine<bool>
+        , IPeriodic
     {
         public event TransientHandler Elapsed;
 
         public TimeSpan TimeRemaining => Kernel.Time.Now - TimeStarted;
         public DateTime TimeStarted { get; }
         public TimeSpan Interval { get; }
+
+        private DateTime _expires;
 
         internal Periodic(IKernel kernel, TimeSpan interval)
         {
@@ -31,7 +35,5 @@ namespace Flow.Impl
 
             return true;
         }
-
-        private DateTime _expires;
     }
 }

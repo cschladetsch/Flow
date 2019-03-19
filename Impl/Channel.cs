@@ -4,8 +4,13 @@ using System.Collections.Generic;
 
 namespace Flow.Impl
 {
-    internal class Channel<TR> : Subroutine<bool>, IChannel<TR>
+    internal class Channel<TR>
+        : Subroutine<bool>
+        , IChannel<TR>
     {
+        private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
+        private readonly Queue<TR> _values = new Queue<TR>();
+
         internal Channel(IKernel kernel)
         {
             Sub = StepChannel;
@@ -32,9 +37,7 @@ namespace Flow.Impl
 
             var list = new List<TR>();
             while (_values.Count > 0)
-            {
                 list.Add(_values.Dequeue());
-            }
 
             return list;
         }
@@ -47,9 +50,7 @@ namespace Flow.Impl
         public void Flush()
         {
             while (_values.Count > 0 && _requests.Count > 0)
-            {
                 _requests.Dequeue().Value = _values.Dequeue();
-            }
         }
 
         internal void Close()
@@ -57,9 +58,7 @@ namespace Flow.Impl
             Flush();
 
             foreach (var f in _requests)
-            {
                 f.Complete();
-            }
         }
 
         private bool StepChannel(IGenerator self)
@@ -68,8 +67,5 @@ namespace Flow.Impl
 
             return true;
         }
-
-        private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
-        private readonly Queue<TR> _values = new Queue<TR>();
     }
 }

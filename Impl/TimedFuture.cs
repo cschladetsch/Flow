@@ -4,7 +4,9 @@ using System;
 
 namespace Flow.Impl
 {
-    internal class TimedFuture<T> : Future<T>, ITimedFuture<T>
+    internal class TimedFuture<T>
+        : Future<T>
+        , ITimedFuture<T>
     {
         public event TimedOutHandler TimedOut;
         public ITimer Timer { get; internal set; }

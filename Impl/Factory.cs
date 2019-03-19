@@ -15,10 +15,9 @@ namespace Flow.Impl
     /// <summary>
     /// Makes instances for the Flow library
     /// </summary>
-    public class Factory : IFactory
+    public class Factory
+        : IFactory
     {
-        // TODO: does the Factory really need a referene to a kernel?
-        // Kernel and Factory should be separated?
         public IKernel Kernel { get; set; }
 
         public bool AutoAdd { get; set; }
@@ -132,9 +131,9 @@ namespace Flow.Impl
             return Prepare(new Generator<T>() { Value = val });
         }
 
-        public IGenerator<T> Expression<T>(Func<T> act)
+        public IGenerator<T> Expression<T>(Func<T> action)
         {
-            return Prepare(new Subroutine<T> { Sub = s => act() });
+            return Prepare(new Subroutine<T> { Sub = s => action() });
         }
 
         public IGenerator Sequence(params IGenerator[] gens)
@@ -149,7 +148,8 @@ namespace Flow.Impl
             return Prepare(seq);
         }
 
-        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
+        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases)
+            where T : IComparable<T>
         {
             gen.Step();
             var val = gen.Value;
@@ -158,12 +158,14 @@ namespace Flow.Impl
             return coro;
         }
 
-        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
+        public ICase<T> Case<T>(T val, IGenerator statement)
+            where T : IComparable<T>
         {
             return new Case<T>(val, statement);
         }
 
-        private static IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
+        private static IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases)
+            where T : IComparable<T>
         {
             return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
         }
@@ -202,12 +204,10 @@ namespace Flow.Impl
             throw new NotImplementedException();
         }
 
-        IEnumerator<bool> ConditionCoro(IGenerator self, Func<bool> pred)
+        private IEnumerator<bool> ConditionCoro(ITransient self, Func<bool> pred)
         {
             while (pred())
-            {
                 yield return true;
-            }
 
             yield return false;
             self.Complete();
@@ -266,8 +266,6 @@ namespace Flow.Impl
             var barrier = Barrier();
             foreach (var tr in args)
             {
-                if (tr == null)
-                    continue;
                 barrier.Add(tr);
             }
             return Prepare(barrier);

@@ -4,12 +4,21 @@ using System;
 
 namespace Flow.Impl
 {
-    public class Kernel : Generator<bool>, IKernel
+    public class Kernel
+        : Generator<bool>
+        , IKernel
     {
         public EDebugLevel DebugLevel { get; set; }
         public ILogger Log { get; set; }
         public INode Root { get; set; }
         public new IFactory Factory { get; internal set; }
+        public ITimeFrame Time => _time;
+
+        private bool _waiting;
+        private DateTime _resumeTime;
+        private readonly TimeFrame _time = new TimeFrame();
+
+        public bool Break { get; private set; }
 
         internal Kernel()
         {
@@ -32,23 +41,9 @@ namespace Flow.Impl
             _time.Delta = TimeSpan.FromSeconds(0);
         }
 
-        public ITimeFrame Time => _time;
-
-        public void WaitSteps(int numSteps)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Break { get; private set; }
-
         public void BreakFlow()
         {
             Break = true;
-        }
-
-        public void ContinueFlow()
-        {
-            Break = false;
         }
 
         public void Wait(TimeSpan span)
@@ -115,9 +110,5 @@ namespace Flow.Impl
             _time.Delta = now - _time.Last;
             _time.Now = now;
         }
-
-        private bool _waiting;
-        private DateTime _resumeTime;
-        private readonly TimeFrame _time = new TimeFrame();
     }
 }

@@ -2,9 +2,13 @@
 
 namespace Flow.Impl
 {
-    internal class Case<T> : ICase<T> where T : IComparable<T>
+    internal class Case<T>
+        : ICase<T> where T 
+            : IComparable<T>
     {
-        public IGenerator Body { get; private set; }
+        public IGenerator Body { get; }
+
+        private readonly T _compare;
 
         internal Case(T val, IGenerator gen)
         {
@@ -16,7 +20,5 @@ namespace Flow.Impl
         {
             return val.CompareTo(_compare) == 0;
         }
-
-        private readonly T _compare;
     }
 }

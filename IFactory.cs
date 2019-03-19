@@ -61,7 +61,7 @@ namespace Flow
 
         IGenerator Do(Action act);
         IGenerator<T> Value<T>(T val);
-        IGenerator<T> Expression<T>(Func<T> act);
+        IGenerator<T> Expression<T>(Func<T> action);
         IGenerator If(Func<bool> pred, IGenerator @if);
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
         IGenerator While(Func<bool> pred, params IGenerator[] body);
