@@ -19,7 +19,8 @@ namespace Dekuple.View
         GameObject GameObject { get; }
         Transform Transform { get; }
 
-        void SetAgent(IViewBase owner, IAgent agent);
+        void SetModel(IModel model);
+        void SetAgent(IAgent agent);
     }
 
     public interface IView<out TIAgent>

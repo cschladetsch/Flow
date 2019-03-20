@@ -1,11 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dekuple.Model;
 using UniRx;
 
 namespace Dekuple
 {
     public static class CollectionExtentions
     {
+        public static void AddReactive<T>(this ICollection<T> coll, T val)
+            where T : class, IHasDestroyHandler<IModel>
+        {
+            coll.Add(val);
+
+            void Remove(IHasDestroyHandler<IModel> tr)
+            {
+                val.OnDestroyed -= Remove;  // remove dangling reference
+                coll.Remove(val);
+                UnityEngine.Debug.Log($"Destroyed {val}. {coll.Count} items remain");
+            }
+
+            val.OnDestroyed += Remove;
+        }
+
         private static readonly Random Rand = new Random(DateTime.Now.Millisecond);
 
         public static void Shuffle<T>(this IList<T> list)

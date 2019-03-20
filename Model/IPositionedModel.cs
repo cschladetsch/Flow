@@ -2,7 +2,7 @@
 using UniRx;
 using UnityEngine;
 
-namespace App.Models
+namespace Dekuple.Model
 {
     public interface IPositionedModel
         : IModel

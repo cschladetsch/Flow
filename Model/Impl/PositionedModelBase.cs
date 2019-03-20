@@ -1,9 +1,7 @@
-﻿using Dekuple;
-using Dekuple.Model;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
-namespace App.Models
+namespace Dekuple.Model
 {
     public class PositionedModelBase
         : ModelBase
