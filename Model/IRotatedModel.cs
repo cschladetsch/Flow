@@ -1,5 +1,4 @@
-﻿using Dekuple.Model;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 namespace Dekuple.Model
