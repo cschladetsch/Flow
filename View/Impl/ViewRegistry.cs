@@ -38,15 +38,15 @@ namespace Dekuple.View.Impl
             return Prepare(Prepare(typeof(TIView), view)) as TIView;
         }
 
-        public TIView FromPrefab<TIView, TIAgent, TModel>(IViewBase owner, Object prefab, TModel model)
+        public TIView FromPrefab<TIView, TIAgent, TModel>(IViewBase viewBase, Object prefab, TModel model)
             where TIView : class , IViewBase
             where TIAgent : class, IAgent, IHasDestroyHandler<IAgent>
             where TModel : IModel
         {
             var view = FromPrefab<TIView>(prefab);
             Assert.IsNotNull(view);
-            var agent = owner.AgentBase.Registry.New<TIAgent>(model);
-            view.SetAgent(owner, agent);
+            var agent = viewBase.AgentBase.Registry.New<TIAgent>(model);
+            view.SetAgent(agent);
             Assert.IsTrue(view.IsValid);
             return view;
         }

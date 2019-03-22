@@ -24,14 +24,15 @@ namespace Dekuple.View.Impl
         public string Name { get; set; }
         public IRegistry<IViewBase> Registry { get; set; }
         public IViewRegistry ViewRegistry => Registry as IViewRegistry;
-        public IReadOnlyReactiveProperty<IOwner> Owner => AgentBase.Owner;
+        public IReadOnlyReactiveProperty<IOwner> Owner => AgentBase?.Owner ?? Model?.Owner;
         public IReadOnlyReactiveProperty<bool> Destroyed => _destroyed;
         public event Action<IViewBase> OnDestroyed;
         public IAgent AgentBase { get; set; }
         public IViewBase OwnerView { get; set; }
-        public IModel OwnerModel => Owner.Value as IModel;
+        public IModel OwnerModel => Owner?.Value as IModel;
         public GameObject GameObject => gameObject;
         public Transform Transform => gameObject.transform;
+        public IModel Model => AgentBase?.BaseModel ?? _model;
 
         // lazy create because most views won't need a queue or audio source
         protected CommandQueue _Queue => _queue ?? (_queue = new CommandQueue());
@@ -43,6 +44,7 @@ namespace Dekuple.View.Impl
         private CommandQueue _queue;
         private AudioSource _audioSource;
         private readonly BoolReactiveProperty _destroyed = new BoolReactiveProperty(false);
+        private IModel _model;
 
         public virtual bool IsValid
         {
@@ -65,10 +67,22 @@ namespace Dekuple.View.Impl
             return other.Owner.Value == Owner.Value;
         }
 
-        public virtual void SetAgent(IViewBase player, IAgent agent)
+        public virtual void SetModel(IModel model)
         {
-            OwnerView = player;
+            _model = model;
+            model.OnDestroyed += obj => Destroy();
+        }
+
+        public virtual void SetAgent(IAgent agent)
+        {
             AgentBase = agent;
+        }
+
+        public void SetOwner(IOwner owner)
+        {
+            Verbose(20, $"New owner of {this} is {owner}");
+
+            Model?.SetOwner(owner);
         }
 
         private bool Is<T>()
@@ -103,6 +117,19 @@ namespace Dekuple.View.Impl
 
         protected virtual void Begin()
         {
+            BindTransformComponents();
+        }
+
+        private void BindTransformComponents()
+        {
+            if (Model is IPositionedModel positionedModel)
+                positionedModel.Position.DistinctUntilChanged().Subscribe(pos => Transform.position = pos);
+            if (Model is ILocalScaledModel localScaledModel)
+                localScaledModel.LocalScale.DistinctUntilChanged().Subscribe(scale => Transform.localScale = scale);
+            if (Model is IWorldScaledModel worldScaledModel) //DK TODO there is no way to access a transforms local scale directly - do we need a world scale interface?
+                worldScaledModel.Scale.DistinctUntilChanged().Subscribe(_ => throw new NotImplementedException());
+            if (Model is IRotatedModel rotatedModel)
+                rotatedModel.Rotation.DistinctUntilChanged().Subscribe(rot => Transform.rotation = rot);
         }
 
         protected virtual void Step()
@@ -123,12 +150,6 @@ namespace Dekuple.View.Impl
         public bool SameOwner(IOwned other)
         {
             return ReferenceEquals(Owner.Value, other);
-        }
-
-        public void SetOwner(IOwner owner)
-        {
-            Verbose(20, $"New owner if {this} is {owner}");
-            AgentBase.SetOwner(owner);
         }
 
         public virtual void Destroy()

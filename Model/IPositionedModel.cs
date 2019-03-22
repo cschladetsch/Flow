@@ -1,9 +1,11 @@
-﻿using Dekuple.Model;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
-namespace App.Models
+namespace Dekuple.Model
 {
+    /// <summary>
+    /// Base for models which require a tracked world position.
+    /// </summary>
     public interface IPositionedModel
         : IModel
     {
