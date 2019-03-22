@@ -24,12 +24,12 @@ namespace Dekuple.View.Impl
         public string Name { get; set; }
         public IRegistry<IViewBase> Registry { get; set; }
         public IViewRegistry ViewRegistry => Registry as IViewRegistry;
-        public IReadOnlyReactiveProperty<IOwner> Owner => AgentBase?.Owner ?? Model.Owner;
+        public IReadOnlyReactiveProperty<IOwner> Owner => AgentBase?.Owner ?? Model?.Owner;
         public IReadOnlyReactiveProperty<bool> Destroyed => _destroyed;
         public event Action<IViewBase> OnDestroyed;
         public IAgent AgentBase { get; set; }
         public IViewBase OwnerView { get; set; }
-        public IModel OwnerModel => Owner.Value as IModel;
+        public IModel OwnerModel => Owner?.Value as IModel;
         public GameObject GameObject => gameObject;
         public Transform Transform => gameObject.transform;
         public IModel Model => AgentBase?.BaseModel ?? _model;
