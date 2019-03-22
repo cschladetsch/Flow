@@ -48,6 +48,13 @@ namespace Dekuple
             list[j] = temp;
         }
 
+        /// <summary>
+        /// Connect this collection to another so that it reacts to additions and removals from the connected collection.
+        /// </summary>
+        /// <typeparam name="TTarget">The type of the connected collection.</typeparam>
+        /// <param name="self">The collection to connect to and watch.</param>
+        /// <param name="add">Called when an element is added to the connected collection.</param>
+        /// <param name="remove">Called when an element is removed from the connected collection.</param>
         public static void Connect<TTarget>(
             this IReadOnlyReactiveCollection<TTarget> self,
             Action<CollectionAddEvent<TTarget>> add,
