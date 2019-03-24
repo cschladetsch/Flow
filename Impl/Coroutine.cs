@@ -1,14 +1,19 @@
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Flow.Impl
 {
-    public class Coroutine : Generator, ICoroutine
+    public class Coroutine
+        : Generator
+        , ICoroutine
     {
         public override object Value => _value;
-
+        protected IEnumerator _state;
         private object _value;
+        internal Func<IEnumerator> Start;
 
         public Coroutine()
         {
@@ -51,13 +56,15 @@ namespace Flow.Impl
             throw new Exception("Coroutine cannot start");
         }
 
-        internal Func<IEnumerator> Start;
-
-        protected IEnumerator _state;
     }
 
-    internal class Coroutine<T> : Generator<T>, ICoroutine<T>
+    internal class Coroutine<T>
+        : Generator<T>
+        , ICoroutine<T>
     {
+        internal Func<IEnumerator<T>> Start;
+        private IEnumerator<T> _state;
+
         public override void Step()
         {
             if (!Running || !Active)
@@ -84,8 +91,5 @@ namespace Flow.Impl
 
             base.Step();
         }
-
-        internal Func<IEnumerator<T>> Start;
-        private IEnumerator<T> _state;
     }
 }

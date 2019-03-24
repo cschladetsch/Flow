@@ -1,3 +1,5 @@
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+
 using System;
 using System.Collections.Generic;
 
@@ -7,8 +9,14 @@ namespace Flow.Impl
     /// <summary>
     /// A thread-safe channel of values.
     /// </summary>
-    internal class BlockingChannel<TR> : Subroutine<bool>, IChannel<TR>
+    internal class BlockingChannel<TR>
+        : Subroutine<bool>
+        , IChannel<TR>
     {
+        private readonly object _mutex = new object();
+        private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
+        private readonly Queue<TR> _values = new Queue<TR>();
+
         internal BlockingChannel(IKernel kernel)
         {
             Sub = StepChannel;
@@ -80,9 +88,5 @@ namespace Flow.Impl
 
             return true;
         }
-
-        private readonly object _mutex = new object();
-        private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
-        private readonly Queue<TR> _values = new Queue<TR>();
     }
 }

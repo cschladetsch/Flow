@@ -1,10 +1,21 @@
-﻿namespace Flow.Impl
+﻿using System.Collections.Generic;
+
+namespace Flow.Impl
 {
-    internal class Sequence : Node, ISequence
+    /// <inheritdoc cref="ISequence"/>
+    internal class Sequence
+        : Node
+        , ISequence
     {
         internal Sequence()
         {
-            _stepOne = true;
+            _StepOne = true;
+        }
+
+        internal Sequence(IEnumerable<IGenerator> gens)
+            : this()
+        {
+            Add(gens);
         }
     }
 }

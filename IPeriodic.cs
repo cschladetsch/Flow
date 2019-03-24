@@ -1,4 +1,4 @@
-// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 
@@ -7,7 +7,9 @@ namespace Flow
     /// <inheritdoc />
     /// <summary>
     /// Periodic instances regularly fire their Elapsed event.
+    /// <para>
     /// NOTE the timer will fire at most once per Kernel Step
+    /// </para>
     /// </summary>
     public interface IPeriodic : IGenerator
     {

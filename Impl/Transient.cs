@@ -1,4 +1,4 @@
-// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 
@@ -13,7 +13,6 @@ namespace Flow.Impl
         public event TransientHandler Completed;
         public event TransientHandlerReason WhyCompleted;
 
-        public static bool DebugTrace;
         public bool Active { get; private set; }
         public IKernel Kernel { get; /*internal*/ set; }
         public IFactory Factory => Kernel.Factory;

@@ -1,4 +1,4 @@
-// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 using System.Collections;
@@ -61,7 +61,7 @@ namespace Flow
 
         IGenerator Do(Action act);
         IGenerator<T> Value<T>(T val);
-        IGenerator<T> Expression<T>(Func<T> act);
+        IGenerator<T> Expression<T>(Func<T> action);
         IGenerator If(Func<bool> pred, IGenerator @if);
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
         IGenerator While(Func<bool> pred, params IGenerator[] body);
@@ -73,7 +73,7 @@ namespace Flow
         IGenerator Break();
 
         ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
-        ITransient Wait(TimeSpan span);
+        ITransient Wait(TimeSpan duration);
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 
         IGenerator SetDebugLEvel(EDebugLevel level);

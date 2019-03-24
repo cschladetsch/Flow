@@ -2,7 +2,9 @@ using System;
 
 namespace Flow.Impl
 {
-    public class Generator : Transient, IGenerator
+    public class Generator
+        : Transient
+        , IGenerator
     {
         public event GeneratorHandler Suspended;
         public event GeneratorHandler Resumed;
@@ -27,7 +29,7 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
-            Kernel.Log.Verbose(90, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
+            Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
 
             if (!Active)
                 return;
@@ -74,14 +76,13 @@ namespace Flow.Impl
 
             // thanks to https://github.com/innostory for reporting an issue
             // where a dangling reference to 'other' resulted in memory leaks.
-            TransientHandler action = null;
-            action = tr =>
+            void Action(ITransient tr)
             {
-                other.Completed -= action;
+                other.Completed -= Action;
                 Suspend();
-            };
+            }
 
-            other.Completed += action;
+            other.Completed += Action;
 
             return this;
         }
@@ -125,26 +126,28 @@ namespace Flow.Impl
         }
     }
 
-    public delegate void WhyTypedGeneratorCompleted<TR>(Generator<TR> self);
+    public delegate void WhyTypedGeneratorCompleted<in TResult>(IGenerator<TResult> self);
 
-    public class Generator<TR> : Generator, IGenerator<TR>
+    public class Generator<TResult>
+        : Generator
+        , IGenerator<TResult>
     {
-        public new TR Value
+        public new TResult Value
         {
-            get => (TR)base.Value;
+            get => (TResult)base.Value;
             set => base.Value = value;
         }
 
-        public event WhyTypedGeneratorCompleted<TR> TypedCompleted;
+        //public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
 
         protected static void CannotStart()
         {
             throw new Exception("Can't start typed gen");
         }
 
-        protected void InvokeTypedCompleted()
-        {
-            TypedCompleted?.Invoke(this);
-        }
+        //protected void InvokeTypedCompleted()
+        //{
+        //    TypedCompleted?.Invoke(this);
+        //}
     }
 }

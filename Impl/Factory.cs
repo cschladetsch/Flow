@@ -1,4 +1,4 @@
-// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 using System.Collections;
@@ -15,10 +15,9 @@ namespace Flow.Impl
     /// <summary>
     /// Makes instances for the Flow library
     /// </summary>
-    public class Factory : IFactory
+    public class Factory
+        : IFactory
     {
-        // TODO: does the Factory really need a referene to a kernel?
-        // Kernel and Factory should be separated?
         public IKernel Kernel { get; set; }
 
         public bool AutoAdd { get; set; }
@@ -56,75 +55,75 @@ namespace Flow.Impl
 
         public IGenerator Do(Action act)
         {
-            return Prepare(new Subroutine() { Sub = (tr) => act() });
+            return Prepare(new Subroutine() { Sub = tr => act() });
         }
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
             var timed = TimedFuture<TR>(span);
-            timed.TimedOut += (tr) => trans.Complete();
+            timed.TimedOut += tr => trans.Complete();
             return Prepare(timed);
         }
 
         public IGenerator If(Func<bool> pred, IGenerator body)
         {
-            return Prepare(Coroutine(IfCoro, pred, body));
-        }
-
-        private static IEnumerator IfCoro(IGenerator self, Func<bool> pred, IGenerator body)
-        {
-            while (true)
+            IEnumerator IfCoro(IGenerator self)
             {
-                if (!body.Active)
-                    yield break;
+                while (true)
+                {
+                    if (!body.Active)
+                        yield break;
 
-                if (pred())
-                    body.Step();
+                    if (pred())
+                        body.Step();
 
-                yield return 0;
+                    yield return 0;
+                }
             }
+
+            return Prepare(Coroutine(IfCoro));
         }
 
         public IGenerator IfElse(Func<bool> pred, IGenerator then, IGenerator elseBody)
         {
-            return Prepare(Coroutine(IfElseCoro, pred, then, elseBody));
-        }
-
-        private static IEnumerator IfElseCoro(IGenerator self, Func<bool> pred, IGenerator then, IGenerator elseBody)
-        {
-            while (true)
+            IEnumerator IfElseCoro(IGenerator self)
             {
-                if (pred())
+                while (true)
                 {
-                    if (!then.Active)
-                        yield break;
-                    then.Step();
-                }
-                else
-                {
-                    if (!elseBody.Active)
-                        yield break;
-                    elseBody.Step();
+                    if (pred())
+                    {
+                        if (!then.Active)
+                            yield break;
+                        then.Step();
+                    }
+                    else
+                    {
+                        if (!elseBody.Active)
+                            yield break;
+                        elseBody.Step();
+                    }
                 }
             }
+
+            return Prepare(Coroutine(IfElseCoro));
         }
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
         {
-            return Prepare(Coroutine(WhileCoro, pred, body));
-        }
-
-        private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
-        {
-            var node = Prepare(Node(gens));
-            while (pred())
+            IEnumerator WhileCoro(IGenerator self)
             {
-                node.Step();
-                if (!node.Active || node.Empty)
-                    yield break;
+                var node = Prepare(Node(body));
+                while (pred())
+                {
+                    node.Step();
+                    if (!node.Active || node.Empty)
+                        yield break;
 
-                yield return null;
+                    yield return null;
+                }
             }
+
+            return Prepare(Coroutine(WhileCoro));
         }
 
         public IGenerator<T> Value<T>(T val)
@@ -132,9 +131,9 @@ namespace Flow.Impl
             return Prepare(new Generator<T>() { Value = val });
         }
 
-        public IGenerator<T> Expression<T>(Func<T> act)
+        public IGenerator<T> Expression<T>(Func<T> action)
         {
-            return Prepare(new Subroutine<T> { Sub = s => act() });
+            return Prepare(new Subroutine<T> { Sub = s => action() });
         }
 
         public IGenerator Sequence(params IGenerator[] gens)
@@ -144,28 +143,26 @@ namespace Flow.Impl
 
         public IGenerator Sequence(IEnumerable<IGenerator> gens)
         {
-            var seq = new Sequence();
-            seq.Add(gens);
-            return Prepare(seq);
+            return Prepare(new Sequence(gens));
         }
 
-        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases) where T : IComparable<T>
+        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases)
+            where T : IComparable<T>
         {
             gen.Step();
             var val = gen.Value;
-            var coro = Coroutine(SwitchCoro, val, cases);
-            Prepare(coro);
-            return coro;
+            IEnumerator SwitchCoro(IGenerator self)
+            {
+                return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
+            }
+
+            return Prepare(Coroutine(SwitchCoro));
         }
 
-        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
+        public ICase<T> Case<T>(T val, IGenerator statement)
+            where T : IComparable<T>
         {
             return new Case<T>(val, statement);
-        }
-
-        private static IEnumerator SwitchCoro<T>(IGenerator self, T val, ICase<T>[] cases) where T : IComparable<T>
-        {
-            return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
         }
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
@@ -202,12 +199,10 @@ namespace Flow.Impl
             throw new NotImplementedException();
         }
 
-        IEnumerator<bool> ConditionCoro(IGenerator self, Func<bool> pred)
+        private IEnumerator<bool> ConditionCoro(ITransient self, Func<bool> pred)
         {
             while (pred())
-            {
                 yield return true;
-            }
 
             yield return false;
             self.Complete();
@@ -265,11 +260,8 @@ namespace Flow.Impl
         {
             var barrier = Barrier();
             foreach (var tr in args)
-            {
-                if (tr == null)
-                    continue;
                 barrier.Add(tr);
-            }
+            
             return Prepare(barrier);
         }
 
@@ -280,8 +272,7 @@ namespace Flow.Impl
 
         public ITimedBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
         {
-            var barrier = new TimedBarrier(Kernel, span, args);
-            return Prepare(barrier);
+            return Prepare(new TimedBarrier(Kernel, span, args));
         }
 
         public ITrigger Trigger(params ITransient[] args)
@@ -315,9 +306,9 @@ namespace Flow.Impl
             return future;
         }
 
-        public ITransient Wait(TimeSpan span)
+        public ITransient Wait(TimeSpan duration)
         {
-            return Do(() => Kernel.Wait(span));
+            return Do(() => Kernel.Wait(duration));
         }
 
         public ITransient WaitFor(ITransient trans, TimeSpan timeOut)
@@ -432,14 +423,8 @@ namespace Flow.Impl
             return Prepare(new Channel<TR>(Kernel));
         }
 
-        public T Prepare<T>(T obj, bool add) where T : ITransient
-        {
-            var tr = Prepare(obj);
-            Kernel.Root.Add(tr);
-            return tr;
-        }
-
-        public T Prepare<T>(T obj) where T : ITransient
+        public T Prepare<T>(T obj)
+            where T : ITransient
         {
             obj.Kernel = Kernel;
             (obj as IGenerator)?.Resume();
