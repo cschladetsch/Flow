@@ -26,6 +26,7 @@ namespace Flow.Impl
             Log.LogSubject = this;
             Log.LogPrefix = "Flow";
             Verbosity = 5;
+            DebugLevel = EDebugLevel.Medium;
             ShowStack = false;
             ShowSource = true;
             Kernel = this;
