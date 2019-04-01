@@ -108,6 +108,19 @@ namespace Flow.Impl
             return Prepare(Coroutine(IfElseCoro));
         }
 
+        public IGenerator WhilePred(Func<bool> pred)
+        {
+            IEnumerator Coro(IGenerator self)
+            {
+                while (!pred())
+                    yield return null;
+            }
+
+            var inner = Prepare(Coroutine(Coro));
+            Kernel.Root.Add(inner);
+            return inner;
+        }
+
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
         {
             IEnumerator WhileCoro(IGenerator self)

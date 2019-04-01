@@ -64,7 +64,10 @@ namespace Flow
         IGenerator<T> Expression<T>(Func<T> action);
         IGenerator If(Func<bool> pred, IGenerator @if);
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
+
         IGenerator While(Func<bool> pred, params IGenerator[] body);
+        IGenerator WhilePred(Func<bool> pred);
+
         IGenerator Sequence(params IGenerator[] transients);
         IGenerator Sequence(IEnumerable<IGenerator> transients);
 
