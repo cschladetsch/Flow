@@ -10,8 +10,7 @@ namespace Flow.Impl
     {
         internal Barrier()
         {
-            if (Kernel.Log.Verbosity > 10)
-                Completed += (tr) => Info($"Barrier {this} Completed");
+            Completed += (tr) => Verbose(10, $"Barrier {this} Completed");
         }
 
         public override void Post()
