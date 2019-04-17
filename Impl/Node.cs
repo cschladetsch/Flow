@@ -62,7 +62,9 @@ namespace Flow.Impl
                         catch (Exception e)
                         {
                             gen.Complete();
+                            
                             Error($"Exception: {e.Message} when stepping {gen.Name}. Completing this generator.");
+                            Error($"   StackTrace: {e.StackTrace}");
                         }
                     }
 
@@ -73,6 +75,7 @@ namespace Flow.Impl
             catch (Exception e)
             {
                 Error($"Exception: {e.Message} when stepping {Name}. Completing this Node.");
+                Error($"   StackTrace: {e.StackTrace}");
                 Complete();
             }
             finally
