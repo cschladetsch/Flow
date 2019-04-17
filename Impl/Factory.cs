@@ -5,8 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
-using UnityEditorInternal;
-using UnityEngine;
+
 #endif
 
 namespace Flow.Impl
@@ -106,6 +105,19 @@ namespace Flow.Impl
             }
 
             return Prepare(Coroutine(IfElseCoro));
+        }
+
+        public IGenerator WhilePred(Func<bool> pred)
+        {
+            IEnumerator Coro(IGenerator self)
+            {
+                while (!pred())
+                    yield return null;
+            }
+
+            var inner = Prepare(Coroutine(Coro));
+            Kernel.Root.Add(inner);
+            return inner;
         }
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)

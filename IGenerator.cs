@@ -30,6 +30,7 @@ namespace Flow
         new IGenerator Named(string name);
         IGenerator SuspendAfter(ITransient other);
         IGenerator SuspendAfter(TimeSpan span);
+        IGenerator ResumeAfter(Func<bool> pred);
         IGenerator ResumeAfter(ITransient other);
         IGenerator After(ITransient other);
         IGenerator ResumeAfter(TimeSpan span);

@@ -92,6 +92,11 @@ namespace Flow.Impl
             return ResumeAfter(other);
         }
 
+        public IGenerator ResumeAfter(Func<bool> pred)
+        {
+            return ResumeAfter(Factory.WhilePred(pred));
+        }
+
         public IGenerator ResumeAfter(ITransient other)
         {
             if (IsNullOrInactive(other))

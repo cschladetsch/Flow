@@ -48,14 +48,24 @@ namespace Flow.Impl
                         if (Kernel.Break)
                             goto end;
 
-                        if (!gen.Active)
+                        try
                         {
-                            Remove(gen);
-                            continue;
-                        }
+                            if (!gen.Active)
+                            {
+                                Remove(gen);
+                                continue;
+                            }
 
-                        if (gen.Running)
-                            gen.Step();
+                            if (gen.Running)
+                                gen.Step();
+                        }
+                        catch (Exception e)
+                        {
+                            gen.Complete();
+                            
+                            Error($"Exception: {e.Message} when stepping {gen.Name}. Completing this generator.");
+                            Error($"   StackTrace: {e.StackTrace}");
+                        }
                     }
 
                     if (_StepOne)
@@ -65,6 +75,7 @@ namespace Flow.Impl
             catch (Exception e)
             {
                 Error($"Exception: {e.Message} when stepping {Name}. Completing this Node.");
+                Error($"   StackTrace: {e.StackTrace}");
                 Complete();
             }
             finally
@@ -72,7 +83,7 @@ namespace Flow.Impl
                 _stepping = false;
             }
 
-        end:
+            end:
             Post();
         }
     }
