@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+=======
+// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+>>>>>>> 2156678... Updated to .Net4.5
 
 using System;
 
@@ -7,9 +11,13 @@ namespace Flow
     /// <inheritdoc />
     /// <summary>
     /// Periodic instances regularly fire their Elapsed event.
+<<<<<<< HEAD
     /// <para>
     /// NOTE the timer will fire at most once per Kernel Step
     /// </para>
+=======
+    /// NOTE the timer will fire at most once per Kernel Step
+>>>>>>> 2156678... Updated to .Net4.5
     /// </summary>
     public interface IPeriodic : IGenerator
     {

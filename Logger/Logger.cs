@@ -6,7 +6,11 @@
 // This has to be fixed and soon.
 
 //#define UNITY
+<<<<<<< HEAD
 #undef UNITY
+=======
+//#undef UNITY
+>>>>>>> 2156678... Updated to .Net4.5
 //#define UNITY
 //#undef TRACE
 

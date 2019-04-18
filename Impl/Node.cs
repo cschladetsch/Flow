@@ -1,6 +1,5 @@
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
 using System.Linq;
 
 namespace Flow.Impl
@@ -62,7 +61,6 @@ namespace Flow.Impl
                         catch (Exception e)
                         {
                             gen.Complete();
-                            
                             Error($"Exception: {e.Message} when stepping {gen.Name}. Completing this generator.");
                             Error($"   StackTrace: {e.StackTrace}");
                         }
@@ -72,19 +70,23 @@ namespace Flow.Impl
                         break;
                 }
             }
-            catch (Exception e)
-            {
-                Error($"Exception: {e.Message} when stepping {Name}. Completing this Node.");
-                Error($"   StackTrace: {e.StackTrace}");
-                Complete();
-            }
             finally
             {
                 _stepping = false;
             }
 
-            end:
+        end:
             Post();
+        }
+
+        public override void Pre()
+        {
+            base.Pre();
+        }
+
+        public override void Post()
+        {
+            base.Post();
         }
     }
 }
