@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
-=======
-// (C) 2012-2018 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
->>>>>>> 2156678... Updated to .Net4.5
 
 using System;
 
@@ -17,10 +13,7 @@ namespace Flow.Impl
         public event TransientHandler Completed;
         public event TransientHandlerReason WhyCompleted;
 
-<<<<<<< HEAD
-=======
         public static bool DebugTrace;
->>>>>>> 2156678... Updated to .Net4.5
         public bool Active { get; private set; }
         public IKernel Kernel { get; /*internal*/ set; }
         public IFactory Factory => Kernel.Factory;

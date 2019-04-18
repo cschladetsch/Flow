@@ -1,15 +1,7 @@
-<<<<<<< HEAD
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
-
-=======
->>>>>>> 2156678... Updated to .Net4.5
-using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Flow.Impl
 {
-<<<<<<< HEAD
     public class Coroutine
         : Generator
         , ICoroutine
@@ -18,13 +10,6 @@ namespace Flow.Impl
         protected IEnumerator _state;
         private object _value;
         internal Func<IEnumerator> Start;
-=======
-    public class Coroutine : Generator, ICoroutine
-    {
-        public override object Value => _value;
-
-        private object _value;
->>>>>>> 2156678... Updated to .Net4.5
 
         public Coroutine()
         {
@@ -66,8 +51,6 @@ namespace Flow.Impl
         {
             throw new Exception("Coroutine cannot start");
         }
-
-<<<<<<< HEAD
     }
 
     internal class Coroutine<T>
@@ -77,15 +60,6 @@ namespace Flow.Impl
         internal Func<IEnumerator<T>> Start;
         private IEnumerator<T> _state;
 
-=======
-        internal Func<IEnumerator> Start;
-
-        protected IEnumerator _state;
-    }
-
-    internal class Coroutine<T> : Generator<T>, ICoroutine<T>
-    {
->>>>>>> 2156678... Updated to .Net4.5
         public override void Step()
         {
             if (!Running || !Active)
@@ -112,11 +86,5 @@ namespace Flow.Impl
 
             base.Step();
         }
-<<<<<<< HEAD
-=======
-
-        internal Func<IEnumerator<T>> Start;
-        private IEnumerator<T> _state;
->>>>>>> 2156678... Updated to .Net4.5
     }
 }

@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Flow.Impl
 {
@@ -17,15 +16,6 @@ namespace Flow.Impl
             : this()
         {
             Add(gens);
-=======
-﻿namespace Flow.Impl
-{
-    internal class Sequence : Node, ISequence
-    {
-        internal Sequence()
-        {
-            _stepOne = true;
->>>>>>> 2156678... Updated to .Net4.5
         }
     }
 }
