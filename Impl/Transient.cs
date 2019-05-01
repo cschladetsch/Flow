@@ -5,9 +5,7 @@ using System;
 namespace Flow.Impl
 {
     public class Transient :
-        #if TRACE
         Logger,
-        #endif
         ITransient
     {
         public event TransientHandler Completed;
