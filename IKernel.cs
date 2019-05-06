@@ -4,15 +4,6 @@ using System;
 
 namespace Flow
 {
-    public enum EDebugLevel
-    {
-        None,
-        Low,
-        Medium,
-        High,
-        Verbose,
-    }
-
     /// When the Kernel is Stepped, it updates its Time property, Steps the Root node, then calls Post on the
     /// Root node.
     public interface IKernel 
