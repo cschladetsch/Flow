@@ -75,7 +75,7 @@ namespace Flow
         ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;
         IGenerator Break();
 
-        ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
+        //ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
         ITransient Wait(TimeSpan duration);
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 

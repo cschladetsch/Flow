@@ -4,9 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-#if UNITY_EDITOR
-
-#endif
 
 namespace Flow.Impl
 {
@@ -169,6 +166,11 @@ namespace Flow.Impl
             }
 
             return Prepare(Coroutine(SwitchCoro));
+        }
+
+        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
+        {
+            throw new NotImplementedException();
         }
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)

@@ -1,5 +1,6 @@
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
+using System;
 using System.Linq;
 
 namespace Flow.Impl
@@ -75,7 +76,7 @@ namespace Flow.Impl
                 _stepping = false;
             }
 
-        end:
+            end:
             Post();
         }
 

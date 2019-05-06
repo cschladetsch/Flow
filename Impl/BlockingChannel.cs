@@ -1,5 +1,8 @@
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
+using System;
+using System.Collections.Generic;
+
 namespace Flow.Impl
 {
     /// <inheritdoc cref="Channel{TR}" />
