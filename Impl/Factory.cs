@@ -207,24 +207,24 @@ namespace Flow.Impl
             return Prepare(new Break());
         }
 
-        public IGenerator SetDebugLEvel(EDebugLevel level)
+        public IGenerator SetDebugLevel(EDebugLevel level)
         {
             return Do(() => { Kernel.DebugLevel = level; });
         }
 
-        public IGenerator Log(string fmt, params object[] objs)
+        public IGenerator Log(string fmt, params object[] args)
         {
-            return Do(() => { Kernel.Log.Info(fmt, objs); });
+            return Do(() => { Kernel.Log.Info(fmt, args); });
         }
 
-        public IGenerator Warn(string fmt, params object[] objs)
+        public IGenerator Warn(string fmt, params object[] args)
         {
-            return Do(() => { Kernel.Log.Warn(fmt, objs); });
+            return Do(() => { Kernel.Log.Warn(fmt, args); });
         }
 
-        public IGenerator Error(string fmt, params object[] objs)
+        public IGenerator Error(string fmt, params object[] args)
         {
-            return Do(() => { Kernel.Log.Error(fmt, objs); });
+            return Do(() => { Kernel.Log.Error(fmt, args); });
         }
 
         public ITransient ActionSequence(params Action[] actions)
