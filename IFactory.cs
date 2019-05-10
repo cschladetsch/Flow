@@ -79,10 +79,10 @@ namespace Flow
         ITransient Wait(TimeSpan duration);
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 
-        IGenerator SetDebugLEvel(EDebugLevel level);
-        IGenerator Log(string fmt, params object[] objs);
-        IGenerator Warn(string fmt, params object[] objs);
-        IGenerator Error(string fmt, params object[] objs);
+        IGenerator SetDebugLevel(EDebugLevel level);
+        IGenerator Log(string fmt, params object[] args);
+        IGenerator Warn(string fmt, params object[] args);
+        IGenerator Error(string fmt, params object[] args);
 
         T Prepare<T>(T obj) where T : ITransient;
     }
