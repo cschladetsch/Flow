@@ -8,5 +8,7 @@ namespace Flow
     /// </summary>
     public interface IBarrier : IGroup
     {
+        new IBarrier AddTo(IGroup group);
+        new IBarrier Named(string name);
     }
 }

@@ -18,17 +18,8 @@ namespace Flow.Impl
                 DeferAdd(gen);
         }
 
-        public new INode AddTo(IGroup group)
-        {
-            group.Add(group);
-            return this;
-        }
-
-        public new INode Named(string name)
-        {
-            Name = name;
-            return this;
-        }
+        public new INode AddTo(IGroup group) => this.AddToGroup<INode>(group);
+        public new INode Named(string name) => this.SetName<INode>(name);
 
         public override void Step()
         {

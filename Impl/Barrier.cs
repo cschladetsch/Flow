@@ -20,5 +20,8 @@ namespace Flow.Impl
             if (Additions.Count == 0)
                 Complete();
         }
+
+        public new IBarrier AddTo(IGroup group) => this.AddToGroup<IBarrier>(group);
+        public new IBarrier Named(string name) => this.SetName<IBarrier>(name);
     }
 }
