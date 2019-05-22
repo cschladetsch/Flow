@@ -20,7 +20,7 @@ namespace Flow.Impl
 
         private void TimedOutHandler(ITransient sender)
         {
-            Kernel.Log.Info("OneShotTimer completed {0}", Name);
+            //Kernel.Log.Info("OneShotTimer completed {0}", Name);
             Complete();
         }
 
