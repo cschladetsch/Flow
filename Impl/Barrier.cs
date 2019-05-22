@@ -10,7 +10,7 @@ namespace Flow.Impl
     {
         internal Barrier()
         {
-            Completed += (tr) => Verbose(10, $"Barrier {this} Completed");
+            //Completed += (tr) => Verbose(10, $"Barrier {this} Completed");
         }
 
         public override void Post()

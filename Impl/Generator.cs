@@ -29,7 +29,7 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
-            Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
+            //Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}"); TODO calculates string interpolation even when not used?
 
             if (!Active)
                 return;
@@ -122,12 +122,22 @@ namespace Flow.Impl
 
         public IGenerator ResumeAfter(TimeSpan span)
         {
-            return !Active ? this : ResumeAfter(Factory.OneShotTimer(span));
+            if (!Active)
+                return this;
+
+            var timer = Factory.OneShotTimer(span);
+            Kernel.Root.Add(timer);
+            return ResumeAfter(timer);
         }
 
         public IGenerator SuspendAfter(TimeSpan span)
         {
-            return !Active ? this : SuspendAfter(Factory.OneShotTimer(span));
+            if (!Active)
+                return this;
+
+            var timer = Factory.OneShotTimer(span);
+            Kernel.Root.Add(timer);
+            return ResumeAfter(timer);
         }
     }
 

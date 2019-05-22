@@ -8,6 +8,9 @@ namespace Flow.Impl
         : Periodic
         , ITimer
     {
+        /// <summary>
+        /// Timer based on game time, not real time.
+        /// </summary>
         internal Timer(IKernel kernel, TimeSpan span)
             : base(kernel, span)
         {

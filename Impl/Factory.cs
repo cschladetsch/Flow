@@ -273,7 +273,7 @@ namespace Flow.Impl
             var barrier = Barrier();
             foreach (var tr in args)
                 barrier.Add(tr);
-            
+
             return Prepare(barrier);
         }
 
