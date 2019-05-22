@@ -20,5 +20,6 @@ namespace Flow
 
         ITransient Named(string name);
         void Complete();
+        ITransient AddTo(IGroup group);
     }
 }

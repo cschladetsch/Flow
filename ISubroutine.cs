@@ -3,11 +3,13 @@
 namespace Flow
 {
     /// Subroutine is a Generator, implemented as a direct method call.
-    public interface ISubroutine : IGenerator
+    public interface ISubroutine 
+        : IGenerator
     {
     }
 
-    public interface ISubroutine<out T> : IGenerator<T>
+    public interface ISubroutine<out T> 
+        : IGenerator<T>
     {
     }
 }

@@ -45,6 +45,12 @@ namespace Flow.Impl
             Completed?.Invoke(this);
         }
 
+        public ITransient AddTo(IGroup group)
+        {
+            group.Add(this);
+            return this;
+        }
+
         public void CompleteAfter(ITransient other)
         {
             if (!Active)
