@@ -11,6 +11,7 @@ namespace Flow.Impl
         public event TransientHandler Completed;
         public event TransientHandlerReason WhyCompleted;
 
+        public static bool DebugTrace;
         public bool Active { get; private set; }
         public IKernel Kernel { get; /*internal*/ set; }
         public IFactory Factory => Kernel.Factory;

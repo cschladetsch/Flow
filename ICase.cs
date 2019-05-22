@@ -1,4 +1,4 @@
-﻿// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 

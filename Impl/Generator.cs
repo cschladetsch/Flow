@@ -153,16 +153,9 @@ namespace Flow.Impl
             set => base.Value = value;
         }
 
-        //public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
-
         protected static void CannotStart()
         {
             throw new Exception("Can't start typed gen");
         }
-
-        //protected void InvokeTypedCompleted()
-        //{
-        //    TypedCompleted?.Invoke(this);
-        //}
     }
 }
