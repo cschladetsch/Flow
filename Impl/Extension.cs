@@ -7,6 +7,18 @@ namespace Flow
 {
     public static class Extension
     {
+        public static T SetName<T>(this T self, string name) where T : ITransient
+        {
+            self.Name = name;
+            return self;
+        }
+
+        public static T AddToGroup<T>(this T self, IGroup group) where T : ITransient
+        {
+            group.Add(self);
+            return self;
+        }
+
         public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
         {
             return list.Any(elem => ReferenceEquals(elem, obj));

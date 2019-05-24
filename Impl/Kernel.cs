@@ -26,11 +26,12 @@ namespace Flow.Impl
             Log.LogSubject = this;
             Log.LogPrefix = "Flow";
             Verbosity = 5;
+            DebugLevel = EDebugLevel.Medium;
             ShowStack = false;
             ShowSource = true;
             Kernel = this;
 
-#if UNITY3D
+#if UNITY
 			Log.AddLogger(new UnityLogger(eLevel));
 #else
 			//Log.AddLogger(new Logger.ConsoleLogger(entryType));

@@ -29,7 +29,7 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
-            Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
+            //Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}"); TODO calculates string interpolation even when not used?
 
             if (!Active)
                 return;
@@ -87,11 +87,6 @@ namespace Flow.Impl
             return this;
         }
 
-        public IGenerator After(ITransient other)
-        {
-            return ResumeAfter(other);
-        }
-
         public IGenerator ResumeAfter(Func<bool> pred)
         {
             return ResumeAfter(Factory.WhilePred(pred));
@@ -122,12 +117,22 @@ namespace Flow.Impl
 
         public IGenerator ResumeAfter(TimeSpan span)
         {
-            return !Active ? this : ResumeAfter(Factory.OneShotTimer(span));
+            if (!Active)
+                return this;
+
+            var timer = Factory.OneShotTimer(span);
+            Kernel.Root.Add(timer);
+            return ResumeAfter(timer);
         }
 
         public IGenerator SuspendAfter(TimeSpan span)
         {
-            return !Active ? this : SuspendAfter(Factory.OneShotTimer(span));
+            if (!Active)
+                return this;
+
+            var timer = Factory.OneShotTimer(span);
+            Kernel.Root.Add(timer);
+            return ResumeAfter(timer);
         }
     }
 
@@ -143,16 +148,9 @@ namespace Flow.Impl
             set => base.Value = value;
         }
 
-        //public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
-
         protected static void CannotStart()
         {
             throw new Exception("Can't start typed gen");
         }
-
-        //protected void InvokeTypedCompleted()
-        //{
-        //    TypedCompleted?.Invoke(this);
-        //}
     }
 }

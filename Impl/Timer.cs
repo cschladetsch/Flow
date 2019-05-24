@@ -8,6 +8,9 @@ namespace Flow.Impl
         : Periodic
         , ITimer
     {
+        /// <summary>
+        /// Timer based on game time, not real time.
+        /// </summary>
         internal Timer(IKernel kernel, TimeSpan span)
             : base(kernel, span)
         {
@@ -17,7 +20,7 @@ namespace Flow.Impl
 
         private void TimedOutHandler(ITransient sender)
         {
-            Kernel.Log.Info("OneShotTimer completed {0}", Name);
+            //Kernel.Log.Info("OneShotTimer completed {0}", Name);
             Complete();
         }
 

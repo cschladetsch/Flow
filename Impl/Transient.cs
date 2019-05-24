@@ -5,14 +5,13 @@ using System;
 namespace Flow.Impl
 {
     public class Transient :
-        #if TRACE
         Logger,
-        #endif
         ITransient
     {
         public event TransientHandler Completed;
         public event TransientHandlerReason WhyCompleted;
 
+        public static bool DebugTrace;
         public bool Active { get; private set; }
         public IKernel Kernel { get; /*internal*/ set; }
         public IFactory Factory => Kernel.Factory;
@@ -44,6 +43,12 @@ namespace Flow.Impl
             Active = false;
 
             Completed?.Invoke(this);
+        }
+
+        public ITransient AddTo(IGroup group)
+        {
+            group.Add(this);
+            return this;
         }
 
         public void CompleteAfter(ITransient other)

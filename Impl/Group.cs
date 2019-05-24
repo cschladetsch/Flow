@@ -126,7 +126,7 @@ namespace Flow.Impl
                 if (tr == null)
                     continue;
 
-                Kernel.Log.Verbose(10, "Removing {0} from Node {1}", tr, Name);
+                //Kernel.Log.Verbose(10, "Removing {0} from Node {1}", tr, Name);
 
                 tr.Completed -= Remove;
 
@@ -141,7 +141,7 @@ namespace Flow.Impl
             foreach (var tr in Additions)
             {
                 _Contents.Add(tr);
-                Verbose(10, $"Adding {tr} to {this}");
+                //Verbose(10, $"Adding {tr} to {this}");
                 tr.Completed += Remove;
                 Added?.Invoke(this, tr);
             }

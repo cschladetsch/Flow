@@ -13,7 +13,8 @@ namespace Flow
     /// <para>When a Group is resumed, all child generators are also resumed</para>
     /// <para>When a Group is suspended, all child generators are also suspended</para>
     /// </summary>
-    public interface IGroup : IGenerator
+    public interface IGroup
+        : IGenerator
     {
         IEnumerable<ITransient> Contents { get; }
         IEnumerable<IGenerator> Generators { get; }

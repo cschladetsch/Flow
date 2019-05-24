@@ -5,8 +5,8 @@
 // But, the same code file is used for both Unity and non-Unity debugging.
 // This has to be fixed and soon.
 
-//#define UNITY
-#undef UNITY
+#define UNITY
+//#undef UNITY
 //#define UNITY
 //#undef TRACE
 
@@ -86,7 +86,7 @@ namespace Flow.Impl
             Trace.Write(text);
         }
 
- #if !UNITY
+#if !UNITY
         readonly string[] _logNames = { "Info", "Warn", "Error", "Verbose" };
 #endif
 

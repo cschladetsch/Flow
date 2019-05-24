@@ -11,7 +11,8 @@ namespace Flow
     /// A Generator does some work every time its Step method is called, unless it is Suspended or Completed.
     /// <para>All Generators are Resumed when they are first created by a Factory</para>
     /// </summary>
-    public interface IGenerator : ITransient
+    public interface IGenerator 
+        : ITransient
     {
         event GeneratorHandler Resumed;
         event GeneratorHandler Stepped;
@@ -32,7 +33,6 @@ namespace Flow
         IGenerator SuspendAfter(TimeSpan span);
         IGenerator ResumeAfter(Func<bool> pred);
         IGenerator ResumeAfter(ITransient other);
-        IGenerator After(ITransient other);
         IGenerator ResumeAfter(TimeSpan span);
     }
 

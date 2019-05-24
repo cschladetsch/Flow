@@ -14,10 +14,12 @@ namespace Flow
     {
         event TransientHandler Completed;
 
+        /// <summary> True if the transient is active, enabled and has not been completed. </summary>
         bool Active { get; }
         IKernel Kernel { get; /*internal*/ set; }
 
         ITransient Named(string name);
         void Complete();
+        ITransient AddTo(IGroup group);
     }
 }

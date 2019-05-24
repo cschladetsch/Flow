@@ -1,4 +1,4 @@
-﻿#if asdasdasd//DOTNET
+#if asdasdasd//DOTNET
 using System;
 
 namespace Flow.Logger

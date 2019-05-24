@@ -1,48 +1,81 @@
-# Dekuple
+# Flow
 
-A dependancy-injection and entity system designed from the ground up to support both rapid prototyping and long-term development and support of `Unity3d` based applications.
+A C# coroutine-based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and/or fork.
 
-The system also adds a `MVC` or `Model-View-Controller` pattern.
+This is Unity-friendly and will work on all versions of Unity after 4.0. Please let me know otherwise.
 
-Except in this case, the `Controller` is called an `Agent` and uses the `Flow` library, and `Views` are based on `MonoBehavior`s.
+Current documentation is at [GamaSutra](http://www.gamasutra.com/view/news/177397/Indepth_Flow__A_coroutine_kernel_for_Net.php) but the formatting is a bit screwy.
 
-The basic architecture is a morphism of a number ideas combined together into an integrated whole:
- * Dependancy Injection
- * Object Registry/Factory for persistence and networking
- * Model/View/Controller, or Model/ViewController/View
- * Unity3d Prefabs and Behaviours
- * Reactive programming techniques
+The original post was on [AltDevBlogADay](http://www.altdevblogaday.com/2012/09/07/flow-a-coroutine-kernel-for-net/) but that site is now lost for the ages.
 
-The code is not 'tricky', other than the hoops required for templates in C#. The key hurdle a user will face is simply understanding the architecture and semantics of the seemingly simple systems.
+## Tests
 
-One key understanding required is that one Registry\<T\> class is used for each model/agent/view domains, but of course with a different template parameter T.
+The [tests](TestFlow/Editor) reside in _TestFlow/Editor_ so they can be used from Unity3d as well.
 
-There are Readme's in each substantial sub-folder that describes each component in more detail.
+## Example
 
-### Dependancies
+This is a code example pulled straight for a game I'm working on:
 
-This library uses the external [CoLib](http://www.github.com) and [Flow](https://www.github.com/cschladetsch/Flow) libraries. These are added as git sub-modules.
+```
+public void GameLoop()
+{
+    Root.Add(
+        New.Sequence(
+            New.Coroutine(StartGame).Named("StartGame"),
+            New.While(() => !_gameOver),
+                New.Coroutine(PlayerTurn).Named("Turn").Named("While"),
+            New.Coroutine(EndGame).Named("EndGame")
+        ).Named("GameLoop")
+    );
+}
+```
+Note the `.Named("Name")` extenstions to the factory methods: these are for debugging and tracing purposes. The library comes with extensive debugging and visualisation support, so you can see in real time as the kernel changes.
 
-## Main Components
+The main logic _flow_ for starting a turn is:
 
-* [Registry](Registry)
-* [Model](Model)
-* [Agent](Agent)
-* [View](View)
+```
+private IEnumerator StartGame(IGenerator self)
+{
+    var start = New.Sequence(
+        New.Barrier(
+            WhitePlayer.StartGame(),
+            BlackPlayer.StartGame()
+        ).Named("Init Game"),
+        New.Barrier(
+            WhitePlayer.DrawInitialCards(),
+            BlackPlayer.DrawInitialCards()
+        ).Named("Deal Cards"),
+        New.Barrier(
+            New.TimedBarrier(
+                TimeSpan.FromSeconds(Parameters.MulliganTimer),
+                WhitePlayer.AcceptCards(),
+                BlackPlayer.AcceptCards()
+            ).Named("Mulligan"),
+            New.Sequence(
+                WhitePlayer.PlaceKing(),
+                BlackPlayer.PlaceKing()
+            ).Named("Place Kings")
+        ).Named("Preceedings")
+    ).Named("Start Game");
+    start.Completed += (tr) => Info("StartGame completed");
+    yield return start;
+}
+```
 
-## Request/Response
+And the relevant IPlayerAgent Method declaractions as being:
 
-Used for internal message-passing/queing and in future for networking when combined with the [Pyro](https://www.github.com/cschladetsch/Pyro) system.
+```
+ITimer StartGame();
+ITimer DrawInitialCards();
+ITimedFuture<bool> AcceptCards();
+ITimedFuture<PlacePiece> PlaceKing();
+ITransient ChangeMaxMana(int i);
+ITimedFuture<ICardModel> DrawCard();
+ITimedFuture<PlacePiece> PlayCard();
+ITimedFuture<MovePiece> MovePiece();
+ITimedFuture<Pass> Pass();
+```
 
-## Future Work
+This is just a simple example on how the library is tyicall used. It's a matter of chainging together sequences of _Barriers_, _Triggers_, and _Futures_ to remove the need to keep explicit track of internal state on each *Update* call.
 
-This system is intended to be used with the new Unity3d ECS system.
-
-Currently, only the View system has any reference to Unity3d.
-
-It would be nice to separate that into a separate Assembly, so the system could be used outside the context of `Unity3d`.
-
-### TODO
-
-Make Error(..) etc log methods return object so they can return null and simplify usage.
-
+In this case, I'm using a lot of timed futures because it's a real-time card game and there are time limits.
