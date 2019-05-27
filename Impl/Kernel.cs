@@ -31,7 +31,7 @@ namespace Flow.Impl
             ShowSource = true;
             Kernel = this;
 
-#if UNITY3D
+#if UNITY
 			Log.AddLogger(new UnityLogger(eLevel));
 #else
 			//Log.AddLogger(new Logger.ConsoleLogger(entryType));

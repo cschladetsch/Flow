@@ -18,6 +18,9 @@ namespace Flow.Impl
                 DeferAdd(gen);
         }
 
+        public new INode AddTo(IGroup group) => this.AddToGroup<INode>(group);
+        public new INode Named(string name) => this.SetName<INode>(name);
+
         public override void Step()
         {
             Pre();
@@ -31,7 +34,7 @@ namespace Flow.Impl
                 {
                     Kernel.Log.Error(
                         $"Node {Name} is re-entrant. Nodes cannot directly or indirectly invoke their Step methods when stepping.");
-                    throw new ReentrancyException();
+                    throw new ReEntranceException();
                 }
 
                 _stepping = true;

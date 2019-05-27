@@ -5,9 +5,7 @@ using System;
 namespace Flow.Impl
 {
     public class Transient :
-        #if TRACE
         Logger,
-        #endif
         ITransient
     {
         public event TransientHandler Completed;
@@ -45,6 +43,12 @@ namespace Flow.Impl
             Active = false;
 
             Completed?.Invoke(this);
+        }
+
+        public ITransient AddTo(IGroup group)
+        {
+            group.Add(this);
+            return this;
         }
 
         public void CompleteAfter(ITransient other)
