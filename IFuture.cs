@@ -11,7 +11,6 @@ namespace Flow
     /// When its Value property is first set, a Future fires its Arrived event, sets its Available property to true, and
     /// Completes itself.
     /// </summary>
-    [Obsolete("Are you sure you don't want use a ITimedFuture?")]
     public interface IFuture<T>
         : ITransient
     {
