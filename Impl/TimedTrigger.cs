@@ -23,7 +23,7 @@ namespace Flow.Impl
                 return;
 
             TimedOut?.Invoke(this);
-
+            Timer.Elapsed -= HandleElapsed;
             HasTimedOut = true;
 
             Complete();

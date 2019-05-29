@@ -42,8 +42,8 @@ namespace Flow.Impl
                 base.Step();
 
                 // TODO: do we really need to copy the contents? Maybe use some double-buffering if required to avoid copying.
-                // TODO: that said, it's only creating a new list of references...
-                // TODO: the underlying issue is that the contents of the node may be altered while stepping children of the node.
+                // that said, it's only creating a new list of references...
+                // the underlying issue is that the contents of the node may be altered while stepping children of the node.
                 foreach (var tr in Contents.ToList())
                 {
                     if (tr is IGenerator gen)
