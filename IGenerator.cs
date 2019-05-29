@@ -6,13 +6,19 @@ namespace Flow
 {
     public delegate void GeneratorHandler(IGenerator generator);
 
-    /// <inheritdoc />
+    public interface ISteppable
+    {
+        void Step();
+    }
+
+    /// <inheritdoc cref="ITransient" />
     /// <summary>
     /// A Generator does some work every time its Step method is called, unless it is Suspended or Completed.
     /// <para>All Generators are Resumed when they are first created by a Factory</para>
     /// </summary>
     public interface IGenerator 
         : ITransient
+        , ISteppable
     {
         event GeneratorHandler Resumed;
         event GeneratorHandler Stepped;
@@ -24,7 +30,6 @@ namespace Flow
 
         void Resume();
         void Pre();
-        void Step();
         void Post();
         void Suspend();
 

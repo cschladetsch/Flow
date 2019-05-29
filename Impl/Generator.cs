@@ -12,7 +12,7 @@ namespace Flow.Impl
 
         public virtual object Value { get; protected set; }
 
-        internal Generator()
+        public Generator()
         {
             Completed += tr => Suspend();
         }
@@ -29,13 +29,10 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
-            //Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}"); TODO calculates string interpolation even when not used?
-
             if (!Active)
                 return;
 
             ++StepNumber;
-
             Stepped?.Invoke(this);
         }
 
@@ -50,7 +47,6 @@ namespace Flow.Impl
         public void Suspend()
         {
             Running = false;
-
             Suspended?.Invoke(this);
         }
 
@@ -60,7 +56,6 @@ namespace Flow.Impl
                 return;
 
             Running = true;
-
             Resumed?.Invoke(this);
         }
 

@@ -28,5 +28,8 @@ namespace Flow.Impl
             foreach (var tr in contents)
                 Add(tr);
         }
+
+        public new ITimedBarrier AddTo(IGroup group) => this.AddToGroup<ITimedBarrier>(group);
+        public new ITimedBarrier Named(string name) => this.SetName<ITimedBarrier>(name);
     }
 }

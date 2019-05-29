@@ -4,9 +4,9 @@ using System;
 
 namespace Flow.Impl
 {
-    public class Transient :
-        Logger,
-        ITransient
+    public class Transient
+        : Logger
+        , ITransient
     {
         public event TransientHandler Completed;
         public event TransientHandlerReason WhyCompleted;
