@@ -20,10 +20,20 @@ namespace Flow
         ITransient Transient();
 
         /// <summary>
-        /// Make a new Group containing the given generators.
+        /// Make a new Group containing the given set of <see cref="ITransient"/>s.
+        ///
+        /// When a group is stepped, nothing happens. <see cref="IGroup"/>
         /// </summary>
         IGroup Group(IEnumerable<ITransient> gens);
         IGroup Group(params ITransient[] gens);
+
+        /// <summary>
+        /// Make a new Node containing the given <see cref="IGenerator"/>s.
+        ///
+        /// When a <see cref="INode"/> is Stepped, it steps all contained generators.
+        /// </summary>
+        /// <param name="gens">The generator to add to the new Node.</param>
+        /// <returns>A new prepared Node.</returns>
         INode Node(IEnumerable<IGenerator> gens);
         INode Node(params IGenerator[] gens);
 
@@ -79,7 +89,7 @@ namespace Flow
         ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut, T val);
 
         /// <summary>
-        /// Make a new Coroutine.
+        /// Make a new <see cref="ICoroutine"/>
         /// </summary>
         ICoroutine Coroutine(Func<IGenerator, IEnumerator> fun);
         ICoroutine Coroutine<T0>(Func<IGenerator, T0, IEnumerator> fun, T0 t0);
@@ -89,7 +99,7 @@ namespace Flow
         ICoroutine<TR> Coroutine<TR, T0>(Func<IGenerator, T0, IEnumerator<TR>> fun, T0 t0);
 
         /// <summary>
-        /// Make a new Subroutine.
+        /// Make a new <see cref="ISubroutine"/>
         /// </summary>
         /// <typeparam name="TR"></typeparam>
         /// <param name="fun"></param>
@@ -107,7 +117,7 @@ namespace Flow
         IChannel<TR> Channel<TR>(IGenerator<TR> gen);
 
         /// <summary>
-        /// Make a generator that does nothing, then Completes.
+        /// Make a <see cref="IGenerator"/> that does nothing, then Completes itself.
         /// </summary>
         /// <returns></returns>
         IGenerator Nop();
@@ -149,7 +159,12 @@ namespace Flow
         /// while the given predicate is true.
         /// </summary>
         IGenerator While(Func<bool> pred, params IGenerator[] body);
-        IGenerator WhilePred(Func<bool> pred);
+
+        /// <summary>
+        /// Make a <see cref="IGenerator"/> that does nothing while the
+        /// given predicate is true.
+        /// </summary>
+        IGenerator While(Func<bool> pred);
 
         /// <summary>
         /// Perform one Generator after the previous Generator Completes.

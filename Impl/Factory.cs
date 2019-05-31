@@ -15,7 +15,6 @@ namespace Flow.Impl
         : IFactory
     {
         public IKernel Kernel { get; set; }
-        public bool AutoAdd { get; set; }
 
         public INode Node(params IGenerator[] gens)
             => Node(gens.ToList());
@@ -83,14 +82,17 @@ namespace Flow.Impl
                     {
                         if (!then.Active)
                             yield break;
+
                         then.Step();
                     }
                     else
                     {
                         if (!elseBody.Active)
                             yield break;
+
                         elseBody.Step();
                     }
+
                     yield return null;
                 }
             }
@@ -98,7 +100,7 @@ namespace Flow.Impl
             return Prepare(Coroutine(IfElseCoro));
         }
 
-        public IGenerator WhilePred(Func<bool> pred)
+        public IGenerator While(Func<bool> pred)
         {
             IEnumerator Coro(IGenerator self)
             {
@@ -112,19 +114,21 @@ namespace Flow.Impl
         }
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
-            => Prepare(Coroutine(WhileCoro, pred, body));
-
-        private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
         {
-            var node = Prepare(Node(gens));
-            while (pred())
+            IEnumerator WhileCoro(IGenerator self)
             {
-                node.Step();
-                if (!node.Active || node.Empty)
-                    yield break;
+                var node = Prepare(Node(body));
+                while (pred())
+                {
+                    node.Step();
+                    if (!node.Active || node.Empty)
+                        yield break;
 
-                yield return null;
+                    yield return null;
+                }
             }
+
+            return Prepare(Coroutine(WhileCoro));
         }
 
         public IGenerator<T> Value<T>(T val)
