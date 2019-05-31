@@ -18,9 +18,7 @@ namespace Flow.Impl
         public bool AutoAdd { get; set; }
 
         public INode Node(params IGenerator[] gens)
-        {
-            return Node(gens.ToList());
-        }
+            => Node(gens.ToList());
 
         public INode Node(IEnumerable<IGenerator> gens)
         {
@@ -44,14 +42,10 @@ namespace Flow.Impl
         }
 
         public ITransient Transient()
-        {
-            return Prepare(new Transient());
-        }
+            => Prepare(new Transient());
 
-        public IGenerator Do(Action act)
-        {
-            return Prepare(new Subroutine() { Sub = (tr) => act() });
-        }
+        public IGenerator Do(Action act) 
+            => Prepare(new Subroutine() { Sub = (tr) => act() });
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
@@ -104,7 +98,6 @@ namespace Flow.Impl
             return Prepare(Coroutine(IfElseCoro));
         }
 
-
         public IGenerator WhilePred(Func<bool> pred)
         {
             IEnumerator Coro(IGenerator self)
@@ -119,9 +112,7 @@ namespace Flow.Impl
         }
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
-        {
-            return Prepare(Coroutine(WhileCoro, pred, body));
-        }
+            => Prepare(Coroutine(WhileCoro, pred, body));
 
         private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
         {
@@ -159,7 +150,9 @@ namespace Flow.Impl
             return Prepare(Coroutine(SwitchCoro));
         }
 
-        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T> => throw new NotImplementedException();
+        public ICase<T> Case<T>(T val, IGenerator statement)
+            where T : IComparable<T>
+                => throw new NotImplementedException();
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
         {
@@ -218,9 +211,7 @@ namespace Flow.Impl
         }
 
         public IBarrier Barrier(params ITransient[] args)
-        {
-            return Barrier(args.ToList());
-        }
+            => Barrier(args.ToList());
 
         public IBarrier Barrier(IEnumerable<ITransient> args)
         {
@@ -254,7 +245,8 @@ namespace Flow.Impl
             return Prepare(timedTrigger);
         }
 
-        public IGenerator Nop() => Node();
+        public IGenerator Nop()
+            => Node();
 
         public IFuture<T> Future<T>()
             => Prepare(new Future<T>());
@@ -382,3 +374,4 @@ namespace Flow.Impl
         }
     }
 }
+
