@@ -12,7 +12,7 @@ namespace Flow.Impl
 
         public virtual object Value { get; protected set; }
 
-        internal Generator()
+        public Generator()
         {
             Completed += tr => Suspend();
         }
@@ -29,13 +29,10 @@ namespace Flow.Impl
 
         public virtual void Step()
         {
-            Kernel.Log.Verbose(30, $"{Name}:{GetType().Name} Stepped #{StepNumber}");
-
             if (!Active)
                 return;
 
             ++StepNumber;
-
             Stepped?.Invoke(this);
         }
 
@@ -50,7 +47,6 @@ namespace Flow.Impl
         public void Suspend()
         {
             Running = false;
-
             Suspended?.Invoke(this);
         }
 
@@ -60,7 +56,6 @@ namespace Flow.Impl
                 return;
 
             Running = true;
-
             Resumed?.Invoke(this);
         }
 
@@ -87,9 +82,9 @@ namespace Flow.Impl
             return this;
         }
 
-        public IGenerator After(ITransient other)
+        public IGenerator ResumeAfter(Func<bool> pred)
         {
-            return ResumeAfter(other);
+            return ResumeAfter(Factory.WhilePred(pred));
         }
 
         public IGenerator ResumeAfter(ITransient other)
@@ -117,12 +112,22 @@ namespace Flow.Impl
 
         public IGenerator ResumeAfter(TimeSpan span)
         {
-            return !Active ? this : ResumeAfter(Factory.OneShotTimer(span));
+            if (!Active)
+                return this;
+
+            var timer = Factory.OneShotTimer(span);
+            Kernel.Root.Add(timer);
+            return ResumeAfter(timer);
         }
 
         public IGenerator SuspendAfter(TimeSpan span)
         {
-            return !Active ? this : SuspendAfter(Factory.OneShotTimer(span));
+            if (!Active)
+                return this;
+
+            var timer = Factory.OneShotTimer(span);
+            Kernel.Root.Add(timer);
+            return ResumeAfter(timer);
         }
     }
 
@@ -138,16 +143,9 @@ namespace Flow.Impl
             set => base.Value = value;
         }
 
-        //public event WhyTypedGeneratorCompleted<TResult> TypedCompleted;
-
         protected static void CannotStart()
         {
             throw new Exception("Can't start typed gen");
         }
-
-        //protected void InvokeTypedCompleted()
-        //{
-        //    TypedCompleted?.Invoke(this);
-        //}
     }
 }

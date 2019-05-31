@@ -18,6 +18,9 @@ namespace Flow.Impl
                 DeferAdd(gen);
         }
 
+        public new INode AddTo(IGroup group) => this.AddToGroup<INode>(group);
+        public new INode Named(string name) => this.SetName<INode>(name);
+
         public override void Step()
         {
             Pre();
@@ -31,7 +34,7 @@ namespace Flow.Impl
                 {
                     Kernel.Log.Error(
                         $"Node {Name} is re-entrant. Nodes cannot directly or indirectly invoke their Step methods when stepping.");
-                    throw new ReentrancyException();
+                    throw new ReEntranceException();
                 }
 
                 _stepping = true;
@@ -39,8 +42,8 @@ namespace Flow.Impl
                 base.Step();
 
                 // TODO: do we really need to copy the contents? Maybe use some double-buffering if required to avoid copying.
-                // TODO: that said, it's only creating a new list of references...
-                // TODO: the underlying issue is that the contents of the node may be altered while stepping children of the node.
+                // that said, it's only creating a new list of references...
+                // the underlying issue is that the contents of the node may be altered while stepping children of the node.
                 foreach (var tr in Contents.ToList())
                 {
                     if (tr is IGenerator gen)
@@ -48,32 +51,46 @@ namespace Flow.Impl
                         if (Kernel.Break)
                             goto end;
 
-                        if (!gen.Active)
+                        try
                         {
-                            Remove(gen);
-                            continue;
-                        }
+                            if (!gen.Active)
+                            {
+                                Remove(gen);
+                                continue;
+                            }
 
-                        if (gen.Running)
-                            gen.Step();
+                            if (gen.Running)
+                                gen.Step();
+                        }
+                        catch (Exception e)
+                        {
+                            gen.Complete();
+                            Error($"Exception: {e.Message} when stepping {gen.Name}. Completing this generator.");
+                            Error($"   StackTrace: {e.StackTrace}");
+                        }
                     }
 
                     if (_StepOne)
                         break;
                 }
             }
-            catch (Exception e)
-            {
-                Error($"Exception: {e.Message} when stepping {Name}. Completing this Node.");
-                Complete();
-            }
             finally
             {
                 _stepping = false;
             }
 
-        end:
+            end:
             Post();
+        }
+
+        public override void Pre()
+        {
+            base.Pre();
+        }
+
+        public override void Post()
+        {
+            base.Post();
         }
     }
 }

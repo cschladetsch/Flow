@@ -4,14 +4,8 @@ using System;
 
 namespace Flow
 {
-    /// <inheritdoc />
-    /// <summary>
-    /// A Kernel contains a top-entryType root Node, and a local TimeFrame.
-    /// <para>
     /// When the Kernel is Stepped, it updates its Time property, Steps the Root node, then calls Post on the
     /// Root node.
-    /// </para>
-    /// </summary>
     public interface IKernel 
         : IGenerator
     {

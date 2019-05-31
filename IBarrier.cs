@@ -1,7 +1,5 @@
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow
 {
     /// <inheritdoc />
@@ -10,5 +8,7 @@ namespace Flow
     /// </summary>
     public interface IBarrier : IGroup
     {
+        new IBarrier AddTo(IGroup group);
+        new IBarrier Named(string name);
     }
 }

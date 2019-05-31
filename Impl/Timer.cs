@@ -8,19 +8,18 @@ namespace Flow.Impl
         : Periodic
         , ITimer
     {
+        public DateTime TimeEnds { get; private set; }
+
+        private void TimedOutHandler(ITransient sender) => Complete();
+
+        /// <summary>
+        /// Timer based on game time, not real time.
+        /// </summary>
         internal Timer(IKernel kernel, TimeSpan span)
             : base(kernel, span)
         {
             TimeEnds = kernel.Time.Now + span;
             Elapsed += TimedOutHandler;
         }
-
-        private void TimedOutHandler(ITransient sender)
-        {
-            Kernel.Log.Info("OneShotTimer completed {0}", Name);
-            Complete();
-        }
-
-        public DateTime TimeEnds { get; private set; }
     }
 }

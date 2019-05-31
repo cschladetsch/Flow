@@ -37,8 +37,7 @@ namespace Flow
 
             Lead(level);
             Header(trans);
-            var group = trans as IGroup;
-            return group == null ? level : Contents(group, level + 1);
+            return !(trans is IGroup @group) ? level : Contents(group, level + 1);
         }
 
         private void Lead(int level)
@@ -46,7 +45,7 @@ namespace Flow
             _sb.Append(' ', level*Indenting);
         }
 
-        bool ImplementsGenericInterface(Type given, Type iface)
+        private static bool ImplementsGenericInterface(Type given, Type iface)
         {
             return given.GetInterfaces().Any(x => x.IsGenericType &&
               x.GetGenericTypeDefinition() == iface);
@@ -136,10 +135,9 @@ namespace Flow
             return level;
         }
 
-        string GeneratorInfo(ITransient trans)
+        private static string GeneratorInfo(ITransient trans)
         {
-            var gen = trans as IGenerator;
-            return gen == null ? "" : $"running={gen.Running}, step={gen.StepNumber}";
+            return !(trans is IGenerator gen) ? "" : $"running={gen.Running}, step={gen.StepNumber}";
         }
 
         private readonly StringBuilder _sb = new StringBuilder();

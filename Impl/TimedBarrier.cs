@@ -18,15 +18,21 @@ namespace Flow.Impl
         public TimedBarrier(IKernel kernel, TimeSpan span, IEnumerable<ITransient> contents)
         {
             Timer = kernel.Factory.OneShotTimer(span);
-            Timer.Elapsed += (tr) =>
-            {
-                HasTimedOut = true;
-                TimedOut?.Invoke(this);
-                Complete();
-            };
+            Timer.Elapsed += Elapsed;
 
             foreach (var tr in contents)
                 Add(tr);
         }
+
+        private void Elapsed(ITransient tr)
+        {
+            Timer.Elapsed -= Elapsed;
+            HasTimedOut = true;
+            TimedOut?.Invoke(this);
+            Complete();
+        }
+
+        public new ITimedBarrier AddTo(IGroup group) => this.AddToGroup<ITimedBarrier>(group);
+        public new ITimedBarrier Named(string name) => this.SetName<ITimedBarrier>(name);
     }
 }

@@ -20,10 +20,10 @@ namespace Flow.Impl
         }
     }
 
-    public class ReentrancyException
+    public class ReEntranceException
         : Exception
     {
-        public ReentrancyException() : base("Method is not re-entrant")
+        public ReEntranceException() : base("Method is not re-entrant")
         {
         }
     }

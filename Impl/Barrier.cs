@@ -1,19 +1,15 @@
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Flow.Impl
 {
-    internal class Barrier 
+    internal class Barrier
         : Group
         , IBarrier
     {
-        internal Barrier()
-        {
-            if (Kernel.Log.Verbosity > 10)
-                Completed += (tr) => Info($"Barrier {this} Completed");
-        }
-
         public override void Post()
         {
             base.Post();
@@ -24,5 +20,8 @@ namespace Flow.Impl
             if (Additions.Count == 0)
                 Complete();
         }
+
+        public new IBarrier AddTo(IGroup group) => this.AddToGroup<IBarrier>(group);
+        public new IBarrier Named(string name) => this.SetName<IBarrier>(name);
     }
 }

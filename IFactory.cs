@@ -64,7 +64,10 @@ namespace Flow
         IGenerator<T> Expression<T>(Func<T> action);
         IGenerator If(Func<bool> pred, IGenerator @if);
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
+
         IGenerator While(Func<bool> pred, params IGenerator[] body);
+        IGenerator WhilePred(Func<bool> pred);
+
         IGenerator Sequence(params IGenerator[] transients);
         IGenerator Sequence(IEnumerable<IGenerator> transients);
 
@@ -72,14 +75,14 @@ namespace Flow
         ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;
         IGenerator Break();
 
-        ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
+        //ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
         ITransient Wait(TimeSpan duration);
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 
-        IGenerator SetDebugLEvel(EDebugLevel level);
-        IGenerator Log(string fmt, params object[] objs);
-        IGenerator Warn(string fmt, params object[] objs);
-        IGenerator Error(string fmt, params object[] objs);
+        IGenerator SetDebugLevel(EDebugLevel level);
+        IGenerator Log(string fmt, params object[] args);
+        IGenerator Warn(string fmt, params object[] args);
+        IGenerator Error(string fmt, params object[] args);
 
         T Prepare<T>(T obj) where T : ITransient;
     }

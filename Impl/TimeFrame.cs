@@ -4,6 +4,7 @@ using System;
 
 namespace Flow.Impl
 {
+    /// <inheritdoc />
     /// <summary>
     /// TODO: delta-capping, pausing, introduction of zulu/sim time differences
     /// </summary>

@@ -4,10 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-#if UNITY_EDITOR
-using UnityEditorInternal;
-using UnityEngine;
-#endif
 
 namespace Flow.Impl
 {
@@ -19,7 +15,6 @@ namespace Flow.Impl
         : IFactory
     {
         public IKernel Kernel { get; set; }
-
         public bool AutoAdd { get; set; }
 
         public INode Node(params IGenerator[] gens)
@@ -55,7 +50,7 @@ namespace Flow.Impl
 
         public IGenerator Do(Action act)
         {
-            return Prepare(new Subroutine() { Sub = tr => act() });
+            return Prepare(new Subroutine() { Sub = (tr) => act() });
         }
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
@@ -67,63 +62,77 @@ namespace Flow.Impl
 
         public IGenerator If(Func<bool> pred, IGenerator body)
         {
-            IEnumerator IfCoro(IGenerator self)
+            return Prepare(Coroutine(IfCoro, pred, body));
+        }
+
+        private static IEnumerator IfCoro(IGenerator self, Func<bool> pred, IGenerator body)
+        {
+            while (true)
             {
-                while (true)
-                {
-                    if (!body.Active)
-                        yield break;
+                if (!body.Active)
+                    yield break;
 
-                    if (pred())
-                        body.Step();
+                if (pred())
+                    body.Step();
 
-                    yield return 0;
-                }
+                yield return 0;
             }
-
-            return Prepare(Coroutine(IfCoro));
         }
 
         public IGenerator IfElse(Func<bool> pred, IGenerator then, IGenerator elseBody)
         {
-            IEnumerator IfElseCoro(IGenerator self)
+            return Prepare(Coroutine(IfElseCoro, pred, then, elseBody));
+        }
+
+        private static IEnumerator IfElseCoro(IGenerator self, Func<bool> pred, IGenerator then, IGenerator elseBody)
+        {
+            while (true)
             {
-                while (true)
+                if (pred())
                 {
-                    if (pred())
-                    {
-                        if (!then.Active)
-                            yield break;
-                        then.Step();
-                    }
-                    else
-                    {
-                        if (!elseBody.Active)
-                            yield break;
-                        elseBody.Step();
-                    }
+                    if (!then.Active)
+                        yield break;
+                    then.Step();
                 }
+                else
+                {
+                    if (!elseBody.Active)
+                        yield break;
+                    elseBody.Step();
+                }
+                yield return null;
+            }
+        }
+
+        public IGenerator WhilePred(Func<bool> pred)
+        {
+            IEnumerator Coro(IGenerator self)
+            {
+                while (!pred())
+                    yield return null;
             }
 
-            return Prepare(Coroutine(IfElseCoro));
+            var inner = Prepare(Coroutine(Coro));
+            Kernel.Root.Add(inner);
+            return inner;
         }
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
         {
-            IEnumerator WhileCoro(IGenerator self)
+            return Prepare(Coroutine(WhileCoro, pred, body));
+        }
+
+        private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
+        {
+            var node = Prepare(Node(gens));
+            while (pred())
             {
-                var node = Prepare(Node(body));
-                while (pred())
-                {
-                    node.Step();
-                    if (!node.Active || node.Empty)
-                        yield break;
+                node.Step();
+                if (!node.Active || node.Empty)
+                    yield break;
 
-                    yield return null;
-                }
+                yield return null;
             }
-
-            return Prepare(Coroutine(WhileCoro));
         }
 
         public IGenerator<T> Value<T>(T val)
@@ -159,10 +168,9 @@ namespace Flow.Impl
             return Prepare(Coroutine(SwitchCoro));
         }
 
-        public ICase<T> Case<T>(T val, IGenerator statement)
-            where T : IComparable<T>
+        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
         {
-            return new Case<T>(val, statement);
+            throw new NotImplementedException();
         }
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
@@ -194,43 +202,29 @@ namespace Flow.Impl
             return Prepare(seq);
         }
 
-        public ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IEnumerator<bool> ConditionCoro(ITransient self, Func<bool> pred)
-        {
-            while (pred())
-                yield return true;
-
-            yield return false;
-            self.Complete();
-        }
-
         public IGenerator Break()
         {
             return Prepare(new Break());
         }
 
-        public IGenerator SetDebugLEvel(EDebugLevel level)
+        public IGenerator SetDebugLevel(EDebugLevel level)
         {
             return Do(() => { Kernel.DebugLevel = level; });
         }
 
-        public IGenerator Log(string fmt, params object[] objs)
+        public IGenerator Log(string fmt, params object[] args)
         {
-            return Do(() => { Kernel.Log.Info(fmt, objs); });
+            return Do(() => { Kernel.Log.Info(fmt, args); });
         }
 
-        public IGenerator Warn(string fmt, params object[] objs)
+        public IGenerator Warn(string fmt, params object[] args)
         {
-            return Do(() => { Kernel.Log.Warn(fmt, objs); });
+            return Do(() => { Kernel.Log.Warn(fmt, args); });
         }
 
-        public IGenerator Error(string fmt, params object[] objs)
+        public IGenerator Error(string fmt, params object[] args)
         {
-            return Do(() => { Kernel.Log.Error(fmt, objs); });
+            return Do(() => { Kernel.Log.Error(fmt, args); });
         }
 
         public ITransient ActionSequence(params Action[] actions)
@@ -260,8 +254,11 @@ namespace Flow.Impl
         {
             var barrier = Barrier();
             foreach (var tr in args)
+            {
+                if (tr == null)
+                    continue;
                 barrier.Add(tr);
-            
+            }
             return Prepare(barrier);
         }
 

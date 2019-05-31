@@ -55,7 +55,6 @@ namespace Flow.Impl
         {
             throw new Exception("Coroutine cannot start");
         }
-
     }
 
     internal class Coroutine<T>
