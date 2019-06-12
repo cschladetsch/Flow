@@ -6,21 +6,29 @@ namespace Flow
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ITimedFuture<T> : IFuture<T>, ITimesOut
+    public interface ITimedFuture<T>
+        : IFuture<T>
+        , ITimesOut
     {
     }
 
-    public interface ITimedBarrier : IBarrier, ITimesOut
+    public interface ITimedBarrier
+        : IBarrier
+        , ITimesOut
     {
         new ITimedBarrier AddTo(IGroup group);
         new ITimedBarrier Named(string name);
     }
 
-    public interface ITimedTrigger : ITrigger, ITimesOut
+    public interface ITimedTrigger
+        : ITrigger
+        , ITimesOut
     {
     }
 
-    public interface ITimedNode : INode, ITimesOut
+    public interface ITimedNode
+        : INode
+        , ITimesOut
     {
     }
 }

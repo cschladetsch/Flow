@@ -229,26 +229,6 @@
     <None Include="Registry\Impl\Readme.md" />
     <None Include="Registry\Impl\Readme.md.meta" />
     <None Include="Registry\Readme.md" />
-    <None Include="TestFlow\Editor\FlowTests.asmdef" />
-    <None Include="TestFlow\Editor\FlowTests.asmdef.meta" />
-    <None Include="TestFlow\Editor\GetParamName.cs.meta" />
-    <None Include="TestFlow\Editor\packages.config" />
-    <None Include="TestFlow\Editor\packages.config.meta" />
-    <None Include="TestFlow\Editor\TestBarrier.cs.meta" />
-    <None Include="TestFlow\Editor\TestBase.cs.meta" />
-    <None Include="TestFlow\Editor\TestChannel.cs.meta" />
-    <None Include="TestFlow\Editor\TestConditionals.cs.meta" />
-    <None Include="TestFlow\Editor\TestEventStream.cs.meta" />
-    <None Include="TestFlow\Editor\TestFlowExtra.cs.meta" />
-    <None Include="TestFlow\Editor\TestKernel.cs.meta" />
-    <None Include="TestFlow\Editor\TestLog.cs.meta" />
-    <None Include="TestFlow\Editor\TestLoops.cs.meta" />
-    <None Include="TestFlow\Editor\TestSequenceTopology.cs.meta" />
-    <None Include="TestFlow\Editor\TestSwitch.cs.meta" />
-    <None Include="TestFlow\Editor\TestTimers.cs.meta" />
-    <None Include="TestFlow\Editor\TestTrigger.cs.meta" />
-    <None Include="TestFlow\Editor\TimerTimedWait.cs.meta" />
-    <None Include="TestFlow\TestFlow.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDebugLevel.cs" />
@@ -295,7 +275,7 @@
     <Compile Include="INode.cs" />
     <Compile Include="IPeriodic.cs" />
     <Compile Include="ISubroutine.cs" />
-    <Compile Include="ITimedFuture.cs" />
+    <Compile Include="ITimedTransients.cs" />
     <Compile Include="ITimeFrame.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="ITimesOut.cs" />
@@ -306,25 +286,9 @@
     <Compile Include="Logger\PrettyPrinter.cs" />
     <Compile Include="Logger\UnityLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestFlow\Editor\GetParamName.cs" />
-    <Compile Include="TestFlow\Editor\TestBarrier.cs" />
-    <Compile Include="TestFlow\Editor\TestBase.cs" />
-    <Compile Include="TestFlow\Editor\TestChannel.cs" />
-    <Compile Include="TestFlow\Editor\TestConditionals.cs" />
-    <Compile Include="TestFlow\Editor\TestEventStream.cs" />
-    <Compile Include="TestFlow\Editor\TestFlowExtra.cs" />
-    <Compile Include="TestFlow\Editor\TestKernel.cs" />
-    <Compile Include="TestFlow\Editor\TestLog.cs" />
-    <Compile Include="TestFlow\Editor\TestLoops.cs" />
-    <Compile Include="TestFlow\Editor\TestSequenceTopology.cs" />
-    <Compile Include="TestFlow\Editor\TestSwitch.cs" />
-    <Compile Include="TestFlow\Editor\TestTimers.cs" />
-    <Compile Include="TestFlow\Editor\TestTrigger.cs" />
-    <Compile Include="TestFlow\Editor\TimerTimedWait.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".nuget\NuGet.exe" />
-    <Content Include="TestFlow\TestFlow.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".git\objects\info\" />

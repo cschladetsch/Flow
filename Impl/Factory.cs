@@ -15,12 +15,9 @@ namespace Flow.Impl
         : IFactory
     {
         public IKernel Kernel { get; set; }
-        public bool AutoAdd { get; set; }
 
         public INode Node(params IGenerator[] gens)
-        {
-            return Node(gens.ToList());
-        }
+            => Node(gens.ToList());
 
         public INode Node(IEnumerable<IGenerator> gens)
         {
@@ -44,14 +41,10 @@ namespace Flow.Impl
         }
 
         public ITransient Transient()
-        {
-            return Prepare(new Transient());
-        }
+            => Prepare(new Transient());
 
-        public IGenerator Do(Action act)
-        {
-            return Prepare(new Subroutine() { Sub = (tr) => act() });
-        }
+        public IGenerator Do(Action act) 
+            => Prepare(new Subroutine() { Sub = (tr) => act() });
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
@@ -62,49 +55,52 @@ namespace Flow.Impl
 
         public IGenerator If(Func<bool> pred, IGenerator body)
         {
-            return Prepare(Coroutine(IfCoro, pred, body));
-        }
-
-        private static IEnumerator IfCoro(IGenerator self, Func<bool> pred, IGenerator body)
-        {
-            while (true)
+            IEnumerator IfCoro(IGenerator self)
             {
-                if (!body.Active)
-                    yield break;
+                while (true)
+                {
+                    if (!body.Active)
+                        yield break;
 
-                if (pred())
-                    body.Step();
+                    if (pred())
+                        body.Step();
 
-                yield return 0;
+                    yield return 0;
+                }
             }
+
+            return Prepare(Coroutine(IfCoro));
         }
 
         public IGenerator IfElse(Func<bool> pred, IGenerator then, IGenerator elseBody)
         {
-            return Prepare(Coroutine(IfElseCoro, pred, then, elseBody));
-        }
-
-        private static IEnumerator IfElseCoro(IGenerator self, Func<bool> pred, IGenerator then, IGenerator elseBody)
-        {
-            while (true)
+            IEnumerator IfElseCoro(IGenerator self)
             {
-                if (pred())
+                while (true)
                 {
-                    if (!then.Active)
-                        yield break;
-                    then.Step();
+                    if (pred())
+                    {
+                        if (!then.Active)
+                            yield break;
+
+                        then.Step();
+                    }
+                    else
+                    {
+                        if (!elseBody.Active)
+                            yield break;
+
+                        elseBody.Step();
+                    }
+
+                    yield return null;
                 }
-                else
-                {
-                    if (!elseBody.Active)
-                        yield break;
-                    elseBody.Step();
-                }
-                yield return null;
             }
+
+            return Prepare(Coroutine(IfElseCoro));
         }
 
-        public IGenerator WhilePred(Func<bool> pred)
+        public IGenerator While(Func<bool> pred)
         {
             IEnumerator Coro(IGenerator self)
             {
@@ -119,59 +115,48 @@ namespace Flow.Impl
 
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
         {
-            return Prepare(Coroutine(WhileCoro, pred, body));
-        }
-
-        private IEnumerator WhileCoro(IGenerator self, Func<bool> pred, IGenerator[] gens)
-        {
-            var node = Prepare(Node(gens));
-            while (pred())
+            IEnumerator WhileCoro(IGenerator self)
             {
-                node.Step();
-                if (!node.Active || node.Empty)
-                    yield break;
+                var node = Prepare(Node(body));
+                while (pred())
+                {
+                    node.Step();
+                    if (!node.Active || node.Empty)
+                        yield break;
 
-                yield return null;
+                    yield return null;
+                }
             }
+
+            return Prepare(Coroutine(WhileCoro));
         }
 
         public IGenerator<T> Value<T>(T val)
-        {
-            return Prepare(new Generator<T>() { Value = val });
-        }
+            => Prepare(new Generator<T>() { Value = val });
 
         public IGenerator<T> Expression<T>(Func<T> action)
-        {
-            return Prepare(new Subroutine<T> { Sub = s => action() });
-        }
+            => Prepare(new Subroutine<T> { Sub = s => action() });
 
         public IGenerator Sequence(params IGenerator[] gens)
-        {
-            return Sequence(gens.ToList());
-        }
+            => Sequence(gens.ToList());
 
         public IGenerator Sequence(IEnumerable<IGenerator> gens)
-        {
-            return Prepare(new Sequence(gens));
-        }
+            => Prepare(new Sequence(gens));
 
         public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases)
             where T : IComparable<T>
         {
             gen.Step();
-            var val = gen.Value;
-            IEnumerator SwitchCoro(IGenerator self)
-            {
-                return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
-            }
+            IEnumerator SwitchCoro(IGenerator self) =>
+                (from c in cases where c.Matches(gen.Value) select c.Body)
+                    .GetEnumerator();
 
             return Prepare(Coroutine(SwitchCoro));
         }
 
-        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
-        {
-            throw new NotImplementedException();
-        }
+        public ICase<T> Case<T>(T val, IGenerator statement)
+            where T : IComparable<T>
+                => throw new NotImplementedException();
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
         {
@@ -180,20 +165,14 @@ namespace Flow.Impl
             return timer;
         }
 
-        public ITimer OneShotTimer(TimeSpan interval)
-        {
-            return Prepare(new Timer(Kernel, interval));
-        }
+        public ITimer OneShotTimer(TimeSpan interval) 
+            => Prepare(new Timer(Kernel, interval));
 
         public IPeriodic PeriodicTimer(TimeSpan interval)
-        {
-            return Prepare(new Periodic(Kernel, interval));
-        }
+            => Prepare(new Periodic(Kernel, interval));
 
         public IBarrier Barrier()
-        {
-            return Prepare(new Barrier());
-        }
+            => Prepare(new Barrier());
 
         public IGenerator Sequence(params ITransient[] gens)
         {
@@ -203,29 +182,19 @@ namespace Flow.Impl
         }
 
         public IGenerator Break()
-        {
-            return Prepare(new Break());
-        }
+            => Prepare(new Break());
 
-        public IGenerator SetDebugLevel(EDebugLevel level)
-        {
-            return Do(() => { Kernel.DebugLevel = level; });
-        }
+        public IGenerator SetDebugLevel(EDebugLevel level) 
+            => Do(() => { Kernel.DebugLevel = level; });
 
         public IGenerator Log(string fmt, params object[] args)
-        {
-            return Do(() => { Kernel.Log.Info(fmt, args); });
-        }
+            => Do(() => { Kernel.Log.Info(fmt, args); });
 
         public IGenerator Warn(string fmt, params object[] args)
-        {
-            return Do(() => { Kernel.Log.Warn(fmt, args); });
-        }
+            => Do(() => { Kernel.Log.Warn(fmt, args); });
 
         public IGenerator Error(string fmt, params object[] args)
-        {
-            return Do(() => { Kernel.Log.Error(fmt, args); });
-        }
+            => Do(() => { Kernel.Log.Error(fmt, args); });
 
         public ITransient ActionSequence(params Action[] actions)
         {
@@ -246,9 +215,7 @@ namespace Flow.Impl
         }
 
         public IBarrier Barrier(params ITransient[] args)
-        {
-            return Barrier(args.ToList());
-        }
+            => Barrier(args.ToList());
 
         public IBarrier Barrier(IEnumerable<ITransient> args)
         {
@@ -263,14 +230,10 @@ namespace Flow.Impl
         }
 
         public ITimedBarrier TimedBarrier(TimeSpan span, params ITransient[] args)
-        {
-            return TimedBarrier(span, args.ToList());
-        }
+            => TimedBarrier(span, args.ToList());
 
         public ITimedBarrier TimedBarrier(TimeSpan span, IEnumerable<ITransient> args)
-        {
-            return Prepare(new TimedBarrier(Kernel, span, args));
-        }
+            => Prepare(new TimedBarrier(Kernel, span, args));
 
         public ITrigger Trigger(params ITransient[] args)
         {
@@ -287,14 +250,10 @@ namespace Flow.Impl
         }
 
         public IGenerator Nop()
-        {
-            return Node();
-        }
+            => Node();
 
         public IFuture<T> Future<T>()
-        {
-            return Prepare(new Future<T>());
-        }
+            => Prepare(new Future<T>());
 
         public IFuture<T> Future<T>(T val)
         {
@@ -304,19 +263,13 @@ namespace Flow.Impl
         }
 
         public ITransient Wait(TimeSpan duration)
-        {
-            return Do(() => Kernel.Wait(duration));
-        }
+            => Do(() => Kernel.Wait(duration));
 
         public ITransient WaitFor(ITransient trans, TimeSpan timeOut)
-        {
-            return Prepare(Trigger(trans, OneShotTimer(timeOut)));
-        }
+            => Prepare(Trigger(trans, OneShotTimer(timeOut)));
 
         public ITimedFuture<T> TimedFuture<T>(TimeSpan interval)
-        {
-            return Prepare(new TimedFuture<T>(Kernel, interval));
-        }
+            => Prepare(new TimedFuture<T>(Kernel, interval));
 
         public ITimedFuture<T> TimedFuture<T>(TimeSpan timeOut, T val)
         {
@@ -411,14 +364,10 @@ namespace Flow.Impl
         }
 
         public IChannel<TR> Channel<TR>(IGenerator<TR> gen)
-        {
-            return Prepare(new Channel<TR>(Kernel, gen));
-        }
+            => Prepare(new Channel<TR>(Kernel, gen));
 
         public IChannel<TR> Channel<TR>()
-        {
-            return Prepare(new Channel<TR>(Kernel));
-        }
+            => Prepare(new Channel<TR>(Kernel));
 
         public T Prepare<T>(T obj)
             where T : ITransient
@@ -429,3 +378,4 @@ namespace Flow.Impl
         }
     }
 }
+
