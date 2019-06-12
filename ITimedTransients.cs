@@ -16,6 +16,8 @@ namespace Flow
         : IBarrier
         , ITimesOut
     {
+        new ITimedBarrier AddTo(IGroup group);
+        new ITimedBarrier Named(string name);
     }
 
     public interface ITimedTrigger

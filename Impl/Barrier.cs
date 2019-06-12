@@ -1,7 +1,5 @@
 // (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Flow.Impl
@@ -25,3 +23,4 @@ namespace Flow.Impl
         public new IBarrier Named(string name) => this.SetName<IBarrier>(name);
     }
 }
+
