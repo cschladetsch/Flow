@@ -7,7 +7,7 @@ namespace Flow
 {
     public static class Extension
     {
-        public static T SetName<T>(this T self, string name) 
+        public static T SetName<T>(this T self, string name)
             where T : ITransient
         {
             self.Name = name;
