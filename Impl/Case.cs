@@ -5,7 +5,7 @@ using System;
 namespace Flow.Impl
 {
     internal class Case<T>
-        : ICase<T> where T 
+        : ICase<T> where T
             : IComparable<T>
     {
         public IGenerator Body { get; }
