@@ -43,7 +43,7 @@ namespace Flow.Impl
         public ITransient Transient()
             => Prepare(new Transient());
 
-        public IGenerator Do(Action act) 
+        public IGenerator Do(Action act)
             => Prepare(new Subroutine() { Sub = (tr) => act() });
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
@@ -165,7 +165,7 @@ namespace Flow.Impl
             return timer;
         }
 
-        public ITimer OneShotTimer(TimeSpan interval) 
+        public ITimer OneShotTimer(TimeSpan interval)
             => Prepare(new Timer(Kernel, interval));
 
         public IPeriodic PeriodicTimer(TimeSpan interval)
@@ -184,7 +184,7 @@ namespace Flow.Impl
         public IGenerator Break()
             => Prepare(new Break());
 
-        public IGenerator SetDebugLevel(EDebugLevel level) 
+        public IGenerator SetDebugLevel(EDebugLevel level)
             => Do(() => { Kernel.DebugLevel = level; });
 
         public IGenerator Log(string fmt, params object[] args)
@@ -250,7 +250,7 @@ namespace Flow.Impl
         }
 
         public IGenerator Nop()
-            => Node();
+            => While(() => false);
 
         public IFuture<T> Future<T>()
             => Prepare(new Future<T>());
