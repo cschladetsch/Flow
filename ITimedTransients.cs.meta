@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 646c95881f200d448bf5f9d35a8f8cad
+<<<<<<< HEAD:ITimedTransients.cs.meta
+guid: c79f31108e99815478501688fa03169d
+=======
+guid: 33d5b23c455c28947977725fc3e46dbc
+>>>>>>> 0a54a6af764aed630dee675c689ecd68a7abd37e:ITimedTransients.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

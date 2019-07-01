@@ -5,7 +5,7 @@
 // But, the same code file is used for both Unity and non-Unity debugging.
 // This has to be fixed and soon.
 
-//#define UNITY
+#define UNITY
 #undef UNITY
 //#define UNITY
 //#undef TRACE
@@ -56,34 +56,45 @@ namespace Flow.Impl
         public static void Initialise()
         {
         }
+
         public void Info(string fmt, params object[] args)
         {
-            Log(ELogLevel.Info, string.Format(fmt, args));
+            Log(ELogLevel.Info, StringFormat(fmt, args));
         }
+
         public void Warn(string fmt, params object[] args)
         {
-            Log(ELogLevel.Warn, string.Format(fmt, args));
+            Log(ELogLevel.Warn, StringFormat(fmt, args));
         }
+
         public void Error(string fmt, params object[] args)
         {
-            Log(ELogLevel.Error, string.Format(fmt, args));
+            Log(ELogLevel.Error, StringFormat(fmt, args));
         }
+
         public void Verbose(int level, string fmt, params object[] args)
         {
             if (level > Verbosity)
                 return;
-            Log(ELogLevel.Verbose, string.Format(fmt, args));
+
+            Log(ELogLevel.Verbose, StringFormat(fmt, args));
         }
 
-        void OutputLine(string text)
+        private void OutputLine(string text)
         {
             Console.WriteLine(text);
             Trace.WriteLine(text);
         }
-        void Output(string text)
+
+        private void Output(string text)
         {
             Console.Write(text);
             Trace.Write(text);
+        }
+
+        private static string StringFormat(string fmt, object[] args)
+        {
+            return fmt == null ? "Null" : string.Format(fmt, args);
         }
 
 #if !UNITY

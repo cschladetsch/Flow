@@ -86,7 +86,7 @@
     <Compile Include="INode.cs" />
     <Compile Include="IPeriodic.cs" />
     <Compile Include="ISubroutine.cs" />
-    <Compile Include="ITimedFuture.cs" />
+    <Compile Include="ITimedTransients.cs" />
     <Compile Include="ITimeFrame.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="ITimesOut.cs" />
