@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flow2", "Flow2.csproj", "{18326C80-2CC4-417D-8FEE-EA608ED85636}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFlow", "TestFlow\TestFlow.csproj", "{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18326C80-2CC4-417D-8FEE-EA608ED85636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18326C80-2CC4-417D-8FEE-EA608ED85636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18326C80-2CC4-417D-8FEE-EA608ED85636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18326C80-2CC4-417D-8FEE-EA608ED85636}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12E9E3DC-61D3-42F6-B9AF-8BE0C5EAAC9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E39A774E-3589-40AE-B148-96CF84C56F84}
+	EndGlobalSection
+EndGlobal
