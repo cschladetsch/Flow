@@ -7,9 +7,11 @@ namespace Flow
     public delegate void TransientHandler(ITransient sender);
     public delegate void TransientHandlerReason(ITransient sender, ITransient reason);
 
+    /// <inheritdoc cref="INamed" />
     /// <inheritdoc cref="IDisposable" />
     /// <summary>
-    /// An ITransient object notifies observers when it has been Disposed.
+    /// An ITransient object has-a IKernel and notifies observers when it
+    /// has been Disposed.
     /// </summary>
     public interface ITransient
         : INamed
