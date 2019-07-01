@@ -71,8 +71,6 @@ namespace Flow
         IGenerator Sequence(params IGenerator[] transients);
         IGenerator Sequence(IEnumerable<IGenerator> transients);
 
-        IGenerator Switch<T>(IGenerator<T> val, params ICase<T>[] cases) where T : IComparable<T>;
-        ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>;
         IGenerator Break();
 
         //ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);

@@ -97,21 +97,6 @@
     <Compile Include="Logger\PrettyPrinter.cs" />
     <Compile Include="Logger\UnityLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestFlow\Editor\GetParamName.cs" />
-    <Compile Include="TestFlow\Editor\TestBarrier.cs" />
-    <Compile Include="TestFlow\Editor\TestBase.cs" />
-    <Compile Include="TestFlow\Editor\TestChannel.cs" />
-    <Compile Include="TestFlow\Editor\TestConditionals.cs" />
-    <Compile Include="TestFlow\Editor\TestEventStream.cs" />
-    <Compile Include="TestFlow\Editor\TestFlowExtra.cs" />
-    <Compile Include="TestFlow\Editor\TestKernel.cs" />
-    <Compile Include="TestFlow\Editor\TestLog.cs" />
-    <Compile Include="TestFlow\Editor\TestLoops.cs" />
-    <Compile Include="TestFlow\Editor\TestSequenceTopology.cs" />
-    <Compile Include="TestFlow\Editor\TestSwitch.cs" />
-    <Compile Include="TestFlow\Editor\TestTimers.cs" />
-    <Compile Include="TestFlow\Editor\TestTrigger.cs" />
-    <Compile Include="TestFlow\Editor\TimerTimedWait.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

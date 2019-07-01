@@ -1,0 +1,11 @@
+W:\Packages\Flow\TestFlow\obj\Debug\TestFlow.csproj.CoreCompileInputs.cache
+W:\Packages\Flow\TestFlow\obj\Debug\TestFlow.csprojAssemblyReference.cache
+W:\Packages\Flow\TestFlow\bin\Debug\TestFlow.dll
+W:\Packages\Flow\TestFlow\bin\Debug\TestFlow.pdb
+W:\Packages\Flow\TestFlow\bin\Debug\Flow2.dll
+W:\Packages\Flow\TestFlow\bin\Debug\nunit.framework.dll
+W:\Packages\Flow\TestFlow\bin\Debug\Flow2.pdb
+W:\Packages\Flow\TestFlow\bin\Debug\nunit.framework.pdb
+W:\Packages\Flow\TestFlow\obj\Debug\TestFlow.csproj.CopyComplete
+W:\Packages\Flow\TestFlow\obj\Debug\TestFlow.dll
+W:\Packages\Flow\TestFlow\obj\Debug\TestFlow.pdb

@@ -155,24 +155,6 @@ namespace Flow.Impl
             return Prepare(new Sequence(gens));
         }
 
-        public IGenerator Switch<T>(IGenerator<T> gen, params ICase<T>[] cases)
-            where T : IComparable<T>
-        {
-            gen.Step();
-            var val = gen.Value;
-            IEnumerator SwitchCoro(IGenerator self)
-            {
-                return (from c in cases where c.Matches(val) select c.Body).GetEnumerator();
-            }
-
-            return Prepare(Coroutine(SwitchCoro));
-        }
-
-        public ICase<T> Case<T>(T val, IGenerator statement) where T : IComparable<T>
-        {
-            throw new NotImplementedException();
-        }
-
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
         {
             var timer = OneShotTimer(interval);
