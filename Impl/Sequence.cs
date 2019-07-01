@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Flow.Impl
 {
@@ -16,6 +17,12 @@ namespace Flow.Impl
             : this()
         {
             Add(gens);
+        }
+
+        public override void Post()
+        {
+            if (!Contents.Any())
+                Complete();
         }
     }
 }

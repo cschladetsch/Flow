@@ -155,16 +155,10 @@ namespace Flow
         IGenerator IfElse(Func<bool> pred, IGenerator @if, IGenerator @else);
 
         /// <summary>
-        /// Make a Generator that Steps the given set of other Generators
-        /// while the given predicate is true.
+        /// Make a <see cref="IGenerator"/> that steps zero or
+        /// more other generators while the given predicate is true.
         /// </summary>
         IGenerator While(Func<bool> pred, params IGenerator[] body);
-
-        /// <summary>
-        /// Make a <see cref="IGenerator"/> that does nothing while the
-        /// given predicate is true.
-        /// </summary>
-        IGenerator While(Func<bool> pred);
 
         /// <summary>
         /// Perform one Generator after the previous Generator Completes.

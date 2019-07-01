@@ -5,8 +5,10 @@
 // But, the same code file is used for both Unity and non-Unity debugging.
 // This has to be fixed and soon.
 
+// ... 1 July 2019
+
 #define UNITY
-#undef UNITY
+//#undef UNITY
 //#define UNITY
 //#undef TRACE
 

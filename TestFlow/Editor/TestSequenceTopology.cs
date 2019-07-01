@@ -13,11 +13,23 @@ namespace Flow.Test
                 New.Sequence(
                     New.Do(() => stepNum += Kernel.StepNumber),
                     New.Do(() => stepNum += Kernel.StepNumber),
+                    New.Do(() => stepNum += Kernel.StepNumber),
+                    New.Do(() => stepNum += Kernel.StepNumber),
                     New.Do(() => stepNum += Kernel.StepNumber)
                 )
             );
-            Step(3);
-            Assert.AreEqual(stepNum, 0 + 1 + 2);
+            Step(5);
+            Assert.AreEqual(stepNum, 0 + 1 + 2 + 3 + 4);
+        }
+
+        [Test]
+        public void TestEmptySequenceCompletes()
+        {
+            bool completed = false;
+            var seq = New.Sequence().AddTo(Root);
+            seq.Completed += tr => completed = true;
+            Step(4);
+            Assert.IsTrue(completed);
         }
 
         [Test()]

@@ -13,7 +13,7 @@ namespace Flow.Test
             var exp = New.If(
                 () => true,
                 New.Do(() => executed = true)
-            );//.Named("IF1");
+            ).Named("IF1");
 
             Root.Add(exp);
             Step(2);
@@ -23,7 +23,7 @@ namespace Flow.Test
             var exp2 = New.If(
                 () => false,
                 New.Do(() => executed = true)
-            );//.Named("If2");
+            ).Named("If2");
 
             Root.Remove(exp);
             Root.Add(exp2);

@@ -100,28 +100,16 @@ namespace Flow.Impl
             return Prepare(Coroutine(IfElseCoro));
         }
 
-        public IGenerator While(Func<bool> pred)
-        {
-            IEnumerator Coro(IGenerator self)
-            {
-                while (!pred())
-                    yield return null;
-            }
-
-            var inner = Prepare(Coroutine(Coro));
-            Kernel.Root.Add(inner);
-            return inner;
-        }
-
         public IGenerator While(Func<bool> pred, params IGenerator[] body)
         {
+            var any = body.Any();
             IEnumerator WhileCoro(IGenerator self)
             {
                 var node = Prepare(Node(body));
                 while (pred())
                 {
                     node.Step();
-                    if (!node.Active || node.Empty)
+                    if (any && (!node.Active || node.Empty))
                         yield break;
 
                     yield return null;
@@ -363,4 +351,3 @@ namespace Flow.Impl
         }
     }
 }
-

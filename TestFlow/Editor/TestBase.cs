@@ -20,7 +20,7 @@ namespace Flow.Test
 
         protected void Print(object q)
         {
-            PrintFmt("{0}={1}", SymbolName.Get(() => q), q);
+            PrintFmt("{0}", q);
         }
 
         protected void PrintFmt(string fmt, params object[] args)
