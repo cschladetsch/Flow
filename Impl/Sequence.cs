@@ -22,7 +22,7 @@ namespace Flow.Impl
         public override void Post()
         {
             if (!Contents.Any())
-                Complete();
+                Dispose();
         }
     }
 }

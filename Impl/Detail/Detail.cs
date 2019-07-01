@@ -35,7 +35,7 @@ namespace Flow.Impl.Detail
         public override void Step()
         {
             base.Step();
-            Complete();
+            Dispose();
         }
     }
 }

@@ -1,26 +1,28 @@
-// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 namespace Flow.Impl
 {
+    using System;
+
     internal class Trigger
         : Group
         , ITrigger
     {
-        public event TriggerHandler Tripped;
+        public event Action<ITrigger, ITransient> OnTripped;
+
         public ITransient Reason { get; private set; }
 
         internal Trigger()
-        {
-            Removed += Trip;
-        }
+            => OnRemoved += Trip;
 
         private void Trip(IGroup self, ITransient other)
         {
             Reason = other;
 
-            Tripped?.Invoke(this, other);
+            OnTripped?.Invoke(this, other);
 
             Complete();
         }
     }
 }
+

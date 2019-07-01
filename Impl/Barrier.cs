@@ -1,4 +1,4 @@
-// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System.Linq;
 
@@ -16,7 +16,7 @@ namespace Flow.Impl
                 return;
 
             if (Additions.Count == 0)
-                Complete();
+                Dispose();
         }
 
         public new IBarrier AddTo(IGroup group) => this.AddToGroup<IBarrier>(group);
