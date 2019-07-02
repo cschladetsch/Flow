@@ -163,8 +163,8 @@ namespace Flow
         /// <summary>
         /// Perform one Generator after the previous Generator Completes.
         /// </summary>
-        IGenerator Sequence(params IGenerator[] transients);
-        IGenerator Sequence(IEnumerable<IGenerator> transients);
+        ISequence Sequence(params IGenerator[] transients);
+        ISequence Sequence(IEnumerable<IGenerator> transients);
 
         IGenerator Break();
 

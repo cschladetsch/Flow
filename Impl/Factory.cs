@@ -125,10 +125,10 @@ namespace Flow.Impl
         public IGenerator<T> Expression<T>(Func<T> action)
             => Prepare(new Subroutine<T> { Sub = s => action() });
 
-        public IGenerator Sequence(params IGenerator[] gens)
+        public ISequence Sequence(params IGenerator[] gens)
             => Sequence(gens.ToList());
 
-        public IGenerator Sequence(IEnumerable<IGenerator> gens)
+        public ISequence Sequence(IEnumerable<IGenerator> gens)
             => Prepare(new Sequence(gens));
 
         public ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed)
