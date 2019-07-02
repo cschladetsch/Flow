@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using NUnit.Framework;
-
-namespace Flow.Test
+﻿namespace Flow.Test
 {
+    using System.Collections;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TestResumeAfter
         : TestBase
@@ -19,13 +19,15 @@ namespace Flow.Test
                 hasRun = true;
             }
 
-            ICoroutine coro = New.Coroutine(Coro); // create a coro
-            coro.AddTo(Root); // add it to the root
-            coro.ResumeAfter(() => Kernel.StepNumber > activateStep); // wait for the kernel to step x times
-            Assert.IsFalse(hasRun); // we will not be running because the kernel hasnt been stepped
-            Step(numSteps); // step x times
+            var coro = New.Coroutine(Coro);
+            coro.AddTo(Root);
+            coro.ResumeAfter(() => Kernel.StepNumber > activateStep);
+            Assert.IsFalse(hasRun);
+
+            Step(numSteps);
             Print(Kernel.StepNumber);
             Print(hasRun);
+
             Assert.AreEqual(hasRun, ran);
         }
     }

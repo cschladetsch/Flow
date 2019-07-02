@@ -1,11 +1,14 @@
-﻿using System.Collections;
-using System.Linq;
-using NUnit.Framework;
-
-namespace Flow.Test
+﻿namespace Flow.Test
 {
-    public class TestLoops : TestBase
+    using System.Collections;
+    using System.Linq;
+    using NUnit.Framework;
+
+    public class TestLoops
+        : TestBase
     {
+        private int _count = 0;
+
         [Test]
         public void TestDebugLog()
         {
@@ -16,22 +19,17 @@ namespace Flow.Test
         [Test]
         public void TestCoro()
         {
-            var f = New;
-            Root.Add(
-                f.Coroutine(CountTo, 10)//.Named("Body")
-            );
+            Root.Add(New.Coroutine(CountTo, 10).Named("Body"));
 
-            count = 0;
+            _count = 0;
             Step(20);
-            Assert.AreEqual(count, 10);
+            Assert.AreEqual(_count, 10);
         }
 
-        IEnumerator CountTo(IGenerator self, int max)
+        private IEnumerator CountTo(IGenerator self, int max)
         {
-            while (++count != max)
-            {
+            while (++_count != max)
                 yield return 0;
-            }
         }
 
         [TestCase(5, 5, true)]
@@ -41,38 +39,38 @@ namespace Flow.Test
         [TestCase(0, 5, false)]
         public void TestWhile(int upper, int steps, bool shouldMatch)
         {
-            var f = New;
-            count = 0;
+            _count = 0;
             Root.Add(
-                f.While(() =>
+                New.While(() =>
                 {
-                    ++count;
-                    Print($"step={Kernel.StepNumber}, count={count}");
-                    return count < upper;
+                    ++_count;
+                    Print($"step={Kernel.StepNumber}, count={_count}");
+                    return _count < upper;
                 })
             );
 
             Step(steps);
-            Print(count);
+            Print(_count);
+
             if (shouldMatch)
-                Assert.AreEqual(upper, count);
+                Assert.AreEqual(upper, _count);
             else
-                Assert.AreNotEqual(upper, count);
+                Assert.AreNotEqual(upper, _count);
         }
 
         [Test]
         public void TestNop()
         {
-            var f = New;
-            count = 0;
-            f.Nop().AddTo(Root);
+            _count = 0;
+
+            New.Nop().AddTo(Root);
             Assert.IsTrue(!Root.Contents.Any());
-            Step(1);
+
+            Step();
             Assert.IsTrue(Root.Contents.Any());
-            Step(1);
+
+            Step();
             Assert.IsTrue(!Root.Contents.Any());
         }
-
-        private int count = 0;
     }
 }
