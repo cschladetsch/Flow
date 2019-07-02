@@ -1,7 +1,5 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow
 {
     public delegate void FutureHandler<T>(IFuture<T> future);

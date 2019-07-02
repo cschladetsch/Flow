@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System.Collections.Generic;
-
 namespace Flow
 {
+    using System.Collections.Generic;
+
     public delegate void GroupHandler(IGroup node, ITransient child);
 
     /// <inheritdoc />

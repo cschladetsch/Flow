@@ -1,4 +1,6 @@
-﻿namespace Flow
+﻿// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+
+namespace Flow
 {
     /// <summary>
     /// DOC
@@ -17,5 +19,4 @@
         void Verbose(int level, string fmt, params object[] args);
     }
 }
-
 

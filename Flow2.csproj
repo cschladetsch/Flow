@@ -86,6 +86,8 @@
     <Compile Include="INamed.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="IPeriodic.cs" />
+    <Compile Include="ISequence.cs" />
+    <Compile Include="ISteppable.cs" />
     <Compile Include="ISubroutine.cs" />
     <Compile Include="ITimedTransients.cs" />
     <Compile Include="ITimeFrame.cs" />
