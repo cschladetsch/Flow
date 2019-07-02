@@ -1,11 +1,11 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Flow.Impl
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class Coroutine
         : Generator
         , ICoroutine
@@ -92,3 +92,4 @@ namespace Flow.Impl
         }
     }
 }
+

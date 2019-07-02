@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDebugLevel.cs" />
+    <Compile Include="ELogLevel.cs" />
     <Compile Include="IBarrier.cs" />
     <Compile Include="IBreak.cs" />
     <Compile Include="ICase.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="ITimesOut.cs" />
     <Compile Include="ITransient.cs" />
     <Compile Include="ITrigger.cs" />
+    <Compile Include="LoggerFacade.cs" />
     <Compile Include="Logger\ConsoleLogger.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\PrettyPrinter.cs" />

@@ -6,8 +6,6 @@ namespace Flow.Impl
         : Transient
         , IFuture<T>
     {
-        private T _value;
-
         public event FutureHandler<T> Arrived;
 
         public bool Available { get; private set; }
@@ -18,12 +16,13 @@ namespace Flow.Impl
             {
                 if (!Available)
                     throw new FutureNotSetException();
+
                 return _value;
             }
             set
             {
                 if (Available)
-                    throw new FutureAlreadySetException();
+                    throw new FutureAlreadySetException(Name);
 
                 _value = value;
                 Available = true;
@@ -33,5 +32,7 @@ namespace Flow.Impl
                 Dispose();
             }
         }
+
+        private T _value;
     }
 }

@@ -7,7 +7,8 @@ namespace Flow.Impl
     public class FutureNotSetException
         : Exception
     {
-        public FutureNotSetException() : base("Future value not arrived yet")
+        public FutureNotSetException()
+            : base("Future value not arrived yet.")
         {
         }
     }
@@ -15,7 +16,8 @@ namespace Flow.Impl
     public class FutureAlreadySetException
         : Exception
     {
-        public FutureAlreadySetException() : base("Future already set")
+        public FutureAlreadySetException(string name)
+            : base($"Future {name} already set.")
         {
         }
     }
@@ -23,7 +25,8 @@ namespace Flow.Impl
     public class ReEntranceException
         : Exception
     {
-        public ReEntranceException() : base("Method is not re-entrant")
+        public ReEntranceException()
+            : base("Method is not re-entrant.")
         {
         }
     }

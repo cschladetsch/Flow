@@ -18,7 +18,7 @@ namespace Flow
     public interface IGroup
         : IGenerator
     {
-        IEnumerable<ITransient> Contents { get; }
+        IList<ITransient> Contents { get; }
         IEnumerable<IGenerator> Generators { get; }
 
         bool Empty { get; }

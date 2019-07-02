@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow.Impl
 {
+    using System;
+
     public class Kernel
         : Generator<bool>
         , IKernel
@@ -11,14 +11,14 @@ namespace Flow.Impl
         public EDebugLevel DebugLevel { get; set; }
         public ILogger Log { get; set; }
         public INode Root { get; set; }
+        public INode Detail { get; set; }
         public new IFactory Factory { get; internal set; }
+        public bool Break { get; private set; }
         public ITimeFrame Time => _time;
 
         private bool _waiting;
         private DateTime _resumeTime;
         private readonly TimeFrame _time = new TimeFrame();
-
-        public bool Break { get; private set; }
 
         internal Kernel()
         {
@@ -43,9 +43,7 @@ namespace Flow.Impl
         }
 
         public void BreakFlow()
-        {
-            Break = true;
-        }
+            => Break = true;
 
         public void Wait(TimeSpan span)
         {
@@ -97,8 +95,14 @@ namespace Flow.Impl
             if (Break)
                 return;
 
-            if (!IsNullOrInactive(Root))
-                Root.Step();
+            void Step(IGenerator node)
+            {
+                if (!IsNullOrInactive(node))
+                    node.Step();
+            }
+
+            Step(Detail);
+            Step(Root);
 
             base.Step();
         }
@@ -113,3 +117,4 @@ namespace Flow.Impl
         }
     }
 }
+

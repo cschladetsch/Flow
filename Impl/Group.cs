@@ -1,11 +1,11 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Flow.Impl
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <inheritdoc cref="Generator" />
     /// <summary>
     /// A flow Group contains a collection of other Transients, and fires events when the contents
@@ -21,12 +21,12 @@ namespace Flow.Impl
         public event GroupHandler OnAdded;
         public event GroupHandler OnRemoved;
 
-        public bool Empty => _Contents.Count == 0;
-        public IEnumerable<ITransient> Contents => _Contents;
+        public IList<ITransient> Contents => _Contents;
         public IEnumerable<IGenerator> Generators => Contents.OfType<IGenerator>();
+        public bool Empty => !_Contents.Any();
 
-        protected readonly List<ITransient> Additions = new List<ITransient>();
-        protected readonly List<ITransient> Deletions = new List<ITransient>();
+        protected readonly List<ITransient> _Additions = new List<ITransient>();
+        protected readonly List<ITransient> _Deletions = new List<ITransient>();
         protected readonly List<ITransient> _Contents = new List<ITransient>();
 
         internal Group()
@@ -42,7 +42,8 @@ namespace Flow.Impl
 
             PerformPending();
 
-            // TODO: do we really need to copy? Answer: yes (?) because the Pre() may change contents of this
+            // Do we really need to copy? Answer: yes (?) because the
+            // Pre() may change contents of this.
             foreach (var gen in Generators.ToArray())
                 gen.Pre();
         }
@@ -51,7 +52,6 @@ namespace Flow.Impl
         {
             base.Post();
 
-            // TODO: do we really need to copy? Answer: yes (?) because the Pre() may change contents of this
             foreach (var gen in Generators.ToArray())
                 gen.Post();
         }
@@ -71,17 +71,15 @@ namespace Flow.Impl
         }
 
         public void Add(params ITransient[] others)
-        {
-            Add(others.ToList());
-        }
+            => Add(others.ToList());
 
         protected void DeferAdd(ITransient other)
         {
             if (other == null)
                 return;
 
-            Deletions.RemoveRef(other);
-            Additions.Add(other);
+            _Deletions.RemoveRef(other);
+            _Additions.Add(other);
         }
 
         public void Remove(ITransient other)
@@ -89,16 +87,16 @@ namespace Flow.Impl
             if (other == null)
                 return;
 
-            Additions.RemoveRef(other);
-            Deletions.Add(other);
+            _Additions.RemoveRef(other);
+            _Deletions.Add(other);
         }
 
         public void Clear()
         {
-            Additions.Clear();
+            _Additions.Clear();
 
             foreach (var tr in Contents)
-                Deletions.Add(tr);
+                _Deletions.Add(tr);
 
             PerformRemoves();
         }
@@ -117,36 +115,33 @@ namespace Flow.Impl
 
         private void PerformRemoves()
         {
-            if (Deletions.Count == 0)
+            if (_Deletions.Count == 0)
                 return;
 
-            foreach (var tr in Deletions.ToList())
+            foreach (var tr in _Deletions.ToList())
             {
                 _Contents.RemoveRef(tr);
                 if (tr == null)
                     continue;
-
-                //Kernel.Log.Verbose(10, "Removing {0} from Node {1}", tr, Name);
 
                 tr.OnDisposed -= Remove;
 
                 OnRemoved?.Invoke(this, tr);
             }
 
-            Deletions.Clear();
+            _Deletions.Clear();
         }
 
         private void PerformAdds()
         {
-            foreach (var tr in Additions)
+            foreach (var tr in _Additions)
             {
                 _Contents.Add(tr);
-                //Verbose(10, $"Adding {tr} to {this}");
                 tr.OnDisposed += Remove;
                 OnAdded?.Invoke(this, tr);
             }
 
-            Additions.Clear();
+            _Additions.Clear();
         }
     }
 }

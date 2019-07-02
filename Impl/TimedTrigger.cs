@@ -1,8 +1,9 @@
-using System;
-using System.Security.AccessControl;
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 namespace Flow.Impl
 {
+    using System;
+
     internal class TimedTrigger
         : Trigger
         , ITimedTrigger

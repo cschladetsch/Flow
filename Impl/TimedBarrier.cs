@@ -1,8 +1,10 @@
-using System;
-using System.Collections.Generic;
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 namespace Flow.Impl
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// A barrier that completes after a certain time.
     /// Barriers normally only complete when all of it contents are complete.
