@@ -1,33 +1,28 @@
-// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 
 namespace Flow.Impl
 {
+    /// <inheritdoc cref="ITransient" />
     public class Transient
         : Logger
         , ITransient
     {
-        public event TransientHandler Completed;
-        public event TransientHandlerReason WhyCompleted;
+        public event TransientHandler OnDisposed;
+        public event TransientHandlerReason OnHowCompleted;
 
         public static bool DebugTrace;
-        public bool Active { get; private set; }
+
+        public bool Active { get; private set; } = true;
         public IKernel Kernel { get; /*internal*/ set; }
         public IFactory Factory => Kernel.Factory;
         public IFactory New => Factory;
 
         public virtual string Name { get; set; }
 
-        public Transient()
-        {
-            Active = true;
-        }
-
         public override string ToString()
-        {
-            return Print.Object(this);
-        }
+            => Print.Object(this);
 
         public ITransient Named(string name)
         {
@@ -37,12 +32,17 @@ namespace Flow.Impl
 
         public void Complete()
         {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
             if (!Active)
                 return;
 
             Active = false;
 
-            Completed?.Invoke(this);
+            OnDisposed?.Invoke(this);
         }
 
         public ITransient AddTo(IGroup group)
@@ -61,31 +61,28 @@ namespace Flow.Impl
 
             if (!other.Active)
             {
-                Complete();
+                Dispose();
                 return;
             }
 
-            other.Completed += tr => CompletedBecause(other);
+            other.OnDisposed += tr => CompletedBecause(other);
         }
 
         public void CompleteAfter(TimeSpan span)
-        {
-            CompleteAfter(Factory.OneShotTimer(span));
-        }
+            => CompleteAfter(Factory.OneShotTimer(span));
 
         public static bool IsNullOrInactive(ITransient other)
-        {
-            return other == null || !other.Active;
-        }
+            => other == null || !other.Active;
 
         private void CompletedBecause(ITransient other)
         {
             if (!Active)
                 return;
 
-            WhyCompleted?.Invoke(this, other);
+            OnHowCompleted?.Invoke(this, other);
 
-            Complete();
+            Dispose();
         }
     }
 }
+

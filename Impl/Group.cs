@@ -1,4 +1,4 @@
-// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Flow.Impl
         , IGroup
     {
         public event GroupHandler Added;
-        public event GroupHandler Removed;
+        public event GroupHandler OnRemoved;
 
         public bool Empty => _Contents.Count == 0;
         public IEnumerable<ITransient> Contents => _Contents;
@@ -33,7 +33,7 @@ namespace Flow.Impl
         {
             Resumed += tr => ForEachGenerator(g => g.Resume());
             Suspended += tr => ForEachGenerator(g => g.Suspend());
-            Completed += tr => Clear();
+            OnDisposed += tr => Clear();
         }
 
         public override void Pre()
@@ -128,9 +128,9 @@ namespace Flow.Impl
 
                 //Kernel.Log.Verbose(10, "Removing {0} from Node {1}", tr, Name);
 
-                tr.Completed -= Remove;
+                tr.OnDisposed -= Remove;
 
-                Removed?.Invoke(this, tr);
+                OnRemoved?.Invoke(this, tr);
             }
 
             Deletions.Clear();
@@ -142,7 +142,7 @@ namespace Flow.Impl
             {
                 _Contents.Add(tr);
                 //Verbose(10, $"Adding {tr} to {this}");
-                tr.Completed += Remove;
+                tr.OnDisposed += Remove;
                 Added?.Invoke(this, tr);
             }
 

@@ -14,7 +14,7 @@ namespace Flow.Impl
 
         public Generator()
         {
-            Completed += tr => Suspend();
+            OnDisposed += tr => Suspend();
         }
 
         public bool Running { get; private set; }
@@ -73,11 +73,11 @@ namespace Flow.Impl
             // where a dangling reference to 'other' resulted in memory leaks.
             void Action(ITransient tr)
             {
-                other.Completed -= Action;
+                other.OnDisposed -= Action;
                 Suspend();
             }
 
-            other.Completed += Action;
+            other.OnDisposed += Action;
 
             return this;
         }
@@ -103,11 +103,11 @@ namespace Flow.Impl
             // where a dangling reference to 'other' resulted in memory leaks.
             void OnCompleted(ITransient tr)
             {
-                other.Completed -= OnCompleted;
+                other.OnDisposed -= OnCompleted;
                 Resume();
             }
 
-            other.Completed += OnCompleted;
+            other.OnDisposed += OnCompleted;
 
             return this;
         }

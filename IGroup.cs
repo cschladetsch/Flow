@@ -1,4 +1,4 @@
-// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System.Collections.Generic;
 
@@ -8,10 +8,12 @@ namespace Flow
 
     /// <inheritdoc />
     /// <summary>
-    /// A Group contains a collection of other Transients, and fires events when the contents of the group changes.
-    /// <para>When a Group is stepped, nothing happens</para>
-    /// <para>When a Group is resumed, all child generators are also resumed</para>
-    /// <para>When a Group is suspended, all child generators are also suspended</para>
+    /// A Group contains a collection of other Transients, and fires events when the
+    /// contents of the group changes.
+    ///
+    /// <para>When a Group is stepped, nothing happens.</para>
+    /// <para>When a Group is resumed, all child generators are also resumed.</para>
+    /// <para>When a Group is suspended, all child generators are also suspended.</para>
     /// </summary>
     public interface IGroup
         : IGenerator
@@ -25,9 +27,10 @@ namespace Flow
         event GroupHandler Added;
 
         // Occurs when a transient is removed from this group.
-        event GroupHandler Removed;
+        event GroupHandler OnRemoved;
 
-        // Add the specified transient to this group if it is not already a member of this group.
+        // Add the specified transient to this group iff it is not already a member
+        // of this group.
         void Add(IEnumerable<ITransient> trans);
         void Add(params ITransient[] trans);
 
@@ -35,3 +38,4 @@ namespace Flow
         void Remove(ITransient trans);
     }
 }
+

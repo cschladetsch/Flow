@@ -7,10 +7,7 @@
 
 // ... 1 July 2019
 
-#define UNITY
-//#undef UNITY
 //#define UNITY
-//#undef TRACE
 
 using System;
 using System.Diagnostics;

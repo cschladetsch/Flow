@@ -1,4 +1,4 @@
-// (C) 2012-2019 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace Flow.Impl
         internal BlockingChannel(IKernel kernel)
         {
             Sub = StepChannel;
-            Completed += tr => Close();
+            OnDisposed += tr => Close();
         }
 
         internal BlockingChannel(IKernel kernel, IGenerator<TR> gen)
@@ -72,7 +72,7 @@ namespace Flow.Impl
 
                 foreach (var f in _requests)
                 {
-                    f.Complete();
+                    f.Dispose();
                 }
             }
         }
