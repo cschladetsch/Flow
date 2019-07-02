@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System.Collections.Generic;
-
 namespace Flow.Impl
 {
+    using System.Collections.Generic;
+
     internal class Channel<TR>
         : Subroutine<bool>
         , IChannel<TR>
@@ -24,6 +24,9 @@ namespace Flow.Impl
             CompleteAfter(gen);
         }
 
+        public void Insert(TR val)
+            => _values.Enqueue(val);
+
         public IFuture<TR> Extract()
         {
             var future = Factory.Future<TR>();
@@ -42,11 +45,6 @@ namespace Flow.Impl
             return list;
         }
 
-        public void Insert(TR val)
-        {
-            _values.Enqueue(val);
-        }
-
         public void Flush()
         {
             while (_values.Count > 0 && _requests.Count > 0)
@@ -57,8 +55,8 @@ namespace Flow.Impl
         {
             Flush();
 
-            foreach (var f in _requests)
-                f.Complete();
+            foreach (var req in _requests)
+                req.Complete();
         }
 
         private bool StepChannel(IGenerator self)

@@ -18,7 +18,7 @@ namespace Flow.Impl
         : Generator<bool>
         , IGroup
     {
-        public event GroupHandler Added;
+        public event GroupHandler OnAdded;
         public event GroupHandler OnRemoved;
 
         public bool Empty => _Contents.Count == 0;
@@ -143,7 +143,7 @@ namespace Flow.Impl
                 _Contents.Add(tr);
                 //Verbose(10, $"Adding {tr} to {this}");
                 tr.OnDisposed += Remove;
-                Added?.Invoke(this, tr);
+                OnAdded?.Invoke(this, tr);
             }
 
             Additions.Clear();
