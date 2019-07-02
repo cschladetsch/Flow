@@ -1,16 +1,14 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System.Collections.Generic;
-
 namespace Flow
 {
     /// <inheritdoc />
     /// <summary>
-    /// A channel is a buffered input/output stream.
+    /// A buffered input/output stream.
     ///
     /// <para>
-    /// If a channel is created with a TypedGenerator, that is used as the
-    /// source of the channel.
+    /// If a Channel is created with a Generator, that is used as the
+    /// source for the channel.
     /// </para>
     /// </summary>
     public interface IChannel<T>
@@ -18,7 +16,6 @@ namespace Flow
     {
         void Insert(T val);
         IFuture<T> Extract();
-        List<T> ExtractAll();
-        void Flush();
     }
 }
+
