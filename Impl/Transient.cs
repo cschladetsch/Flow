@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow.Impl
 {
+    using System;
+
     /// <inheritdoc cref="ITransient" />
     public class Transient
         : Logger
@@ -11,6 +11,8 @@ namespace Flow.Impl
     {
         public event TransientHandler OnDisposed;
         public event TransientHandlerReason OnHowCompleted;
+        // deprecated
+        public event TransientHandler Completed;
 
         public static bool DebugTrace;
 
@@ -43,6 +45,9 @@ namespace Flow.Impl
             Active = false;
 
             OnDisposed?.Invoke(this);
+
+            // deprecated
+            Completed?.Invoke(this);
         }
 
         public ITransient AddTo(IGroup group)

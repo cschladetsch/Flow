@@ -34,8 +34,10 @@ namespace Flow
         void Suspend();
 
         new IGenerator Named(string name);
+
         IGenerator SuspendAfter(ITransient other);
         IGenerator SuspendAfter(TimeSpan span);
+
         IGenerator ResumeAfter(Func<bool> pred);
         IGenerator ResumeAfter(ITransient other);
         IGenerator ResumeAfter(TimeSpan span);
@@ -43,7 +45,8 @@ namespace Flow
 
     public delegate void GeneratorHandler<in T>(IGenerator<T> generator);
 
-    public interface IGenerator<out T> : IGenerator
+    public interface IGenerator<out T>
+        : IGenerator
     {
         new T Value { get; }
     }

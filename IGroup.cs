@@ -24,7 +24,7 @@ namespace Flow
         bool Empty { get; }
 
         // Occurs when a transient is added to this group.
-        event GroupHandler Added;
+        event GroupHandler OnAdded;
 
         // Occurs when a transient is removed from this group.
         event GroupHandler OnRemoved;
