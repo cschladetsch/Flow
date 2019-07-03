@@ -29,7 +29,7 @@ namespace Flow.Impl
             Timer.Elapsed -= Elapsed;
             HasTimedOut = true;
             TimedOut?.Invoke(this);
-            Complete();
+            Dispose();
         }
 
         public new ITimedBarrier AddTo(IGroup group) => this.AddToGroup<ITimedBarrier>(group);

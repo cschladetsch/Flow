@@ -64,7 +64,7 @@ namespace Flow.Impl
                         }
                         catch (Exception e)
                         {
-                            gen.Complete();
+                            gen.Dispose();
                             Error($"Exception: {e.Message} when stepping {gen.Name}. Completing this generator.");
                             Error($"   StackTrace: {e.StackTrace}");
                         }

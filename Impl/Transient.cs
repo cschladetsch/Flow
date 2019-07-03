@@ -11,8 +11,6 @@ namespace Flow.Impl
     {
         public event TransientHandler OnDisposed;
         public event TransientHandlerReason OnHowCompleted;
-        // deprecated
-        public event TransientHandler Completed;
 
         public static bool DebugTrace;
 
@@ -32,11 +30,6 @@ namespace Flow.Impl
             return this;
         }
 
-        public void Complete()
-        {
-            Dispose();
-        }
-
         public void Dispose()
         {
             if (!Active)
@@ -45,9 +38,6 @@ namespace Flow.Impl
             Active = false;
 
             OnDisposed?.Invoke(this);
-
-            // deprecated
-            Completed?.Invoke(this);
         }
 
         public ITransient AddTo(IGroup group)

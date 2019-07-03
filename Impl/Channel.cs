@@ -56,7 +56,7 @@ namespace Flow.Impl
             Flush();
 
             foreach (var req in _requests)
-                req.Complete();
+                req.Dispose();
         }
 
         private bool StepChannel(IGenerator self)

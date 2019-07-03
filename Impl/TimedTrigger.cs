@@ -27,7 +27,7 @@ namespace Flow.Impl
             Timer.Elapsed -= HandleElapsed;
             HasTimedOut = true;
 
-            Complete();
+            Dispose();
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Flow.Impl
 
                 foreach (var f in _requests)
                 {
-                    f.Dispose();
+                    ((IDisposable) f).Dispose();
                 }
             }
         }

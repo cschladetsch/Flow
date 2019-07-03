@@ -20,7 +20,7 @@ namespace Flow
         event TransientHandler OnDisposed;
 
         //[Deprecated("Use OnDisposed")]
-        event TransientHandler Completed;
+        //event TransientHandler Completed;
 
         /// <summary>
         /// True if the transient has not been Completed.
@@ -31,11 +31,6 @@ namespace Flow
         /// The kernel that made this transient.
         /// </summary>
         IKernel Kernel { get; /* TODO internal: */ set; }
-
-        /// <summary>
-        /// Synonymous with Dispose.
-        /// </summary>
-        void Complete();
 
         ITransient Named(string name);
         ITransient AddTo(IGroup group);
