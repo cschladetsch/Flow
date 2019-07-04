@@ -2,7 +2,6 @@
 # Unity output folders
 /Library/
 /Builds/
-/obj/
 /Logs/
 /Temp/
 /[Pp]ackages/
@@ -14,7 +13,7 @@
 .vs/
 
 bin/
-/obj/
+obj/
 /bin.meta
 /obj.meta
 
