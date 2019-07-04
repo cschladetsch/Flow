@@ -1,10 +1,10 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-using System.Linq;
-
 namespace Flow.Impl
 {
+    using System;
+    using System.Linq;
+
     internal class Node
         : Group
         , INode
@@ -81,16 +81,6 @@ namespace Flow.Impl
 
             end:
             Post();
-        }
-
-        public override void Pre()
-        {
-            base.Pre();
-        }
-
-        public override void Post()
-        {
-            base.Post();
         }
     }
 }

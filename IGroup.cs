@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System.Collections.Generic;
-
 namespace Flow
 {
+    using System.Collections.Generic;
+
     public delegate void GroupHandler(IGroup node, ITransient child);
 
     /// <inheritdoc />
@@ -18,7 +18,7 @@ namespace Flow
     public interface IGroup
         : IGenerator
     {
-        IEnumerable<ITransient> Contents { get; }
+        IList<ITransient> Contents { get; }
         IEnumerable<IGenerator> Generators { get; }
 
         bool Empty { get; }

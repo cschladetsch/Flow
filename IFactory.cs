@@ -1,28 +1,24 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Flow
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Creates Flow instances that reside within a Kernel.
     ///
     /// Instances created by a Factory are not automatically added to any process.
-    /// Rather, they have to be later added to a Group that will be executed, such
-    /// as Kernel.Root or some other Group.
     /// </summary>
     public interface IFactory
     {
         IKernel Kernel { get; set; }
 
-        ITransient Transient();
-
         /// <summary>
         /// Make a new Group containing the given set of <see cref="ITransient"/>s.
         ///
-        /// When a group is stepped, nothing happens. <see cref="IGroup"/>
+        /// When a group is Stepped, nothing happens. <see cref="IGroup"/>
         /// </summary>
         IGroup Group(IEnumerable<ITransient> gens);
         IGroup Group(params ITransient[] gens);
@@ -40,7 +36,7 @@ namespace Flow
         /// <summary>
         /// Make a new timer that fires once, then Complets.
         /// </summary>
-        /// <param name="interval">The shortest time-span before this timer will Complete
+        /// <param name="interval">The shortest time-span before this timer will Complete.
         /// </param>
         ITimer OneShotTimer(TimeSpan interval);
         ITimer OneShotTimer(TimeSpan interval, Action<ITransient> onElapsed);
@@ -76,7 +72,7 @@ namespace Flow
         ITimedTrigger TimedTrigger(TimeSpan span, params ITransient[] args);
 
         /// <summary>
-        /// Make a new promised future value of type T.
+        /// Make a new future value of type T.
         /// </summary>
         IFuture<T> Future<T>();
         IFuture<T> Future<T>(T val);
@@ -117,9 +113,8 @@ namespace Flow
         IChannel<TR> Channel<TR>(IGenerator<TR> gen);
 
         /// <summary>
-        /// Make a <see cref="IGenerator"/> that does nothing, then Completes itself.
+        /// Make a <see cref="IGenerator"/> that does nothing, then Completes.
         /// </summary>
-        /// <returns></returns>
         IGenerator Nop();
 
         /// <summary>
@@ -134,6 +129,11 @@ namespace Flow
         /// <param name="val">The value to always return.</param>
         IGenerator<T> Value<T>(T val);
 
+        /// <summary>
+        /// DOC
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action"></param>
         IGenerator<T> Expression<T>(Func<T> action);
 
         /// <summary>
@@ -142,7 +142,6 @@ namespace Flow
         /// </summary>
         /// <param name="pred">The predicate to test.</param>
         /// <param name="if">What to do if the predicate returns true.</param>
-        /// <returns></returns>
         IGenerator If(Func<bool> pred, IGenerator @if);
 
         /// <summary>
@@ -166,10 +165,22 @@ namespace Flow
         ISequence Sequence(params IGenerator[] transients);
         ISequence Sequence(IEnumerable<IGenerator> transients);
 
+        /// <summary>
+        /// DOC
+        /// </summary>
         IGenerator Break();
 
-        //ITransient Apply(Func<ITransient, ITransient> fun, params ITransient[] transients);
+        /// <summary>
+        /// DOC
+        /// </summary>
+        /// <param name="duration"></param>
         ITransient Wait(TimeSpan duration);
+
+        /// <summary>
+        /// DOC
+        /// </summary>
+        /// <param name="trans"></param>
+        /// <param name="timeOut"></param>
         ITransient WaitFor(ITransient trans, TimeSpan timeOut);
 
         /// <summary>

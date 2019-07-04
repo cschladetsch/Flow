@@ -1,15 +1,10 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow
 {
-    public delegate void GeneratorHandler(IGenerator generator);
+    using System;
 
-    public interface ISteppable
-    {
-        void Step();
-    }
+    public delegate void GeneratorHandler(IGenerator generator);
 
     /// <inheritdoc cref="ITransient" />
     /// <summary>

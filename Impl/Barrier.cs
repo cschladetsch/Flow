@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System.Linq;
-
 namespace Flow.Impl
 {
+    using System.Linq;
+
     internal class Barrier
         : Group
         , IBarrier
@@ -15,12 +15,15 @@ namespace Flow.Impl
             if (Contents.Any(t => t.Active))
                 return;
 
-            if (Additions.Count == 0)
+            if (_Additions.Count == 0)
                 Dispose();
         }
 
-        public new IBarrier AddTo(IGroup group) => this.AddToGroup<IBarrier>(group);
-        public new IBarrier Named(string name) => this.SetName<IBarrier>(name);
+        public new IBarrier AddTo(IGroup group)
+            => this.AddToGroup<IBarrier>(group);
+
+        public new IBarrier Named(string name)
+            => this.SetName<IBarrier>(name);
     }
 }
 

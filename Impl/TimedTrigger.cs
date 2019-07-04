@@ -1,8 +1,9 @@
-using System;
-using System.Security.AccessControl;
+// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
 namespace Flow.Impl
 {
+    using System;
+
     internal class TimedTrigger
         : Trigger
         , ITimedTrigger
@@ -15,7 +16,9 @@ namespace Flow.Impl
         {
             Timer = k.Factory.OneShotTimer(span);
             k.Root.Add(Timer);
-            Timer.Elapsed += HandleElapsed;
+
+            if (TimeoutsEnabled)
+                Timer.Elapsed += HandleElapsed;
         }
 
         private void HandleElapsed(ITransient sender)

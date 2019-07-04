@@ -2,7 +2,10 @@
 
 namespace Flow
 {
-    /// Subroutine is a Generator, implemented as a direct method call.
+    /// <inheritdoc />
+    /// <summary>
+    /// An ISubroutine is-a IGenerator, implemented as a direct method call.
+    /// </summary>
     public interface ISubroutine
         : IGenerator
     {

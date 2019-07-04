@@ -12,14 +12,12 @@ namespace Flow.Impl
 
         public virtual object Value { get; protected set; }
 
-        public Generator()
-        {
-            OnDisposed += tr => Suspend();
-        }
-
         public bool Running { get; private set; }
 
         public int StepNumber { get; protected set; }
+
+        public Generator() =>
+            OnDisposed += tr => Suspend();
 
         public new IGenerator Named(string name)
         {
@@ -69,25 +67,19 @@ namespace Flow.Impl
 
             Resume();
 
-            // thanks to https://github.com/innostory for reporting an issue
-            // where a dangling reference to 'other' resulted in memory leaks.
-            void Action(ITransient tr)
+            void SuspendThis(ITransient tr)
             {
-                other.OnDisposed -= Action;
+                other.OnDisposed -= SuspendThis;
                 Suspend();
             }
 
-            other.OnDisposed += Action;
+            other.OnDisposed += SuspendThis;
 
             return this;
         }
 
         public IGenerator ResumeAfter(Func<bool> pred)
-        {
-            // resume after pred is true
-            var @while = Factory.While(() => !pred()).AddTo(Kernel.Root);
-            return ResumeAfter(@while);
-        }
+            => ResumeAfter(Factory.While(() => !pred()).AddTo(Kernel.Detail));
 
         public IGenerator ResumeAfter(ITransient other)
         {

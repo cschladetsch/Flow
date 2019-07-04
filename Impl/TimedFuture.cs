@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow.Impl
 {
+    using System;
+
     internal class TimedFuture<T>
         : Future<T>
         , ITimedFuture<T>
@@ -16,7 +16,8 @@ namespace Flow.Impl
         {
             Timer = k.Factory.OneShotTimer(span);
             k.Root.Add(Timer);
-            Timer.Elapsed += HandleElapsed;
+            if (TimeoutsEnabled)
+                Timer.Elapsed += HandleElapsed;
         }
 
         private void HandleElapsed(ITransient sender)

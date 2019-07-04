@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow
 {
+    using System;
+
     /// <inheritdoc />
     /// <summary>
     /// Periodic instances regularly fire their Elapsed event.

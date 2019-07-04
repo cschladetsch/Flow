@@ -1,9 +1,9 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-using System;
-
 namespace Flow.Impl
 {
+    using System;
+
     internal class Subroutine
         : Generator
         , ISubroutine

@@ -1,11 +1,12 @@
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace Flow.Test
 {
-    public class TestChannel : TestBase
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
+    public class TestChannel
+        : TestBase
     {
-        [Test()]
+        [Test]
         public void TestInsertExtract()
         {
             var chan = New.Channel<int>();
@@ -20,6 +21,7 @@ namespace Flow.Test
             var f3 = chan.Extract();
 
             Root.Add(chan);
+
             Step(5);
 
             Assert.IsTrue(f0.Available);
@@ -32,7 +34,7 @@ namespace Flow.Test
             Assert.AreEqual(3, f2.Value);
         }
 
-        [Test()]
+        [Test]
         public void TestExtractInsert()
         {
             var chan = New.Channel<int>();
@@ -46,6 +48,7 @@ namespace Flow.Test
             chan.Insert(3);
 
             Root.Add(chan);
+
             Step(5);
 
             Assert.AreEqual(1, f0.Value);

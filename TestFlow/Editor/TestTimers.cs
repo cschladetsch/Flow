@@ -1,9 +1,10 @@
-using System;
-using NUnit.Framework;
-
 namespace Flow.Test
 {
-    public class TestTimers : TestBase
+    using System;
+    using NUnit.Framework;
+
+    public class TestTimers
+        : TestBase
     {
         [TestCase(0.4f, 0.5f, true)]
         [TestCase(0.4f, 0.2f, false)]
@@ -32,9 +33,9 @@ namespace Flow.Test
         public void TestPeriodic(float interval, float runTime, int numElapsed)
         {
             var timer = New.PeriodicTimer(TimeSpan.FromSeconds(interval));
+            var elapsed = 0;
 
-            int elapsed = 0;
-            timer.Elapsed += (sender) => ++elapsed;
+            timer.Elapsed += tr => ++elapsed;
 
             Root.Add(timer);
             RunKernel(runTime);
@@ -46,8 +47,7 @@ namespace Flow.Test
         [TestCase(0.2f, 0.1f, false)]
         public void TestTimedFuture(float futureLifetime, float runTime, bool result)
         {
-            var span = TimeSpan.FromSeconds(futureLifetime);
-            var future = New.TimedFuture<int>(span);
+            var future = New.TimedFuture<int>(TimeSpan.FromSeconds(futureLifetime));
 
             Assert.IsFalse(future.Available);
 

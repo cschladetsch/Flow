@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using NUnit.Framework;
-
-namespace Flow.Test
+﻿namespace Flow.Test
 {
-    class TestConditionals : TestBase
+    using NUnit.Framework;
+
+    internal class TestConditionals
+        : TestBase
     {
         [Test]
         public void TestIf()
