@@ -8,9 +8,10 @@ namespace Flow.Impl
         : Periodic
         , ITimer
     {
-        public DateTime TimeEnds { get; private set; }
+        public DateTime TimeEnds { get; }
 
-        private void TimedOutHandler(ITransient sender) => Complete();
+        private void TimedOutHandler(ITransient sender)
+            => Dispose();
 
         /// <summary>
         /// Timer based on game time, not real time.

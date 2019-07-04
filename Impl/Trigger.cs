@@ -21,7 +21,7 @@ namespace Flow.Impl
 
             OnTripped?.Invoke(this, other);
 
-            Complete();
+            Dispose();
         }
     }
 }

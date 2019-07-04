@@ -20,7 +20,8 @@ namespace Flow.Impl
         public TimedBarrier(IKernel kernel, TimeSpan span, IEnumerable<ITransient> contents)
         {
             Timer = kernel.Factory.OneShotTimer(span);
-            Timer.Elapsed += Elapsed;
+            if (TimeoutsEnabled)
+                Timer.Elapsed += Elapsed;
 
             foreach (var tr in contents)
                 Add(tr);
@@ -31,7 +32,7 @@ namespace Flow.Impl
             Timer.Elapsed -= Elapsed;
             HasTimedOut = true;
             TimedOut?.Invoke(this);
-            Complete();
+            Dispose();
         }
 
         public new ITimedBarrier AddTo(IGroup group) => this.AddToGroup<ITimedBarrier>(group);

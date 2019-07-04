@@ -16,7 +16,9 @@ namespace Flow.Impl
         {
             Timer = k.Factory.OneShotTimer(span);
             k.Root.Add(Timer);
-            Timer.Elapsed += HandleElapsed;
+
+            if (TimeoutsEnabled)
+                Timer.Elapsed += HandleElapsed;
         }
 
         private void HandleElapsed(ITransient sender)
@@ -28,7 +30,7 @@ namespace Flow.Impl
             Timer.Elapsed -= HandleElapsed;
             HasTimedOut = true;
 
-            Complete();
+            Dispose();
         }
     }
 }

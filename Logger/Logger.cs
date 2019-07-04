@@ -7,7 +7,7 @@
 
 // ... 1 July 2019
 
-//#define UNITY
+#define UNITY
 
 using System;
 using System.Diagnostics;
@@ -23,7 +23,8 @@ namespace Flow.Impl
     /// <summary>
     /// Log system used by Models.
     /// </summary>
-    public class Logger : ILogger
+    public class Logger
+        : ILogger
     {
         public string LogPrefix { get; set; }
         public object LogSubject { get; set; }
