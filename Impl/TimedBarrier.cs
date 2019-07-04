@@ -18,7 +18,8 @@ namespace Flow.Impl
         public TimedBarrier(IKernel kernel, TimeSpan span, IEnumerable<ITransient> contents)
         {
             Timer = kernel.Factory.OneShotTimer(span);
-            Timer.Elapsed += Elapsed;
+            if (TimeoutsEnabled)
+                Timer.Elapsed += Elapsed;
 
             foreach (var tr in contents)
                 Add(tr);

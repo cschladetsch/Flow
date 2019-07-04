@@ -13,6 +13,7 @@ namespace Flow.Impl
         public event TransientHandlerReason OnHowCompleted;
 
         public static bool DebugTrace;
+        public static bool TimeoutsEnabled = true;
 
         public bool Active { get; private set; } = true;
         public IKernel Kernel { get; /*internal*/ set; }
