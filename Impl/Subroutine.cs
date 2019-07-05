@@ -17,7 +17,7 @@ namespace Flow.Impl
 
             if (Sub == null)
             {
-                Dispose();
+                Complete();
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace Flow.Impl
 
             if (Sub == null)
             {
-                Dispose();
+                Complete();
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace Flow.Impl
             base.Step();
 
             if (_once)
-                Dispose();
+                Complete();
         }
     }
 }

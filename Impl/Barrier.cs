@@ -16,7 +16,7 @@ namespace Flow.Impl
                 return;
 
             if (_Additions.Count == 0)
-                Dispose();
+                Complete();
         }
 
         public new IBarrier AddTo(IGroup group)

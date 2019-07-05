@@ -20,7 +20,7 @@ namespace Flow.Impl
         internal BlockingChannel(IKernel kernel)
         {
             Sub = StepChannel;
-            OnDisposed += tr => Close();
+            Completed += tr => Close();
         }
 
         internal BlockingChannel(IKernel kernel, IGenerator<TR> gen)

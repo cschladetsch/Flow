@@ -49,7 +49,7 @@ namespace Flow.Impl
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {
             var timed = TimedFuture<TR>(span);
-            timed.TimedOut += tr => trans.Dispose();
+            timed.TimedOut += tr => trans.Complete();
             return Prepare(timed);
         }
 

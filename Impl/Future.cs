@@ -29,7 +29,7 @@ namespace Flow.Impl
 
                 Arrived?.Invoke(this);
 
-                Dispose();
+                Complete();
             }
         }
 

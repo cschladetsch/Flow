@@ -15,17 +15,15 @@ namespace Flow
     /// </summary>
     public interface ITransient
         : INamed
-        , IDisposable
     {
-        event TransientHandler OnDisposed;
-
-        //[Deprecated("Use OnDisposed")]
-        //event TransientHandler Completed;
+        event TransientHandler Completed;
 
         /// <summary>
         /// True if the transient has not been Completed.
         /// </summary>
         bool Active { get; }
+
+        void Complete();
 
         /// <summary>
         /// The kernel that made this transient.

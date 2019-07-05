@@ -29,7 +29,7 @@ namespace Flow.Impl
 
             HasTimedOut = true;
 
-            Dispose();
+            Complete();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Flow.Impl
         internal Channel(IKernel kernel)
         {
             Sub = StepChannel;
-            OnDisposed += tr => Close();
+            Completed += tr => Close();
         }
 
         internal Channel(IKernel kernel, IGenerator<TR> gen)
@@ -56,7 +56,7 @@ namespace Flow.Impl
             Flush();
 
             foreach (var req in _requests)
-                req.Dispose();
+                req.Complete();
         }
 
         private bool StepChannel(IGenerator self)

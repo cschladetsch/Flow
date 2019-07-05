@@ -42,7 +42,7 @@ namespace Flow.Impl
 
             if (_state == null || !_state.MoveNext())
             {
-                Dispose();
+                Complete();
                 return;
             }
 
@@ -82,7 +82,7 @@ namespace Flow.Impl
 
             if (_state == null || !_state.MoveNext())
             {
-                Dispose();
+                Complete();
                 return;
             }
 

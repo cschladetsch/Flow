@@ -33,7 +33,7 @@ namespace Flow.Impl
         {
             Resumed += tr => ForEachGenerator(g => g.Resume());
             Suspended += tr => ForEachGenerator(g => g.Suspend());
-            OnDisposed += tr => Clear();
+            Completed += tr => Clear();
         }
 
         public override void Pre()
@@ -124,7 +124,7 @@ namespace Flow.Impl
                 if (tr == null)
                     continue;
 
-                tr.OnDisposed -= Remove;
+                tr.Completed -= Remove;
 
                 OnRemoved?.Invoke(this, tr);
             }
@@ -137,7 +137,7 @@ namespace Flow.Impl
             foreach (var tr in _Additions)
             {
                 _Contents.Add(tr);
-                tr.OnDisposed += Remove;
+                tr.Completed += Remove;
                 OnAdded?.Invoke(this, tr);
             }
 

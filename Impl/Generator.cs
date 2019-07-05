@@ -17,7 +17,7 @@ namespace Flow.Impl
         public int StepNumber { get; protected set; }
 
         public Generator() =>
-            OnDisposed += tr => Suspend();
+            Completed += tr => Suspend();
 
         public new IGenerator Named(string name)
         {
@@ -69,11 +69,11 @@ namespace Flow.Impl
 
             void SuspendThis(ITransient tr)
             {
-                other.OnDisposed -= SuspendThis;
+                other.Completed -= SuspendThis;
                 Suspend();
             }
 
-            other.OnDisposed += SuspendThis;
+            other.Completed += SuspendThis;
 
             return this;
         }
@@ -95,11 +95,11 @@ namespace Flow.Impl
             // where a dangling reference to 'other' resulted in memory leaks.
             void OnCompleted(ITransient tr)
             {
-                other.OnDisposed -= OnCompleted;
+                other.Completed -= OnCompleted;
                 Resume();
             }
 
-            other.OnDisposed += OnCompleted;
+            other.Completed += OnCompleted;
 
             return this;
         }

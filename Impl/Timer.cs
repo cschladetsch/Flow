@@ -11,7 +11,7 @@ namespace Flow.Impl
         public DateTime TimeEnds { get; }
 
         private void TimedOutHandler(ITransient sender)
-            => Dispose();
+            => Complete();
 
         /// <summary>
         /// Timer based on game time, not real time.

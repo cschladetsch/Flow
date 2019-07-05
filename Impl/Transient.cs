@@ -9,7 +9,7 @@ namespace Flow.Impl
         : Logger
         , ITransient
     {
-        public event TransientHandler OnDisposed;
+        public event TransientHandler Completed;
         public event TransientHandlerReason OnHowCompleted;
 
         public static bool DebugTrace;
@@ -31,14 +31,14 @@ namespace Flow.Impl
             return this;
         }
 
-        public void Dispose()
+        public void Complete()
         {
             if (!Active)
                 return;
 
             Active = false;
 
-            OnDisposed?.Invoke(this);
+            Completed?.Invoke(this);
         }
 
         public ITransient AddTo(IGroup group)
@@ -57,11 +57,11 @@ namespace Flow.Impl
 
             if (!other.Active)
             {
-                Dispose();
+                Complete();
                 return;
             }
 
-            other.OnDisposed += tr => CompletedBecause(other);
+            other.Completed += tr => CompletedBecause(other);
         }
 
         public void CompleteAfter(TimeSpan span)
@@ -77,7 +77,7 @@ namespace Flow.Impl
 
             OnHowCompleted?.Invoke(this, other);
 
-            Dispose();
+            Complete();
         }
     }
 }
