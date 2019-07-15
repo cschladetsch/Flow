@@ -15,7 +15,6 @@ namespace Flow.Impl
         internal TimedFuture(IKernel k, TimeSpan span)
         {
             Timer = k.Factory.OneShotTimer(span);
-            k.Root.Add(Timer);
             if (TimeoutsEnabled)
                 Timer.Elapsed += HandleElapsed;
         }
