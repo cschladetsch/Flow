@@ -10,9 +10,6 @@ namespace Flow.Impl
     {
         public DateTime TimeEnds { get; }
 
-        private void TimedOutHandler(ITransient sender)
-            => Complete();
-
         /// <summary>
         /// Timer based on game time, not real time.
         /// </summary>
@@ -22,5 +19,9 @@ namespace Flow.Impl
             TimeEnds = kernel.Time.Now + span;
             Elapsed += TimedOutHandler;
         }
+
+        private void TimedOutHandler(ITransient sender)
+            => Complete();
     }
 }
+
