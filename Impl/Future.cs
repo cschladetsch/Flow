@@ -6,8 +6,6 @@ namespace Flow.Impl
         : Transient
         , IFuture<T>
     {
-        public event FutureHandler<T> Arrived;
-
         public bool Available { get; private set; }
 
         public T Value
@@ -26,8 +24,6 @@ namespace Flow.Impl
 
                 _value = value;
                 Available = true;
-
-                Arrived?.Invoke(this);
 
                 Complete();
             }

@@ -2,18 +2,15 @@
 
 namespace Flow
 {
-    public delegate void FutureHandler<T>(IFuture<T> future);
-
     /// <inheritdoc />
     /// <summary>
-    /// When its Value property is first set, a Future fires its Arrived event, sets its Available property to true, and
-    /// Completes itself.
+    /// When its' Value property is first set, set Available property to true, and Complete.
     /// </summary>
     public interface IFuture<T>
         : ITransient
     {
         bool Available { get; }
         T Value { get; set; }
-        event FutureHandler<T> Arrived;
     }
 }
+
