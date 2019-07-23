@@ -40,6 +40,11 @@ namespace Flow.Impl
             }
         }
 
+        public new IChannel<TR> AddTo(IGroup @group)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TR> ExtractAll()
         {
             throw new NotImplementedException();

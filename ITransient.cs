@@ -32,6 +32,14 @@ namespace Flow
 
         ITransient Named(string name);
         ITransient AddTo(IGroup group);
+
+        /// <summary>
+        /// Resume the given process after this one completes.
+        /// </summary>
+        /// <param name="next"></param>
+        ITransient Then(IGenerator next);
+        ITransient Then(Action action);
+        ITransient Then(Action<ITransient> action);
     }
 }
 

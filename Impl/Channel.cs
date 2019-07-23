@@ -65,5 +65,11 @@ namespace Flow.Impl
 
             return true;
         }
+
+        public new IChannel<TR> AddTo(IGroup group)
+        {
+            group.Add(this);
+            return this;
+        }
     }
 }

@@ -1,5 +1,7 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
+using System;
+
 namespace Flow
 {
     /// <inheritdoc cref="IFuture{T}" />
@@ -10,6 +12,7 @@ namespace Flow
         : IFuture<T>
         , ITimesOut
     {
+        ITimedFuture<T> Then(Action<ITimedFuture<T>> action);
     }
 
     public interface ITimedBarrier

@@ -28,6 +28,7 @@ namespace Flow
         void Post();
         void Suspend();
 
+        new IGenerator AddTo(IGroup group);
         new IGenerator Named(string name);
 
         IGenerator SuspendAfter(ITransient other);

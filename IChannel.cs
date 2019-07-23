@@ -16,6 +16,8 @@ namespace Flow
     {
         void Insert(T val);
         IFuture<T> Extract();
+
+        new IChannel<T> AddTo(IGroup group);
     }
 }
 

@@ -8,15 +8,30 @@ namespace Flow.Impl
         : Future<T>
         , ITimedFuture<T>
     {
-        public event TimedOutHandler TimedOut;
-        public ITimer Timer { get; internal set; }
+        public event TimedOutHandler TimedOut
+        {
+            add
+            {
+                _timedOut += value;
+                if (HasTimedOut)
+                    value(this);
+            }
+            remove => _timedOut -= value;
+        }
+
         public bool HasTimedOut { get; protected set; }
+
+        public ITimer Timer { get; internal set; }
+
+        private event TimedOutHandler _timedOut;
 
         internal TimedFuture(IKernel k, TimeSpan span)
         {
             Timer = k.Factory.OneShotTimer(span);
             if (TimeoutsEnabled)
                 Timer.Elapsed += HandleElapsed;
+
+            //Completed += tr => Timer.Complete();
         }
 
         private void HandleElapsed(ITransient sender)
@@ -24,7 +39,7 @@ namespace Flow.Impl
             if (!Active)
                 return;
 
-            TimedOut?.Invoke(this);
+            _timedOut?.Invoke(this);
 
             HasTimedOut = true;
 

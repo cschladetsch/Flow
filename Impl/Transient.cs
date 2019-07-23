@@ -9,7 +9,17 @@ namespace Flow.Impl
         : Logger
         , ITransient
     {
-        public event TransientHandler Completed;
+        public event TransientHandler Completed
+        {
+            add
+            {
+                _completed += value;
+                if (!Active)
+                    value(this);
+            }
+            remove => _completed -= value;
+        }
+
         public event TransientHandlerReason OnHowCompleted;
 
         public static bool DebugTrace;
@@ -38,8 +48,10 @@ namespace Flow.Impl
 
             Active = false;
 
-            Completed?.Invoke(this);
+            _completed?.Invoke(this);
         }
+
+        private TransientHandler _completed;
 
         public ITransient AddTo(IGroup group)
         {
@@ -62,6 +74,39 @@ namespace Flow.Impl
             }
 
             other.Completed += tr => CompletedBecause(other);
+        }
+
+        public ITransient Then(Action action)
+            => Then(Factory.Do(action).AddTo(Kernel.Detail));
+
+        public ITransient Then(Action<ITransient> action)
+            => Then(Factory.Do(() => action(this)).AddTo(Kernel.Detail));
+
+        public ITransient Then(IGenerator next)
+        {
+            if (next == null)
+            {
+                Warn("Cannot do nothing next.");
+                return this;
+            }
+
+            if (!Active)
+            {
+                next.Resume();
+                return this;
+            }
+
+            next.Suspend();
+
+            void OnCompleted(ITransient self)
+            {
+                Completed -= OnCompleted;
+                next.Resume();
+            }
+
+            Completed += OnCompleted;
+
+            return this;
         }
 
         public void CompleteAfter(TimeSpan span)

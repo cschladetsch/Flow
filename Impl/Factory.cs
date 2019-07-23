@@ -44,7 +44,18 @@ namespace Flow.Impl
             => Prepare(new Transient());
 
         public IGenerator Do(Action act)
-            => Prepare(new Subroutine() { Sub = (tr) => act() });
+        {
+            var subroutine = Prepare(new Subroutine
+            {
+                Sub = self =>
+                {
+                    act();
+                    self.Complete();
+                }
+            });
+
+            return Prepare(subroutine);
+        }
 
         public IFuture<TR> Timed<TR>(TimeSpan span, ITransient trans)
         {

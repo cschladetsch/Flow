@@ -1,5 +1,7 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
+using System;
+
 namespace Flow
 {
     public delegate void FutureHandler<T>(IFuture<T> future);
@@ -14,6 +16,10 @@ namespace Flow
     {
         bool Available { get; }
         T Value { get; set; }
+
         event FutureHandler<T> Arrived;
+
+        ITransient Then(Action<IFuture<T>> action);
     }
 }
+

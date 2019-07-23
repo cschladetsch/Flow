@@ -20,7 +20,7 @@ namespace Flow.Impl
         {
             Interval = interval;
             TimeStarted = kernel.Time.Now;
-            kernel.Root.Add(this);
+            kernel.Detail.Add(this);
             _expires = TimeStarted + Interval;
             Sub = StepTimer;
         }

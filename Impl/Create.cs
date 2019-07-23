@@ -7,7 +7,7 @@ namespace Flow
     using Impl;
 
     /// <summary>
-    /// Boot-strapper for the flow library using default implementations.
+    /// Bootstrapper for the flow library using default implementations.
     /// </summary>
     public static class Create
     {
@@ -35,3 +35,4 @@ namespace Flow
         }
     }
 }
+

@@ -19,6 +19,12 @@ namespace Flow.Impl
         public Generator() =>
             Completed += tr => Suspend();
 
+        public new IGenerator AddTo(IGroup group)
+        {
+            group?.Add(this);
+            return this;
+        }
+
         public new IGenerator Named(string name)
         {
             Name = name;
@@ -44,6 +50,9 @@ namespace Flow.Impl
 
         public void Suspend()
         {
+            if (!Running)
+                return;
+
             Running = false;
             Suspended?.Invoke(this);
         }
