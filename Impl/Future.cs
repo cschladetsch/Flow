@@ -19,9 +19,6 @@ namespace Flow.Impl
             remove => _arrived -= value;
         }
 
-        public ITransient Then1(Action<IFuture<T>> action)
-            => Then(Factory.Do(() => action(this)).AddTo(Kernel.Detail));
-
         public bool Available { get; private set; }
 
         public T Value

@@ -17,7 +17,7 @@ namespace Flow
         T Value { get; set; }
         event FutureHandler<T> Arrived;
 
-        ITransient Then1(Action<IFuture<T>> action);
+        //ITransient Then1(Action<IFuture<T>> action);
     }
 }
 
