@@ -44,7 +44,11 @@ namespace Flow.Impl
             }
         }
 
+        public IFuture<T> Then(Action<IFuture<T>> action)
+            => Then(() => action(this)) as IFuture<T>;
+
         private T _value;
         private FutureHandler<T> _arrived;
     }
 }
+

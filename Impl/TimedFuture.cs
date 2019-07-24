@@ -9,7 +9,7 @@ namespace Flow.Impl
         , ITimedFuture<T>
     {
         public ITimedFuture<T> Then(Action<ITimedFuture<T>> action)
-            => Then(Factory.Do(() => action(this)).AddTo(Kernel.Detail)) as ITimedFuture<T>;
+            => Then(() => action(this)) as ITimedFuture<T>;
 
         public event TimedOutHandler TimedOut
         {
