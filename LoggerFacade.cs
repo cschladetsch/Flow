@@ -10,16 +10,11 @@
             , ILogger
             , new()
     {
-        public string LogPrefix
-        {
-            get => _log.LogPrefix;
-            set => _log.LogPrefix = value;
-        }
-
-        public object LogSubject { get; set; }
-        public bool ShowSource { get; set; }
-        public bool ShowStack { get; set; }
-        public int Verbosity { get; set; }
+        public string LogPrefix { get => _log.LogPrefix; set => _log.LogPrefix = value; }
+        public object LogSubject { get => _log.LogSubject; set => _log.LogSubject = value; }
+        public bool ShowSource { get => _log.ShowSource; set => _log.ShowSource = value; }
+        public bool ShowStack { get => _log.ShowStack; set => _log.ShowStack = value; }
+        public int Verbosity { get => _log.Verbosity; set => _log.Verbosity = value; }
 
         private readonly TLogger _log = new TLogger();
 
