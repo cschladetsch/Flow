@@ -31,12 +31,6 @@ namespace Flow.Impl
             ShowSource = true;
             Kernel = this;
 
-#if UNITY
-			Log.AddLogger(new UnityLogger(eLevel));
-#else
-			//Log.AddLogger(new Logger.ConsoleLogger(entryType));
-#endif
-
             _time.Now = DateTime.Now;
             _time.Last = _time.Now;
             _time.Delta = TimeSpan.FromSeconds(0);
