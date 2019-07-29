@@ -41,17 +41,15 @@
         public void TestParallel()
         {
             var stepNum = 0;
-            Root.Add(
                 New.Node(
-                    New.Do(() => stepNum += Kernel.StepNumber),
-                    New.Do(() => stepNum += Kernel.StepNumber),
-                    New.Do(() => stepNum += Kernel.StepNumber)
-                )
-            );
+                    New.Do(() => stepNum += 1).Named("Do 1"),
+                    New.Do(() => stepNum += 1).Named("Do 2"),
+                    New.Do(() => stepNum += 1).Named("Do 3")
+                ).Named("Parallel Node").AddTo(Root);
 
             Step(3);
 
-            Assert.AreEqual(stepNum, 0*3 + 1*3 + 2*3);
+            Assert.AreEqual(3, stepNum);
         }
     }
 }
