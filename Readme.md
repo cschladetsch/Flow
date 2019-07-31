@@ -78,4 +78,4 @@ ITimedFuture<Pass> Pass();
 
 This is just a simple example on how the library is tyicall used. It's a matter of chainging together sequences of _Barriers_, _Triggers_, and _Futures_ to remove the need to keep explicit track of internal state on each *Update* call.
 
-In this case, I'm using a lot of timed futures because it's a real-time card game and there are time limits.
+In this case, I'm using a lot of timed futures because it's a real-time card game and there are time limits
