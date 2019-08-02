@@ -134,7 +134,7 @@ namespace Flow.Impl
 
         private void PerformAdds()
         {
-            foreach (var tr in _Additions)
+            foreach (var tr in _Additions.ToList())
             {
                 _Contents.Add(tr);
                 tr.Completed += Remove;
