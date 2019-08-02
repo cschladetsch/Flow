@@ -10,6 +10,7 @@
 #define UNITY
 
 using System;
+using System.Collections;
 using System.Diagnostics;
 
 #if UNITY
@@ -128,7 +129,7 @@ namespace Flow.Impl
                     if (!foundTop)
                     {
                         var name = fr.GetMethod().Name;
-                        if (_logNames.Contains(name))
+                        if (((IList) _logNames).Contains(name))
                         {
                             foundTop = true;
                             continue;
