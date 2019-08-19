@@ -20,6 +20,7 @@ namespace Flow.Impl
         }
 
         public Coroutine(Func<IEnumerator> start)
+            : this()
         {
             Start = start;
         }
