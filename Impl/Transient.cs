@@ -22,7 +22,6 @@ namespace Flow.Impl
 
         public event TransientHandlerReason OnHowCompleted;
 
-        public static bool DebugTrace;
         public static bool TimeoutsEnabled = true;
 
         public bool Active { get; protected set; } = true;
