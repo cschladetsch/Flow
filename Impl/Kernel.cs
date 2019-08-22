@@ -95,6 +95,9 @@ namespace Flow.Impl
                     node.Step();
             }
 
+            if (Root.Contents.Count > 0)
+                Verbose(10, $"Stepping kernel {Root.Contents.Count}");
+
             Step(Detail);
             Step(Root);
 

@@ -21,7 +21,10 @@ namespace Flow.Impl
         }
 
         private void TimedOutHandler(ITransient sender)
-            => Complete();
+        {
+            Info("Timed out");
+            Complete();
+        }
     }
 }
 

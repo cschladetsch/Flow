@@ -87,7 +87,7 @@ namespace Flow.Impl
 
         private void Output(string text)
         {
-            Console.Write(text);
+            //Console.Write(text);
             Trace.Write(text);
         }
 
@@ -188,7 +188,7 @@ namespace Flow.Impl
             var prefix = string.IsNullOrEmpty(LogPrefix) ? "" : $"{LogPrefix}: ";
             var from = string.IsNullOrEmpty(name) ? "" : $" {name}:";
             var gen = LogSubject as IGenerator;
-            var step = gen == null ? "" : $"#{gen.StepNumber}/{gen.Kernel.StepNumber}: ";
+            var step = gen == null ? "" : $"#{gen.StepNumber}/{gen.Kernel?.StepNumber}: ";
             var openTick = "`";
             switch (level)
             {
