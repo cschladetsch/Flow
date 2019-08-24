@@ -1,4 +1,5 @@
 # Flow
+[![Build status](https://ci.appveyor.com/api/projects/status/github/flow/flow?svg=true)](https://ci.appveyor.com/project/flow/flow)
 
 A C# coroutine-based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and/or fork.
 
