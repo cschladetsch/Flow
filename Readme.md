@@ -1,5 +1,6 @@
 # Flow
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cschladetsch/flow?svg=true)](https://ci.appveyor.com/project/cschladetsch/flow)
+[![CodeFactor](https://www.codefactor.io/repository/github/cschladetsch/flow/badge)](https://www.codefactor.io/repository/github/cschladetsch/flow)
 
 A C# coroutine-based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and/or fork.
 
