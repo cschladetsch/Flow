@@ -1,5 +1,5 @@
 # Flow
-[![Build status](https://ci.appveyor.com/api/projects/status/github/flowts/flow?branch=master&svg=true)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/flow/randomuser?svg=true)](https://ci.appveyor.com/api/projects/status/github/flow/)
 
 A C# coroutine-based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and/or fork.
 
