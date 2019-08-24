@@ -12,7 +12,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using NUnit.Framework;
+//using NUnit.Framework;
 
 #if UNITY
 using Debug = UnityEngine.Debug;
@@ -83,15 +83,15 @@ namespace Flow.Impl
         private void OutputLine(string text)
         {
             //Console.WriteLine(text);
-            //Trace.WriteLine(text);
-            TestContext.Out.Write(text);
+            Trace.WriteLine(text);
+            //TestContext.Out.Write(text);
         }
 
         private void Output(string text)
         {
             //Console.Write(text);
-            //Trace.Write(text);
-            TestContext.Out.Write(text);
+            Trace.Write(text);
+            //TestContext.Out.Write(text);
         }
 
         private static string StringFormat(string fmt, object[] args)
