@@ -12,7 +12,7 @@ namespace Flow.Impl
 
         public virtual object Value { get; protected set; }
 
-        public bool Running { get; set; }
+        public bool Running { get; protected set; }
 
         public int StepNumber { get; protected set; }
 
