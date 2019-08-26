@@ -2,8 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cschladetsch/flow?svg=true)](https://ci.appveyor.com/project/cschladetsch/flow)
 [![CodeFactor](https://www.codefactor.io/repository/github/cschladetsch/flow/badge)](https://www.codefactor.io/repository/github/cschladetsch/flow)
 [![License](https://img.shields.io/github/license/cschladetsch/flow.svg?label=License&maxAge=86400)](./LICENSE.txt)
-[![Release](https://img.shields.io/github/release/cschladetsch/flow.svg?label=Release&maxAge=60)](https://github.com/cschladetsch/flow/releases/latest)
-[![Discord](https://discordapp.com/api/guilds/614846759075577882/widget.json)](https://discord.gg/SharedCodingTools)
+[![Release](https://img.shields.io/github/release/cschladetsch/flow.svg?label=Release&maxAge=60)]
 
 A C# coroutine-based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and/or fork.
 
@@ -19,9 +18,9 @@ The [tests](TestFlow/Editor) reside in _TestFlow/Editor_ so they can be used fro
 
 ## Example
 
-This is a code example pulled straight for a game I'm working on:
+This is example code pulled straight for a [game](https://github.com/cschladetsch/Chess2) I'm quasi-working on:
 
-```
+```C#
 public void GameLoop()
 {
     Root.Add(
@@ -38,7 +37,7 @@ Note the `.Named("Name")` extenstions to the factory methods: these are for debu
 
 The main logic _flow_ for starting a turn is:
 
-```
+```C#
 private IEnumerator StartGame(IGenerator self)
 {
     var start = New.Sequence(
@@ -69,7 +68,7 @@ private IEnumerator StartGame(IGenerator self)
 
 And the relevant IPlayerAgent Method declaractions as being:
 
-```
+```C#
 ITimer StartGame();
 ITimer DrawInitialCards();
 ITimedFuture<bool> AcceptCards();
