@@ -19,7 +19,7 @@ The [tests](TestFlow/Editor) reside in _TestFlow/Editor_ so they can be used fro
 
 ## Example
 
-This is a code example pulled straight for a game I'm working on:
+This is example code pulled straight for a [game](https://github.com/cschladetsch/Chess2) I'm quasi-working on:
 
 ```C#
 public void GameLoop()
