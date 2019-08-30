@@ -120,7 +120,6 @@ namespace Flow.Impl
 
             var timer = Factory.OneShotTimer(span);
             Kernel.Root.Add(timer);
-            timer.Elapsed += tr => Info("Timer elapsed");
             return ResumeAfter(timer);
         }
 
