@@ -83,3 +83,12 @@ ITimedFuture<Pass> Pass();
 This is just a simple example on how the library is tyicall used. It's a matter of chainging together sequences of _Barriers_, _Triggers_, and _Futures_ to remove the need to keep explicit track of internal state on each *Update* call.
 
 In this case, I'm using a lot of timed futures because it's a real-time card game and there are time limits.
+
+## Notes
+### Verbose Logging
+When using `Verbose()` be mindful that the arguments passed into the log will be evaluated even if the verbosity is set lower than would print. Be diligent when using interpolated strings or complex functions in Verbose logging.
+e.g.
+```csharp
+Verbosity = 10;
+Verbose(15, $"Result of complex function: {ComplexFunction()}.");
+```
