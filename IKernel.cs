@@ -5,7 +5,7 @@ namespace Flow
     /// <inheritdoc />
     /// <summary>
     /// When an IKernel is Stepped, it updates its Time property,
-    /// and steps its Root and Detail nodes.
+    /// and steps its Root node.
     /// </summary>
     public interface IKernel
         : IGenerator
@@ -22,11 +22,6 @@ namespace Flow
         /// The root of the process tree.
         /// </summary>
         INode Root { get; set; }
-
-        /// <summary>
-        /// Used for incidentals that must be added to Kernels.
-        /// </summary>
-        INode Detail { get; set; }
 
         IFactory Factory { get; }
         ITimeFrame Time { get; }

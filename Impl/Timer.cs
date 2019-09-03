@@ -17,13 +17,11 @@ namespace Flow.Impl
             : base(kernel, span)
         {
             TimeEnds = kernel.Time.Now + span;
-            if (TimeoutsEnabled)
-                Elapsed += TimedOutHandler;
+            Elapsed += TimedOutHandler;
         }
 
         private void TimedOutHandler(ITransient sender)
         {
-            Info($"{Name} timed out @{Kernel.Time.Now}.");
             Complete();
         }
     }

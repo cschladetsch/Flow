@@ -11,7 +11,6 @@ namespace Flow.Impl
         public EDebugLevel DebugLevel { get; set; }
         public ILogger Log { get; set; }
         public INode Root { get; set; }
-        public INode Detail { get; set; }
         public new IFactory Factory { get; internal set; }
         public bool Break { get; private set; }
         public ITimeFrame Time => _time;
@@ -98,7 +97,6 @@ namespace Flow.Impl
             if (Root.Contents.Count > 0)
                 Verbose(10, $"Stepping kernel {Root.Contents.Count}");
 
-            Step(Detail);
             Step(Root);
 
             base.Step();

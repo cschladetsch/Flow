@@ -60,6 +60,7 @@ namespace Flow.Impl
         {
             foreach (var other in others)
             {
+                //Info($"Adding {other} to {Name}.");
                 if (IsNullOrInactive(other))
                 {
                     Warn($"Attempt to add null or inactive transient to Group {this}");

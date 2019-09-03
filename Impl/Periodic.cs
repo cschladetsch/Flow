@@ -18,9 +18,11 @@ namespace Flow.Impl
 
         internal Periodic(IKernel kernel, TimeSpan interval)
         {
+            Verbosity = 100;
+
             Interval = interval;
             TimeStarted = kernel.Time.Now;
-            kernel.Detail.Add(this);
+            kernel.Root.Add(this);
             _expires = TimeStarted + Interval;
             Sub = StepTimer;
         }

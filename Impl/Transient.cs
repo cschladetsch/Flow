@@ -76,10 +76,10 @@ namespace Flow.Impl
         }
 
         public ITransient Then(Action action)
-            => Then(Factory.Do(action).AddTo(Kernel.Detail));
+            => Then(Factory.Do(action).AddTo(Kernel.Root));
 
         public ITransient Then(Action<ITransient> action)
-            => Then(Factory.Do(() => action(this)).AddTo(Kernel.Detail));
+            => Then(Factory.Do(() => action(this)).AddTo(Kernel.Root));
 
         public ITransient Then(IGenerator next)
         {

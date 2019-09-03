@@ -87,17 +87,28 @@ namespace Flow.Impl
             return this;
         }
 
+        public IGenerator ResumeAfter(Func<bool> pred, string name)
+        {
+            ITransient transient = Factory.While(() => !pred()).AddTo(Kernel.Root).Named(name);
+            return ResumeAfter(transient);
+        }
+
         public IGenerator ResumeAfter(Func<bool> pred)
-            => ResumeAfter(Factory.While(() => !pred()).AddTo(Kernel.Detail));
+        {
+            return ResumeAfter(pred, pred.ToString());
+        }
 
         public IGenerator ResumeAfter(ITransient other)
         {
+            //Verbosity = 100;
             if (IsNullOrInactive(other))
             {
+                Verbose(10, $"<color=blue>Gen: </color><b>{other.Name}</b> already complete, resuming <b>{Name}</b>.");
                 Resume();
                 return this;
             }
 
+            Verbose(10, $"<color=blue>Gen: </color>Suspending <b>{Name}</b> until after <b>{other.Name}</b>.");
             Suspend();
 
             // thanks to https://github.com/innostory for reporting an issue
@@ -105,6 +116,7 @@ namespace Flow.Impl
             void OnCompleted(ITransient tr)
             {
                 other.Completed -= OnCompleted;
+                Verbose(10, $"<color=blue>Gen: </color><b>{other.Name}</b> completed, resuming <b>{Name}</b>.");
                 Resume();
             }
 
@@ -119,6 +131,7 @@ namespace Flow.Impl
                 return this;
 
             var timer = Factory.OneShotTimer(span);
+            timer.Name = $"TimeSpan ({span})";
             Kernel.Root.Add(timer);
             return ResumeAfter(timer);
         }

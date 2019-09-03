@@ -35,6 +35,7 @@ namespace Flow
         IGenerator SuspendAfter(TimeSpan span);
 
         IGenerator ResumeAfter(Func<bool> pred);
+        IGenerator ResumeAfter(Func<bool> pred, string name);
         IGenerator ResumeAfter(ITransient other);
         IGenerator ResumeAfter(TimeSpan span);
     }
