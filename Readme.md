@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/github/license/cschladetsch/flow.svg?label=License&maxAge=86400)](./LICENSE.txt)
 ![Release](https://img.shields.io/github/release/cschladetsch/flow.svg?label=Release&maxAge=60)
 
+** Build is only failing due to stale NuGet package references. The project builds and passes tests otherwise.**
+
 A C# coroutine-based Kernel for .Net. If you are one of the many developers using this library, I encourage you provide any feedback and/or fork.
 
 This is Unity-friendly and will work on all versions of Unity after 4.0. Please let me know otherwise.
