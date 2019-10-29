@@ -18,7 +18,30 @@ The original post was on [AltDevBlogADay](http://www.altdevblogaday.com/2012/09/
 
 The [tests](TestFlow/Editor) reside in _TestFlow/Editor_ so they can be used from Unity3d as well.
 
-## Example
+These tests, along with the GamaSutra article, are the best first sources of documentation.
+
+## Example 1
+
+Using _Flow_ for async REST communications.
+
+```C#
+private void CreateHeartbeat()
+{
+    New.PeriodicTimer(TimeSpan.FromMinutes(2)).Elapsed += tr =>
+    {
+        Get<UserCount>("user/alive").Then(result =>
+        {
+            if (result.Succeeded(out var val))
+            {
+                _activeUsers.Value = val.Num;
+                Info($"{val.Num} users online.");
+            }
+        });
+    };
+}
+```
+
+## Example 2
 
 This is example code pulled straight for a [game](https://github.com/cschladetsch/Chess2) I'm quasi-working on:
 
