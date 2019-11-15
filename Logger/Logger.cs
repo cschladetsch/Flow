@@ -8,6 +8,7 @@
 // ... 1 July 2019
 
 #define UNITY
+#undef UNITY
 
 using System;
 using System.Collections;
