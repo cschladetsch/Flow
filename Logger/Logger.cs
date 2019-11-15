@@ -36,26 +36,15 @@ namespace Flow.Impl
         public static string LogFileName;
         public static ELogLevel MaxLevel;
 
-        public Logger()
+        protected ELogLevel LogLevel;
+        
+#if !UNITY
+        private static readonly DateTime StartTime = DateTime.Now;
+#endif
+
+        protected Logger()
         {
             LogSubject = this;
-        }
-
-        public Logger(string pre, bool src, bool st)
-            : this(pre)
-        {
-            ShowSource = src;
-            ShowStack = st;
-        }
-
-        public Logger(string pre)
-            : this()
-        {
-            LogPrefix = pre;
-        }
-
-        public static void Initialise()
-        {
         }
 
         public void Info(string fmt, params object[] args)
@@ -158,7 +147,7 @@ namespace Flow.Impl
             {
                 OutputLine("");
             }
-#else // TODO: use bitmasks as intended
+#else // TODO: use bit-masks as intended
             switch (level)
             {
                 case ELogLevel.Info:
@@ -186,7 +175,7 @@ namespace Flow.Impl
             text = text.Trim();
             var named = LogSubject as INamed;
             var name = named == null ? "" : named.Name;
-            var dt = DateTime.Now - _startTime;
+            var dt = DateTime.Now - StartTime;
             var ms = dt.ToString(@"fff");
             var time = dt.ToString(@"mm\:ss\:") + ms;
             var prefix = string.IsNullOrEmpty(LogPrefix) ? "" : $"{LogPrefix}: ";
@@ -217,10 +206,5 @@ namespace Flow.Impl
             return $"{level}: {prefix}{time} {step}{from}\n\t{openTick}{text}`";
 #endif
         }
-
-        protected ELogLevel _logLevel;
-#if !UNITY
-        private static readonly DateTime _startTime = DateTime.Now;
-#endif
     }
 }
