@@ -1,4 +1,7 @@
-/.current
+.current
+.enter
+.leave
+.leu
 
 # Unity output folders
 /Library/
