@@ -2,6 +2,7 @@
 .enter
 .leave
 .leu
+.nuget
 
 # Unity output folders
 /Library/
