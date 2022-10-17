@@ -2,8 +2,7 @@
 
 using System;
 
-namespace Flow
-{
+namespace Flow {
     public delegate void TransientHandler(ITransient sender);
     public delegate void TransientHandlerReason(ITransient sender, ITransient reason);
 
@@ -14,8 +13,7 @@ namespace Flow
     /// has been Disposed.
     /// </summary>
     public interface ITransient
-        : INamed
-    {
+        : INamed {
         event TransientHandler Completed;
 
         /// <summary>

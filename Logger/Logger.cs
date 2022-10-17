@@ -9,7 +9,7 @@
 // ... 2 Sept 2019
 // ... 3 March 2020
 
-#define UNITY
+//#define UNITY
 //#undef UNITY
 
 using System;
@@ -21,14 +21,12 @@ using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 #endif
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     /// <summary>
     /// Log system used by Models.
     /// </summary>
     public class Logger
-        : ILogger
-    {
+        : ILogger {
         public string LogPrefix { get; set; }
         public object LogSubject { get; set; }
         public int Verbosity { get; set; }
@@ -38,67 +36,56 @@ namespace Flow.Impl
         public static string LogFileName;
         public static ELogLevel MaxLevel;
 
-        public Logger()
-        {
+        public Logger() {
             LogSubject = this;
         }
 
         public Logger(string pre, bool src, bool st)
-            : this(pre)
-        {
+            : this(pre) {
             ShowSource = src;
             ShowStack = st;
         }
 
         public Logger(string pre)
-            : this()
-        {
+            : this() {
             LogPrefix = pre;
         }
 
-        public static void Initialise()
-        {
+        public static void Initialise() {
         }
 
-        public void Info(string fmt, params object[] args)
-        {
+        public void Info(string fmt, params object[] args) {
             Log(ELogLevel.Info, StringFormat(fmt, args));
         }
 
-        public void Warn(string fmt, params object[] args)
-        {
+        public void Warn(string fmt, params object[] args) {
             Log(ELogLevel.Warn, StringFormat(fmt, args));
         }
 
-        public void Error(string fmt, params object[] args)
-        {
+        public void Error(string fmt, params object[] args) {
             Log(ELogLevel.Error, StringFormat(fmt, args));
         }
 
-        public void Verbose(int level, string fmt, params object[] args)
-        {
+        public void Verbose(int level, string fmt, params object[] args) {
             if (level > Verbosity)
                 return;
 
             Log(ELogLevel.Verbose, StringFormat(fmt, args));
         }
 
-        private void OutputLine(string text)
-        {
+        private void OutputLine(string text) {
             //Console.WriteLine(text);
             Trace.WriteLine(text);
             //TestContext.Out.Write(text);
         }
 
-        private void Output(string text)
-        {
+        private void Output(string text) {
             //Console.Write(text);
             Trace.Write(text);
             //TestContext.Out.Write(text);
         }
 
-        private static string StringFormat(string fmt, object[] args)
-        {
+        private static string StringFormat(string fmt, object[] args) {
             return fmt == null ? "Null" : string.Format(fmt, args);
         }
 
@@ -106,8 +93,7 @@ namespace Flow.Impl
         readonly string[] _logNames = { "Info", "Warn", "Error", "Verbose" };
 #endif
 
-        private void Log(ELogLevel level, string text)
-        {
+        private void Log(ELogLevel level, string text) {
             if (level == ELogLevel.None)
                 level = ELogLevel.Error;
 #if UNITY
@@ -124,19 +110,15 @@ namespace Flow.Impl
             // HACK!
             showFrames = error;
 
-            if (ShowSource || error)
-            {
+            if (ShowSource || error) {
                 OutputLine("");
                 var lead = "\t\t";
                 var st = new StackTrace(true);
                 var foundTop = false;
-                foreach (var fr in st.GetFrames())
-                {
-                    if (!foundTop)
-                    {
+                foreach (var fr in st.GetFrames()) {
+                    if (!foundTop) {
                         var name = fr.GetMethod().Name;
-                        if (((IList) _logNames).Contains(name))
-                        {
+                        if (((IList)_logNames).Contains(name)) {
                             foundTop = true;
                             continue;
                         }
@@ -155,9 +137,7 @@ namespace Flow.Impl
                         break;
                     lead += "\t";
                 }
-            }
-            else
-            {
+            } else {
                 OutputLine("");
             }
 #else // TODO: use bitmasks as intended
@@ -180,8 +160,7 @@ namespace Flow.Impl
 #endif
         }
 
-        private string MakeEntry(ELogLevel level, string text)
-        {
+        private string MakeEntry(ELogLevel level, string text) {
 #if UNITY
             return text;
 #else
@@ -196,8 +175,7 @@ namespace Flow.Impl
             var gen = LogSubject as IGenerator;
             var step = gen == null ? "" : $"#{gen.StepNumber}/{gen.Kernel?.StepNumber}: ";
             var openTick = "`";
-            switch (level)
-            {
+            switch (level) {
                 case ELogLevel.None:
                     break;
                 case ELogLevel.Info:

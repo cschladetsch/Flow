@@ -2,32 +2,25 @@
 
 using System;
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     public class FutureNotSetException
-        : Exception
-    {
+        : Exception {
         public FutureNotSetException()
-            : base("Future value not arrived yet.")
-        {
+            : base("Future value not arrived yet.") {
         }
     }
 
     public class FutureAlreadySetException
-        : Exception
-    {
+        : Exception {
         public FutureAlreadySetException(string name)
-            : base($"Future {name} already set.")
-        {
+            : base($"Future {name} already set.") {
         }
     }
 
     public class ReEntranceException
-        : Exception
-    {
+        : Exception {
         public ReEntranceException()
-            : base("Method is not re-entrant.")
-        {
+            : base("Method is not re-entrant.") {
         }
     }
 }

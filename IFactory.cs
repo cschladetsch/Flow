@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -11,8 +10,7 @@ namespace Flow
     ///
     /// Instances created by a Factory are not automatically added to any process.
     /// </summary>
-    public interface IFactory
-    {
+    public interface IFactory {
         IKernel Kernel { get; set; }
 
         /// <summary>

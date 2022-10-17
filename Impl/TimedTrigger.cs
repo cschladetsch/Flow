@@ -1,19 +1,16 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
 
     internal class TimedTrigger
         : Trigger
-        , ITimedTrigger
-    {
+        , ITimedTrigger {
         public event TimedOutHandler TimedOut;
         public ITimer Timer { get; internal set; }
         public bool HasTimedOut { get; protected set; }
 
-        internal TimedTrigger(IKernel k, TimeSpan span)
-        {
+        internal TimedTrigger(IKernel k, TimeSpan span) {
             Timer = k.Factory.OneShotTimer(span);
             k.Root.Add(Timer);
 
@@ -21,8 +18,7 @@ namespace Flow.Impl
                 Timer.Elapsed += HandleElapsed;
         }
 
-        private void HandleElapsed(ITransient sender)
-        {
+        private void HandleElapsed(ITransient sender) {
             if (!Active)
                 return;
 

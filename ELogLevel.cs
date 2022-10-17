@@ -1,7 +1,5 @@
-﻿namespace Flow
-{
-    public enum ELogLevel
-    {
+﻿namespace Flow {
+    public enum ELogLevel {
         None = 0,
         Info = 1,
         Warn = 2,

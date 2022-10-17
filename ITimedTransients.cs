@@ -2,37 +2,32 @@
 
 using System;
 
-namespace Flow
-{
+namespace Flow {
     /// <inheritdoc cref="IFuture{T}" />
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface ITimedFuture<T>
         : IFuture<T>
-        , ITimesOut
-    {
+        , ITimesOut {
         ITimedFuture<T> Then(Action<ITimedFuture<T>> action);
     }
 
     public interface ITimedBarrier
         : IBarrier
-        , ITimesOut
-    {
+        , ITimesOut {
         new ITimedBarrier AddTo(IGroup group);
         new ITimedBarrier Named(string name);
     }
 
     public interface ITimedTrigger
         : ITrigger
-        , ITimesOut
-    {
+        , ITimesOut {
     }
 
     public interface ITimedNode
         : INode
-        , ITimesOut
-    {
+        , ITimesOut {
     }
 }
 

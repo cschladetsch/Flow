@@ -2,8 +2,7 @@
 
 using System;
 
-namespace Flow
-{
+namespace Flow {
     public delegate void FutureHandler<T>(IFuture<T> fut);
 
     /// <inheritdoc />
@@ -11,8 +10,7 @@ namespace Flow
     /// When its' Value property is first set, set Available property to true, and Complete.
     /// </summary>
     public interface IFuture<T>
-        : ITransient
-    {
+        : ITransient {
         bool Available { get; }
         T Value { get; set; }
         event FutureHandler<T> Arrived;

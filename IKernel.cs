@@ -1,15 +1,13 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     /// <inheritdoc />
     /// <summary>
     /// When an IKernel is Stepped, it updates its Time property,
     /// and steps its Root node.
     /// </summary>
     public interface IKernel
-        : IGenerator
-    {
+        : IGenerator {
         EDebugLevel DebugLevel { get; set; }
         ILogger Log { get; set; }
 

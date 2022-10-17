@@ -2,13 +2,11 @@
 
 using System;
 
-namespace Flow
-{
+namespace Flow {
     /// <summary>
     /// Stores information about a time step.
     /// </summary>
-    public interface ITimeFrame
-    {
+    public interface ITimeFrame {
         DateTime Last { get; }
         DateTime Now { get; }
         TimeSpan Delta { get; }

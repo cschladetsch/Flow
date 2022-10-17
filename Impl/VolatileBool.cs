@@ -2,16 +2,13 @@
 
 using System.Runtime.InteropServices;
 
-namespace Flow.Impl
-{
-	[StructLayout(LayoutKind.Sequential)]
-	internal struct VolatileBool
-	{
-		public volatile bool m_value;
+namespace Flow.Impl {
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct VolatileBool {
+        public volatile bool m_value;
 
-		public VolatileBool(bool value)
-		{
-			m_value = value;
-		}
-	}
+        public VolatileBool(bool value) {
+            m_value = value;
+        }
+    }
 }

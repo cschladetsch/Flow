@@ -2,12 +2,10 @@
 
 using System;
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     internal class Periodic
         : Subroutine<bool>
-        , IPeriodic
-    {
+        , IPeriodic {
         public event TransientHandler Elapsed;
 
         public TimeSpan TimeRemaining => Kernel.Time.Now - TimeStarted;
@@ -16,8 +14,7 @@ namespace Flow.Impl
 
         private DateTime _expires;
 
-        internal Periodic(IKernel kernel, TimeSpan interval)
-        {
+        internal Periodic(IKernel kernel, TimeSpan interval) {
             Verbosity = 100;
 
             Interval = interval;
@@ -27,8 +24,7 @@ namespace Flow.Impl
             Sub = StepTimer;
         }
 
-        private bool StepTimer(IGenerator self)
-        {
+        private bool StepTimer(IGenerator self) {
             if (Kernel.Time.Now < _expires)
                 return true;
 

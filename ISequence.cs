@@ -1,5 +1,4 @@
-namespace Flow
-{
+namespace Flow {
     /// <inheritdoc />
     /// <summary>
     /// A Sequence is a node that steps only the first generator until it is
@@ -8,8 +7,7 @@ namespace Flow
     /// When the sequence is empty it Completes.
     /// </summary>
     public interface ISequence
-        : INode
-    {
+        : INode {
     }
 }
 

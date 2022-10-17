@@ -1,37 +1,31 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
     using System.Collections;
     using System.Collections.Generic;
 
     public class Coroutine
         : Generator
-        , ICoroutine
-    {
+        , ICoroutine {
         public override object Value => _value;
         protected IEnumerator _state;
         private object _value;
         internal Func<IEnumerator> Start;
 
-        public Coroutine()
-        {
+        public Coroutine() {
         }
 
         public Coroutine(Func<IEnumerator> start)
-            : this()
-        {
+            : this() {
             Start = start;
         }
 
-        public override void Step()
-        {
+        public override void Step() {
             if (!Running || !Active)
                 return;
 
-            if (_state == null)
-            {
+            if (_state == null) {
                 if (Start == null)
                     CannotStart();
                 else
@@ -41,8 +35,7 @@ namespace Flow.Impl
                     CannotStart();
             }
 
-            if (_state == null || !_state.MoveNext())
-            {
+            if (_state == null || !_state.MoveNext()) {
                 Complete();
                 return;
             }
@@ -52,26 +45,22 @@ namespace Flow.Impl
             base.Step();
         }
 
-        protected static void CannotStart()
-        {
+        protected static void CannotStart() {
             throw new Exception("Coroutine cannot start");
         }
     }
 
     internal class Coroutine<T>
         : Generator<T>
-        , ICoroutine<T>
-    {
+        , ICoroutine<T> {
         internal Func<IEnumerator<T>> Start;
         private IEnumerator<T> _state;
 
-        public override void Step()
-        {
+        public override void Step() {
             if (!Running || !Active)
                 return;
 
-            if (_state == null)
-            {
+            if (_state == null) {
                 if (Start == null)
                     CannotStart();
                 else
@@ -81,8 +70,7 @@ namespace Flow.Impl
                     CannotStart();
             }
 
-            if (_state == null || !_state.MoveNext())
-            {
+            if (_state == null || !_state.MoveNext()) {
                 Complete();
                 return;
             }

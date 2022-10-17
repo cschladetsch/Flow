@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     using System;
 
     public delegate void GeneratorHandler(IGenerator generator);
@@ -13,8 +12,7 @@ namespace Flow
     /// </summary>
     public interface IGenerator
         : ITransient
-        , ISteppable
-    {
+        , ISteppable {
         event GeneratorHandler Resumed;
         event GeneratorHandler Stepped;
         event GeneratorHandler Suspended;
@@ -43,8 +41,7 @@ namespace Flow
     public delegate void GeneratorHandler<in T>(IGenerator<T> generator);
 
     public interface IGenerator<out T>
-        : IGenerator
-    {
+        : IGenerator {
         new T Value { get; }
     }
 }

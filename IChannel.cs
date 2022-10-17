@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     /// <inheritdoc />
     /// <summary>
     /// A buffered input/output stream.
@@ -12,8 +11,7 @@ namespace Flow
     /// </para>
     /// </summary>
     public interface IChannel<T>
-        : ITransient
-    {
+        : ITransient {
         void Insert(T val);
         IFuture<T> Extract();
 

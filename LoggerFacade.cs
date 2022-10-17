@@ -1,5 +1,4 @@
-﻿namespace Flow
-{
+﻿namespace Flow {
     /// <summary>
     /// DOC
     /// </summary>
@@ -8,8 +7,7 @@
         : ILogger where TLogger
             : class
             , ILogger
-            , new()
-    {
+            , new() {
         public string LogPrefix { get => _log.LogPrefix; set => _log.LogPrefix = value; }
         public object LogSubject { get => _log.LogSubject; set => _log.LogSubject = value; }
         public bool ShowSource { get => _log.ShowSource; set => _log.ShowSource = value; }
@@ -18,8 +16,7 @@
 
         private readonly TLogger _log = new TLogger();
 
-        public LoggerFacade(string pre)
-        {
+        public LoggerFacade(string pre) {
             _log.LogPrefix = pre;
             _log.ShowStack = false;
             _log.ShowSource = true;

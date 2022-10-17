@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     using System.Collections.Generic;
 
     public delegate void GroupHandler(IGroup node, ITransient child);
@@ -16,8 +15,7 @@ namespace Flow
     /// <para>When a Group is suspended, all child generators are also suspended.</para>
     /// </summary>
     public interface IGroup
-        : IGenerator
-    {
+        : IGenerator {
         IList<ITransient> Contents { get; }
         IEnumerable<IGenerator> Generators { get; }
 

@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     using System;
 
     /// <inheritdoc />
@@ -11,8 +10,7 @@ namespace Flow
     /// NOTE the timer will fire at most once per Kernel Step
     /// </para>
     /// </summary>
-    public interface IPeriodic : IGenerator
-    {
+    public interface IPeriodic : IGenerator {
         // Periodically fires when the timer has elapsed. Fired at most once per Kernel Step
         event TransientHandler Elapsed;
 

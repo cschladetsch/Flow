@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
     using System.Collections.Generic;
 
@@ -11,14 +10,12 @@ namespace Flow.Impl
     /// </summary>
     internal class TimedBarrier
         : Barrier
-        , ITimedBarrier
-    {
+        , ITimedBarrier {
         public event TimedOutHandler TimedOut;
         public ITimer Timer { get; }
         public bool HasTimedOut { get; set; }
 
-        public TimedBarrier(IKernel kernel, TimeSpan span, IEnumerable<ITransient> contents)
-        {
+        public TimedBarrier(IKernel kernel, TimeSpan span, IEnumerable<ITransient> contents) {
             Timer = kernel.Factory.OneShotTimer(span);
             if (TimeoutsEnabled)
                 Timer.Elapsed += Elapsed;
@@ -27,8 +24,7 @@ namespace Flow.Impl
                 Add(tr);
         }
 
-        private void Elapsed(ITransient tr)
-        {
+        private void Elapsed(ITransient tr) {
             Timer.Elapsed -= Elapsed;
             HasTimedOut = true;
             TimedOut?.Invoke(this);

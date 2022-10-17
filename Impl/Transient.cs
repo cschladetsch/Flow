@@ -1,14 +1,12 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
 
     /// <inheritdoc cref="ITransient" />
     public class Transient
         : Logger
-        , ITransient
-    {
+        , ITransient {
         public event TransientHandler Completed
         {
             add
@@ -34,14 +32,12 @@ namespace Flow.Impl
         public override string ToString()
             => Print.Object(this);
 
-        public ITransient Named(string name)
-        {
+        public ITransient Named(string name) {
             Name = name;
             return this;
         }
 
-        public void Complete()
-        {
+        public void Complete() {
             if (!Active)
                 return;
 
@@ -52,22 +48,19 @@ namespace Flow.Impl
 
         private TransientHandler _completed;
 
-        public ITransient AddTo(IGroup group)
-        {
+        public ITransient AddTo(IGroup group) {
             group.Add(this);
             return this;
         }
 
-        public void CompleteAfter(ITransient other)
-        {
+        public void CompleteAfter(ITransient other) {
             if (!Active)
                 return;
 
             if (other == null)
                 return;
 
-            if (!other.Active)
-            {
+            if (!other.Active) {
                 Complete();
                 return;
             }
@@ -81,24 +74,20 @@ namespace Flow.Impl
         public ITransient Then(Action<ITransient> action)
             => Then(Factory.Do(() => action(this)).AddTo(Kernel.Root));
 
-        public ITransient Then(IGenerator next)
-        {
-            if (next == null)
-            {
+        public ITransient Then(IGenerator next) {
+            if (next == null) {
                 Warn("Cannot do nothing next.");
                 return this;
             }
 
-            if (!Active)
-            {
+            if (!Active) {
                 next.Resume();
                 return this;
             }
 
             next.Suspend();
 
-            void OnCompleted(ITransient self)
-            {
+            void OnCompleted(ITransient self) {
                 Completed -= OnCompleted;
                 next.Resume();
             }
@@ -114,8 +103,7 @@ namespace Flow.Impl
         public static bool IsNullOrInactive(ITransient other)
             => other == null || !other.Active;
 
-        private void CompletedBecause(ITransient other)
-        {
+        private void CompletedBecause(ITransient other) {
             if (!Active)
                 return;
 

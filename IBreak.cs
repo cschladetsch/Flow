@@ -1,7 +1,5 @@
-namespace Flow
-{
+namespace Flow {
     public interface IBreak
-        : IGenerator
-    {
+        : IGenerator {
     }
 }

@@ -2,12 +2,10 @@
 
 using System;
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     internal class Future<T>
         : Transient
-        , IFuture<T>
-    {
+        , IFuture<T> {
         public event FutureHandler<T> Arrived
         {
             add

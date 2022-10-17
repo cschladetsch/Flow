@@ -1,7 +1,5 @@
-namespace Flow
-{
-    public interface ISteppable
-    {
+namespace Flow {
+    public interface ISteppable {
         void Step();
     }
 }

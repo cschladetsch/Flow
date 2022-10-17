@@ -1,11 +1,9 @@
 using System;
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     public class Generator
         : Transient
-        , IGenerator
-    {
+        , IGenerator {
         public event GeneratorHandler Suspended;
         public event GeneratorHandler Resumed;
         public event GeneratorHandler Stepped;
@@ -19,20 +17,17 @@ namespace Flow.Impl
         public Generator() =>
             Completed += tr => Suspend();
 
-        public new IGenerator AddTo(IGroup group)
-        {
+        public new IGenerator AddTo(IGroup group) {
             group?.Add(this);
             return this;
         }
 
-        public new IGenerator Named(string name)
-        {
+        public new IGenerator Named(string name) {
             Name = name;
             return this;
         }
 
-        public virtual void Step()
-        {
+        public virtual void Step() {
             if (!Active)
                 return;
 
@@ -40,16 +35,13 @@ namespace Flow.Impl
             Stepped?.Invoke(this);
         }
 
-        public virtual void Pre()
-        {
+        public virtual void Pre() {
         }
 
-        public virtual void Post()
-        {
+        public virtual void Post() {
         }
 
-        public void Suspend()
-        {
+        public void Suspend() {
             if (!Running)
                 return;
 
@@ -57,8 +49,7 @@ namespace Flow.Impl
             Suspended?.Invoke(this);
         }
 
-        public void Resume()
-        {
+        public void Resume() {
             if (Running || !Active)
                 return;
 
@@ -66,18 +57,15 @@ namespace Flow.Impl
             Resumed?.Invoke(this);
         }
 
-        public IGenerator SuspendAfter(ITransient other)
-        {
-            if (IsNullOrInactive(other))
-            {
+        public IGenerator SuspendAfter(ITransient other) {
+            if (IsNullOrInactive(other)) {
                 Suspend();
                 return this;
             }
 
             Resume();
 
-            void SuspendThis(ITransient tr)
-            {
+            void SuspendThis(ITransient tr) {
                 other.Completed -= SuspendThis;
                 Suspend();
             }
@@ -87,22 +75,18 @@ namespace Flow.Impl
             return this;
         }
 
-        public IGenerator ResumeAfter(Func<bool> pred, string name)
-        {
+        public IGenerator ResumeAfter(Func<bool> pred, string name) {
             ITransient transient = Factory.While(() => !pred()).AddTo(Kernel.Root).Named(name);
             return ResumeAfter(transient);
         }
 
-        public IGenerator ResumeAfter(Func<bool> pred)
-        {
+        public IGenerator ResumeAfter(Func<bool> pred) {
             return ResumeAfter(pred, pred.ToString());
         }
 
-        public IGenerator ResumeAfter(ITransient other)
-        {
+        public IGenerator ResumeAfter(ITransient other) {
             //Verbosity = 100;
-            if (IsNullOrInactive(other))
-            {
+            if (IsNullOrInactive(other)) {
                 Verbose(10, $"<color=blue>Gen: </color><b>{other.Name}</b> already complete, resuming <b>{Name}</b>.");
                 Resume();
                 return this;
@@ -113,8 +97,7 @@ namespace Flow.Impl
 
             // thanks to https://github.com/innostory for reporting an issue
             // where a dangling reference to 'other' resulted in memory leaks.
-            void OnCompleted(ITransient tr)
-            {
+            void OnCompleted(ITransient tr) {
                 other.Completed -= OnCompleted;
                 Verbose(10, $"<color=blue>Gen: </color><b>{other.Name}</b> completed, resuming <b>{Name}</b>.");
                 Resume();
@@ -125,8 +108,7 @@ namespace Flow.Impl
             return this;
         }
 
-        public IGenerator ResumeAfter(TimeSpan span)
-        {
+        public IGenerator ResumeAfter(TimeSpan span) {
             if (!Active)
                 return this;
 
@@ -136,8 +118,7 @@ namespace Flow.Impl
             return ResumeAfter(timer);
         }
 
-        public IGenerator SuspendAfter(TimeSpan span)
-        {
+        public IGenerator SuspendAfter(TimeSpan span) {
             if (!Active)
                 return this;
 
@@ -151,16 +132,14 @@ namespace Flow.Impl
 
     public class Generator<TResult>
         : Generator
-        , IGenerator<TResult>
-    {
+        , IGenerator<TResult> {
         public new TResult Value
         {
             get => (TResult)base.Value;
             set => base.Value = value;
         }
 
-        protected static void CannotStart()
-        {
+        protected static void CannotStart() {
             throw new Exception("Can't start typed gen");
         }
     }

@@ -1,12 +1,10 @@
 ﻿// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow
-{
+namespace Flow {
     /// <summary>
     /// DOC
     /// </summary>
-    public interface ILogger
-    {
+    public interface ILogger {
         string LogPrefix { get; set; }
         object LogSubject { get; set; }
         bool ShowSource { get; set; }

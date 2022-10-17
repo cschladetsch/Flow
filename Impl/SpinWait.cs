@@ -3,47 +3,38 @@
 using System;
 using System.Threading;
 
-namespace Flow.Impl
-{
-    public struct SpinWait
-    {
+namespace Flow.Impl {
+    public struct SpinWait {
         public bool NextSpinWillYield => isSingleCpu || ntime % step == 0;
         public int Count => ntime;
 
-        public void SpinOnce()
-        {
+        public void SpinOnce() {
             // On a single-CPU system, spinning does no good
             if (isSingleCpu)
                 Yield();
-            else
-            {
+            else {
                 if (Interlocked.Increment(ref ntime) % step == 0)
                     Yield();
-                else
-                {
+                else {
                     // Multi-CPU system might be hyper-threaded, let other thread run
                     Thread.SpinWait(2 * (ntime + 1));
                 }
             }
         }
 
-        public void SpinUntil(Func<bool> predicate)
-        {
-            while (!predicate())
-            {
+        public void SpinUntil(Func<bool> predicate) {
+            while (!predicate()) {
                 SpinOnce();
             }
         }
 
-        private static void Yield()
-        {
+        private static void Yield() {
             // Replace sched_yield by Thread.Sleep(0) which does almost the same thing
             // (going back in kernel mode and yielding) but avoid the branching and unmanaged bridge
             Thread.Sleep(0);
         }
 
-        public void Reset()
-        {
+        public void Reset() {
             ntime = 0;
         }
 

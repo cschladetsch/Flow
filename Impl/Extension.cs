@@ -3,20 +3,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flow
-{
-    public static class Extension
-    {
+namespace Flow {
+    public static class Extension {
         public static T SetName<T>(this T self, string name)
-            where T : ITransient
-        {
+            where T : ITransient {
             self.Name = name;
             return self;
         }
 
         public static T AddToGroup<T>(this T self, IGroup group)
-            where T : ITransient
-        {
+            where T : ITransient {
             group.Add(self);
             return self;
         }
@@ -24,10 +20,8 @@ namespace Flow
         public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
             => list.Any(elem => ReferenceEquals(elem, obj));
 
-        public static void RemoveRef<T>(this IList<T> list, T obj)
-        {
-            for (var n = 0; n < list.Count; ++n)
-            {
+        public static void RemoveRef<T>(this IList<T> list, T obj) {
+            for (var n = 0; n < list.Count; ++n) {
                 if (!ReferenceEquals(list[n], obj))
                     continue;
 

@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,8 +15,7 @@ namespace Flow.Impl
     /// </summary>
     internal class Group
         : Generator<bool>
-        , IGroup
-    {
+        , IGroup {
         public event GroupHandler OnAdded;
         public event GroupHandler OnRemoved;
 
@@ -29,15 +27,13 @@ namespace Flow.Impl
         protected readonly List<ITransient> _Deletions = new List<ITransient>();
         protected readonly List<ITransient> _Contents = new List<ITransient>();
 
-        internal Group()
-        {
+        internal Group() {
             Resumed += tr => ForEachGenerator(g => g.Resume());
             Suspended += tr => ForEachGenerator(g => g.Suspend());
             Completed += tr => Clear();
         }
 
-        public override void Pre()
-        {
+        public override void Pre() {
             base.Pre();
 
             PerformPending();
@@ -48,21 +44,17 @@ namespace Flow.Impl
                 gen.Pre();
         }
 
-        public override void Post()
-        {
+        public override void Post() {
             base.Post();
 
             foreach (var gen in Generators.ToArray())
                 gen.Post();
         }
 
-        public void Add(IEnumerable<ITransient> others)
-        {
-            foreach (var other in others)
-            {
+        public void Add(IEnumerable<ITransient> others) {
+            foreach (var other in others) {
                 //Info($"Adding {other} to {Name}.");
-                if (IsNullOrInactive(other))
-                {
+                if (IsNullOrInactive(other)) {
                     Warn($"Attempt to add null or inactive transient to Group {this}");
                     continue;
                 }
@@ -74,8 +66,7 @@ namespace Flow.Impl
         public void Add(params ITransient[] others)
             => Add(others.ToList());
 
-        protected void DeferAdd(ITransient other)
-        {
+        protected void DeferAdd(ITransient other) {
             if (other == null)
                 return;
 
@@ -83,8 +74,7 @@ namespace Flow.Impl
             _Additions.Add(other);
         }
 
-        public void Remove(ITransient other)
-        {
+        public void Remove(ITransient other) {
             if (other == null)
                 return;
 
@@ -92,8 +82,7 @@ namespace Flow.Impl
             _Deletions.Add(other);
         }
 
-        public void Clear()
-        {
+        public void Clear() {
             _Additions.Clear();
 
             foreach (var tr in Contents)
@@ -102,25 +91,21 @@ namespace Flow.Impl
             PerformRemoves();
         }
 
-        private void ForEachGenerator(Action<IGenerator> act)
-        {
+        private void ForEachGenerator(Action<IGenerator> act) {
             foreach (var gen in Generators)
                 act(gen);
         }
 
-        protected void PerformPending()
-        {
+        protected void PerformPending() {
             PerformAdds();
             PerformRemoves();
         }
 
-        private void PerformRemoves()
-        {
+        private void PerformRemoves() {
             if (_Deletions.Count == 0)
                 return;
 
-            foreach (var tr in _Deletions.ToList())
-            {
+            foreach (var tr in _Deletions.ToList()) {
                 _Contents.RemoveRef(tr);
                 if (tr == null)
                     continue;
@@ -133,10 +118,8 @@ namespace Flow.Impl
             _Deletions.Clear();
         }
 
-        private void PerformAdds()
-        {
-            foreach (var tr in _Additions.ToList())
-            {
+        private void PerformAdds() {
+            foreach (var tr in _Additions.ToList()) {
                 _Contents.Add(tr);
                 tr.Completed += Remove;
                 OnAdded?.Invoke(this, tr);

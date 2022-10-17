@@ -2,13 +2,11 @@
 
 using System;
 
-namespace Flow
-{
+namespace Flow {
     /// <summary>
     /// A one-shot OneShotTimer that will fire its Elapsed event, and then Complete itself after a fixed time Interval.
     /// </summary>
-    public interface ITimer : IPeriodic
-    {
+    public interface ITimer : IPeriodic {
         DateTime TimeEnds { get; }
     }
 }

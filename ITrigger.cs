@@ -2,16 +2,14 @@
 
 using System;
 
-namespace Flow
-{
+namespace Flow {
     /// <inheritdoc />
     /// <summary>
     /// A Trigger is a <see cref="T:Flow.IGroup" /> that completes whenever
     /// a child completes.
     /// </summary>
     public interface ITrigger
-        : IGroup
-    {
+        : IGroup {
         event Action<ITrigger, ITransient> OnTripped;
 
         /// <summary>

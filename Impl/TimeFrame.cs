@@ -1,7 +1,6 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
 
     /// <inheritdoc />
@@ -9,8 +8,7 @@ namespace Flow.Impl
     /// TODO: delta-capping, pausing, introduction of zulu/sim time differences
     /// </summary>
     internal class TimeFrame
-        : ITimeFrame
-    {
+        : ITimeFrame {
         public DateTime Last { get; internal set; }
         public DateTime Now { get; internal set; }
         public TimeSpan Delta { get; internal set; }

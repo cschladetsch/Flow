@@ -1,22 +1,18 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl
-{
+namespace Flow.Impl {
     using System;
 
     internal class Subroutine
         : Generator
-        , ISubroutine
-    {
+        , ISubroutine {
         internal Action<IGenerator> Sub;
 
-        public override void Step()
-        {
+        public override void Step() {
             if (!(Active && Running))
                 return;
 
-            if (Sub == null)
-            {
+            if (Sub == null) {
                 Complete();
                 return;
             }
@@ -29,23 +25,19 @@ namespace Flow.Impl
 
     internal class Subroutine<TR>
         : Generator<TR>
-        , ISubroutine<TR>
-    {
+        , ISubroutine<TR> {
         internal Func<IGenerator, TR> Sub;
         private readonly bool _once;
 
-        internal Subroutine(bool once = false)
-        {
+        internal Subroutine(bool once = false) {
             _once = once;
         }
 
-        public override void Step()
-        {
+        public override void Step() {
             if (!Active || !Running)
                 return;
 
-            if (Sub == null)
-            {
+            if (Sub == null) {
                 Complete();
                 return;
             }
