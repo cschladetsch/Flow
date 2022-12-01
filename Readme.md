@@ -56,7 +56,7 @@ public void GameLoop()
     );
 }
 ```
-Note the `.Named("Name")` extenstions to the factory methods: these are for debugging and tracing purposes. The library comes with extensive debugging and visualisation support, so you can see in real time as the kernel changes.
+Note the `.Named("Name")` extensions to the factory methods: these are for debugging and tracing purposes. The library comes with extensive debugging and visualisation support, so you can see in real time as the kernel changes.
 
 The main logic _flow_ for starting a turn is:
 
