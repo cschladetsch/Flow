@@ -1,4 +1,4 @@
-// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
 namespace Flow.Impl {
     using System;
@@ -20,7 +20,7 @@ namespace Flow.Impl {
 
         public event TransientHandlerReason OnHowCompleted;
 
-        public static bool TimeoutsEnabled = true;
+        protected static readonly bool TimeoutsEnabled = true;
 
         public bool Active { get; protected set; } = true;
         public IKernel Kernel { get; /*internal*/ set; }

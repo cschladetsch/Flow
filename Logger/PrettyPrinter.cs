@@ -13,13 +13,13 @@ namespace Flow {
     }
 
     public class PrettyPrinter {
-        public int Indenting = 4;
+        private readonly int _indenting = 4;
 
         public static string ToString(ITransient trans) {
             return new PrettyPrinter(trans)._sb.ToString();
         }
 
-        public PrettyPrinter(ITransient trans) {
+        private PrettyPrinter(ITransient trans) {
             _sb.Append("# ");
             Print(trans, 0);
         }
@@ -34,7 +34,7 @@ namespace Flow {
         }
 
         private void Lead(int level) {
-            _sb.Append(' ', level * Indenting);
+            _sb.Append(' ', level * _indenting);
         }
 
         private static bool ImplementsGenericInterface(Type given, Type iface) {

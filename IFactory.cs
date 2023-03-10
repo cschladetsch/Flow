@@ -1,4 +1,4 @@
-// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 christian.schladetsch@gmail.com See https://github.com/cschladetsch/Flow.
 
 namespace Flow {
     using System;
@@ -32,7 +32,7 @@ namespace Flow {
         INode Node(params IGenerator[] gens);
 
         /// <summary>
-        /// Make a new timer that fires once, then Complets.
+        /// Make a new timer that fires once, then Completes.
         /// </summary>
         /// <param name="interval">The shortest time-span before this timer will Complete.
         /// </param>

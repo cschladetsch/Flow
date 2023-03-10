@@ -1,4 +1,4 @@
-// (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
+// (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
 #pragma warning disable 1685
 
