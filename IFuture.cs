@@ -7,7 +7,7 @@ namespace Flow {
 
     /// <inheritdoc />
     /// <summary>
-    /// When its' Value property is first set, set Available property to true, and Complete.
+    ///     When its' Value property is first set, set Available property to true, and Complete.
     /// </summary>
     public interface IFuture<T>
         : ITransient {
@@ -18,4 +18,3 @@ namespace Flow {
         IFuture<T> Then(Action<IFuture<T>> action);
     }
 }
-

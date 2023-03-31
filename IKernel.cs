@@ -1,10 +1,12 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
+using System;
+
 namespace Flow {
     /// <inheritdoc />
     /// <summary>
-    /// When an IKernel is Stepped, it updates its Time property,
-    /// and steps its Root node.
+    ///     When an IKernel is Stepped, it updates its Time property,
+    ///     and steps its Root node.
     /// </summary>
     public interface IKernel
         : IGenerator {
@@ -12,12 +14,12 @@ namespace Flow {
         ILogger Log { get; set; }
 
         /// <summary>
-        /// If true, the Kernel will stop mid-senten
+        ///     If true, the Kernel will stop mid-senten
         /// </summary>
         bool Break { get; }
 
         /// <summary>
-        /// The root of the process tree.
+        ///     The root of the process tree.
         /// </summary>
         INode Root { get; set; }
 
@@ -25,7 +27,7 @@ namespace Flow {
         ITimeFrame Time { get; }
 
         void Update(float deltaSeconds);
-        void Wait(System.TimeSpan duration);
+        void Wait(TimeSpan duration);
         void BreakFlow();
     }
 }

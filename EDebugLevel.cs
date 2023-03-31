@@ -1,12 +1,12 @@
 namespace Flow {
     /// <summary>
-    /// Used to control the verbosity of logging
+    ///     Used to control the verbosity of logging
     /// </summary>
     public enum EDebugLevel {
-        None,
-        Low,
-        Medium,
-        High,
-        Verbose,
+        None
+        , Low
+        , Medium
+        , High
+        , Verbose
     }
 }

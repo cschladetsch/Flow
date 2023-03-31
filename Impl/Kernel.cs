@@ -1,21 +1,15 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System;
+using System;
 
+namespace Flow.Impl {
     public class Kernel
         : Generator<bool>
-        , IKernel {
-        public EDebugLevel DebugLevel { get; set; }
-        public ILogger Log { get; set; }
-        public INode Root { get; set; }
-        public new IFactory Factory { get; internal set; }
-        public bool Break { get; private set; }
-        public ITimeFrame Time => _time;
+            , IKernel {
+        private readonly TimeFrame _time = new TimeFrame();
+        private DateTime _resumeTime;
 
         private bool _waiting;
-        private DateTime _resumeTime;
-        private readonly TimeFrame _time = new TimeFrame();
 
         internal Kernel() {
             Log = this;
@@ -32,8 +26,16 @@ namespace Flow.Impl {
             _time.Delta = TimeSpan.FromSeconds(0);
         }
 
-        public void BreakFlow()
-            => Break = true;
+        public EDebugLevel DebugLevel { get; set; }
+        public ILogger Log { get; set; }
+        public INode Root { get; set; }
+        public new IFactory Factory { get; internal set; }
+        public bool Break { get; private set; }
+        public ITimeFrame Time => _time;
+
+        public void BreakFlow() {
+            Break = true;
+        }
 
         public void Wait(TimeSpan span) {
             if (_waiting) {
@@ -51,13 +53,6 @@ namespace Flow.Impl {
             Process();
         }
 
-        private void UpdateTime(float dt) {
-            var delta = TimeSpan.FromSeconds(dt);
-            _time.Last = _time.Now;
-            _time.Delta = delta;
-            _time.Now = _time.Now + delta;
-        }
-
         public override void Step() {
             StepTime();
 
@@ -65,24 +60,36 @@ namespace Flow.Impl {
                 if (_time.Now > _resumeTime) {
                     _resumeTime = DateTime.MinValue;
                     _waiting = false;
-                } else
+                }
+                else {
                     return;
+                }
             }
 
             Process();
         }
 
-        private void Process() {
-            if (Break)
-                return;
+        private void UpdateTime(float dt) {
+            var delta = TimeSpan.FromSeconds(dt);
+            _time.Last = _time.Now;
+            _time.Delta = delta;
+            _time.Now = _time.Now + delta;
+        }
 
-            void Step(IGenerator node) {
-                if (!IsNullOrInactive(node))
-                    node.Step();
+        private void Process() {
+            if (Break) {
+                return;
             }
 
-            if (Root.Contents.Count > 0)
+            void Step(IGenerator node) {
+                if (!IsNullOrInactive(node)) {
+                    node.Step();
+                }
+            }
+
+            if (Root.Contents.Count > 0) {
                 Verbose(10, $"Stepping kernel {Root.Contents.Count}");
+            }
 
             Step(Root);
 
@@ -98,4 +105,3 @@ namespace Flow.Impl {
         }
     }
 }
-

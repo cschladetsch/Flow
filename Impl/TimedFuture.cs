@@ -1,21 +1,30 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System;
+using System;
 
+namespace Flow.Impl {
     internal class TimedFuture<T>
         : Future<T>
-        , ITimedFuture<T> {
-        public ITimedFuture<T> Then(Action<ITimedFuture<T>> action)
-            => Then(() => action(this)) as ITimedFuture<T>;
+            , ITimedFuture<T> {
+        internal TimedFuture(IKernel k, TimeSpan span) {
+            Timer = k.Factory.OneShotTimer(span);
+            if (TimeoutsEnabled) {
+                Timer.Elapsed += HandleElapsed;
+            }
 
-        public event TimedOutHandler TimedOut
-        {
-            add
-            {
+            //Completed += tr => Timer.Complete();
+        }
+
+        public ITimedFuture<T> Then(Action<ITimedFuture<T>> action) {
+            return Then(() => action(this)) as ITimedFuture<T>;
+        }
+
+        public event TimedOutHandler TimedOut {
+            add {
                 _timedOut += value;
-                if (HasTimedOut)
+                if (HasTimedOut) {
                     value(this);
+                }
             }
             remove => _timedOut -= value;
         }
@@ -26,17 +35,10 @@ namespace Flow.Impl {
 
         private event TimedOutHandler _timedOut;
 
-        internal TimedFuture(IKernel k, TimeSpan span) {
-            Timer = k.Factory.OneShotTimer(span);
-            if (TimeoutsEnabled)
-                Timer.Elapsed += HandleElapsed;
-
-            //Completed += tr => Timer.Complete();
-        }
-
         private void HandleElapsed(ITransient sender) {
-            if (!Active)
+            if (!Active) {
                 return;
+            }
 
             _timedOut?.Invoke(this);
 

@@ -1,29 +1,35 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System;
-    using System.Linq;
+using System;
+using System.Linq;
 
+namespace Flow.Impl {
     internal class Node
         : Group
-        , INode {
-        private bool _stepping;
+            , INode {
         protected bool _StepOne;
+        private bool _stepping;
 
         public void Add(params IGenerator[] gens) {
             foreach (var gen in gens)
                 DeferAdd(gen);
         }
 
-        public new INode AddTo(IGroup group) => this.AddToGroup<INode>(group);
-        public new INode Named(string name) => this.SetName<INode>(name);
+        public new INode AddTo(IGroup group) {
+            return this.AddToGroup<INode>(group);
+        }
+
+        public new INode Named(string name) {
+            return this.SetName<INode>(name);
+        }
 
         public override void Step() {
             Pre();
 
             try {
-                if (Kernel.DebugLevel > EDebugLevel.Medium)
+                if (Kernel.DebugLevel > EDebugLevel.Medium) {
                     Kernel.Log.Info($"Stepping Node {Name}");
+                }
 
                 if (_stepping) {
                     Kernel.Log.Error(
@@ -40,8 +46,9 @@ namespace Flow.Impl {
                 // the underlying issue is that the contents of the node may be altered while stepping children of the node.
                 foreach (var tr in Contents.ToList()) {
                     if (tr is IGenerator gen) {
-                        if (Kernel.Break)
+                        if (Kernel.Break) {
                             goto end;
+                        }
 
                         try {
                             if (!gen.Active) {
@@ -49,8 +56,9 @@ namespace Flow.Impl {
                                 continue;
                             }
 
-                            if (gen.Running)
+                            if (gen.Running) {
                                 gen.Step();
+                            }
                         } catch (Exception e) {
                             gen.Complete();
                             Error($"Exception: {e.Message} when stepping {gen.Name}. Completing this generator.");
@@ -58,14 +66,16 @@ namespace Flow.Impl {
                         }
                     }
 
-                    if (_StepOne)
+                    if (_StepOne) {
                         break;
+                    }
                 }
-            } finally {
+            }
+            finally {
                 _stepping = false;
             }
 
-end:
+        end:
             Post();
         }
     }

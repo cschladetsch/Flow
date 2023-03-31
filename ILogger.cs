@@ -2,7 +2,7 @@
 
 namespace Flow {
     /// <summary>
-    /// DOC
+    ///     DOC
     /// </summary>
     public interface ILogger {
         string LogPrefix { get; set; }
@@ -17,4 +17,3 @@ namespace Flow {
         void Verbose(int level, string fmt, params object[] args);
     }
 }
-

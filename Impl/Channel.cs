@@ -1,11 +1,11 @@
 // (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System.Collections.Generic;
+using System.Collections.Generic;
 
+namespace Flow.Impl {
     internal class Channel<TR>
         : Subroutine<bool>
-        , IChannel<TR> {
+            , IChannel<TR> {
         private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
         private readonly Queue<TR> _values = new Queue<TR>();
 
@@ -20,13 +20,19 @@ namespace Flow.Impl {
             CompleteAfter(gen);
         }
 
-        public void Insert(TR val)
-            => _values.Enqueue(val);
+        public void Insert(TR val) {
+            _values.Enqueue(val);
+        }
 
         public IFuture<TR> Extract() {
             var future = Factory.Future<TR>();
             _requests.Enqueue(future);
             return future;
+        }
+
+        public new IChannel<TR> AddTo(IGroup group) {
+            group.Add(this);
+            return this;
         }
 
         public List<TR> ExtractAll() {
@@ -55,11 +61,6 @@ namespace Flow.Impl {
             Flush();
 
             return true;
-        }
-
-        public new IChannel<TR> AddTo(IGroup group) {
-            group.Add(this);
-            return this;
         }
     }
 }

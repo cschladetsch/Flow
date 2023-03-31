@@ -3,7 +3,7 @@
 namespace Flow {
     /// <inheritdoc />
     /// <summary>
-    /// An ISubroutine is-a IGenerator, implemented as a direct method call.
+    ///     An ISubroutine is-a IGenerator, implemented as a direct method call.
     /// </summary>
     public interface ISubroutine
         : IGenerator {
@@ -13,4 +13,3 @@ namespace Flow {
         : IGenerator<T> {
     }
 }
-

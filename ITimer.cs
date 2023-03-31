@@ -4,7 +4,7 @@ using System;
 
 namespace Flow {
     /// <summary>
-    /// A one-shot OneShotTimer that will fire its Elapsed event, and then Complete itself after a fixed time Interval.
+    ///     A one-shot OneShotTimer that will fire its Elapsed event, and then Complete itself after a fixed time Interval.
     /// </summary>
     public interface ITimer : IPeriodic {
         DateTime TimeEnds { get; }

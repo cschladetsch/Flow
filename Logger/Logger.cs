@@ -15,6 +15,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+
 //using NUnit.Framework;
 
 #if UNITY
@@ -23,18 +24,21 @@ using Debug = UnityEngine.Debug;
 
 namespace Flow.Impl {
     /// <summary>
-    /// Log system used by Models.
+    ///     Log system used by Models.
     /// </summary>
     public class Logger
         : ILogger {
-        public string LogPrefix { get; set; }
-        public object LogSubject { get; set; }
-        public int Verbosity { get; set; }
-        public bool ShowSource { get; set; } = true;
-        public bool ShowStack { get; set; } = true;
-
         public static string LogFileName;
         public static ELogLevel MaxLevel;
+#if !UNITY
+        private static readonly DateTime _startTime = DateTime.Now;
+#endif
+
+#if !UNITY
+        private readonly string[] _logNames = { "Info", "Warn", "Error", "Verbose" };
+#endif
+
+        protected ELogLevel _logLevel;
 
         public Logger() {
             LogSubject = this;
@@ -51,8 +55,11 @@ namespace Flow.Impl {
             LogPrefix = pre;
         }
 
-        public static void Initialise() {
-        }
+        public string LogPrefix { get; set; }
+        public object LogSubject { get; set; }
+        public int Verbosity { get; set; }
+        public bool ShowSource { get; set; } = true;
+        public bool ShowStack { get; set; } = true;
 
         public void Info(string fmt, params object[] args) {
             Log(ELogLevel.Info, StringFormat(fmt, args));
@@ -67,10 +74,14 @@ namespace Flow.Impl {
         }
 
         public void Verbose(int level, string fmt, params object[] args) {
-            if (level > Verbosity)
+            if (level > Verbosity) {
                 return;
+            }
 
             Log(ELogLevel.Verbose, StringFormat(fmt, args));
+        }
+
+        public static void Initialise() {
         }
 
         private void OutputLine(string text) {
@@ -89,13 +100,10 @@ namespace Flow.Impl {
             return fmt == null ? "Null" : string.Format(fmt, args);
         }
 
-#if !UNITY
-        readonly string[] _logNames = { "Info", "Warn", "Error", "Verbose" };
-#endif
-
         private void Log(ELogLevel level, string text) {
-            if (level == ELogLevel.None)
+            if (level == ELogLevel.None) {
                 level = ELogLevel.Error;
+            }
 #if UNITY
             Action<string> log = Debug.Log;
 #else
@@ -123,21 +131,27 @@ namespace Flow.Impl {
                             continue;
                         }
                     }
-                    if (!foundTop)
+
+                    if (!foundTop) {
                         continue;
+                    }
 
                     //if (!fr.HasSource())
                     //    break;
-                    if (string.IsNullOrEmpty(fr.GetFileName()))
+                    if (string.IsNullOrEmpty(fr.GetFileName())) {
                         break;
+                    }
 
                     OutputLine(
                         $"{lead}{fr.GetFileName()}({fr.GetFileLineNumber()},{fr.GetFileColumnNumber()}): from: {fr.GetMethod().Name}");
-                    if (!showFrames)
+                    if (!showFrames) {
                         break;
+                    }
+
                     lead += "\t";
                 }
-            } else {
+            }
+            else {
                 OutputLine("");
             }
 #else // TODO: use bitmasks as intended
@@ -192,15 +206,11 @@ namespace Flow.Impl {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
+
             // this trace includes the source type: it's a bit "verbose"
             //return $"{level}: {prefix}{time} {step}{LogSubject.GetType()}{from}\n\t{openTick}{text}`";
             return $"{level}: {prefix}{time} {step}{from}\n\t{openTick}{text}`";
 #endif
         }
-
-        protected ELogLevel _logLevel;
-#if !UNITY
-        private static readonly DateTime _startTime = DateTime.Now;
-#endif
     }
 }

@@ -1,15 +1,13 @@
 // (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System;
+using System;
 
+namespace Flow.Impl {
     internal class Timer
         : Periodic
-        , ITimer {
-        public DateTime TimeEnds { get; }
-
+            , ITimer {
         /// <summary>
-        /// Timer based on game time, not real time.
+        ///     Timer based on game time, not real time.
         /// </summary>
         internal Timer(IKernel kernel, TimeSpan span)
             : base(kernel, span) {
@@ -17,9 +15,10 @@ namespace Flow.Impl {
             Elapsed += TimedOutHandler;
         }
 
+        public DateTime TimeEnds { get; }
+
         private void TimedOutHandler(ITransient sender) {
             Complete();
         }
     }
 }
-

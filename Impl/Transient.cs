@@ -1,36 +1,32 @@
 // (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System;
+using System;
 
+namespace Flow.Impl {
     /// <inheritdoc cref="ITransient" />
     public class Transient
         : Logger
-        , ITransient {
-        public event TransientHandler Completed
-        {
-            add
-            {
+            , ITransient {
+        protected static readonly bool TimeoutsEnabled = true;
+
+        private TransientHandler _completed;
+        public IFactory Factory => Kernel.Factory;
+        public IFactory New => Factory;
+
+        public event TransientHandler Completed {
+            add {
                 _completed += value;
-                if (!Active)
+                if (!Active) {
                     value(this);
+                }
             }
             remove => _completed -= value;
         }
 
-        public event TransientHandlerReason OnHowCompleted;
-
-        protected static readonly bool TimeoutsEnabled = true;
-
         public bool Active { get; protected set; } = true;
         public IKernel Kernel { get; /*internal*/ set; }
-        public IFactory Factory => Kernel.Factory;
-        public IFactory New => Factory;
 
         public virtual string Name { get; set; }
-
-        public override string ToString()
-            => Print.Object(this);
 
         public ITransient Named(string name) {
             Name = name;
@@ -38,27 +34,34 @@ namespace Flow.Impl {
         }
 
         public void Complete() {
-            if (!Active)
+            if (!Active) {
                 return;
+            }
 
             Active = false;
 
             _completed?.Invoke(this);
         }
 
-        private TransientHandler _completed;
-
         public ITransient AddTo(IGroup group) {
             group.Add(this);
             return this;
         }
 
-        public void CompleteAfter(ITransient other) {
-            if (!Active)
-                return;
+        public event TransientHandlerReason OnHowCompleted;
 
-            if (other == null)
+        public override string ToString() {
+            return Print.Object(this);
+        }
+
+        public void CompleteAfter(ITransient other) {
+            if (!Active) {
                 return;
+            }
+
+            if (other == null) {
+                return;
+            }
 
             if (!other.Active) {
                 Complete();
@@ -68,11 +71,13 @@ namespace Flow.Impl {
             other.Completed += tr => CompletedBecause(other);
         }
 
-        public ITransient Then(Action action)
-            => Then(Factory.Do(action).AddTo(Kernel.Root));
+        public ITransient Then(Action action) {
+            return Then(Factory.Do(action).AddTo(Kernel.Root));
+        }
 
-        public ITransient Then(Action<ITransient> action)
-            => Then(Factory.Do(() => action(this)).AddTo(Kernel.Root));
+        public ITransient Then(Action<ITransient> action) {
+            return Then(Factory.Do(() => action(this)).AddTo(Kernel.Root));
+        }
 
         public ITransient Then(IGenerator next) {
             if (next == null) {
@@ -97,15 +102,18 @@ namespace Flow.Impl {
             return this;
         }
 
-        public void CompleteAfter(TimeSpan span)
-            => CompleteAfter(Factory.OneShotTimer(span));
+        public void CompleteAfter(TimeSpan span) {
+            CompleteAfter(Factory.OneShotTimer(span));
+        }
 
-        public static bool IsNullOrInactive(ITransient other)
-            => other == null || !other.Active;
+        public static bool IsNullOrInactive(ITransient other) {
+            return other == null || !other.Active;
+        }
 
         private void CompletedBecause(ITransient other) {
-            if (!Active)
+            if (!Active) {
                 return;
+            }
 
             OnHowCompleted?.Invoke(this, other);
 
@@ -113,4 +121,3 @@ namespace Flow.Impl {
         }
     }
 }
-

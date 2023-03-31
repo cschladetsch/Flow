@@ -6,11 +6,11 @@ using System.Collections.Generic;
 namespace Flow.Impl {
     /// <inheritdoc cref="Channel{TR}" />
     /// <summary>
-    /// A thread-safe channel of values.
+    ///     A thread-safe channel of values.
     /// </summary>
     internal class BlockingChannel<TR>
         : Subroutine<bool>
-        , IChannel<TR> {
+            , IChannel<TR> {
         private readonly object _mutex = new object();
         private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
         private readonly Queue<TR> _values = new Queue<TR>();
@@ -28,17 +28,13 @@ namespace Flow.Impl {
 
         public IFuture<TR> Extract() {
             lock (_mutex) {
-                IFuture<TR> future = Factory.Future<TR>();
+                var future = Factory.Future<TR>();
                 _requests.Enqueue(future);
                 return future;
             }
         }
 
-        public new IChannel<TR> AddTo(IGroup @group) {
-            throw new NotImplementedException();
-        }
-
-        public List<TR> ExtractAll() {
+        public new IChannel<TR> AddTo(IGroup group) {
             throw new NotImplementedException();
         }
 
@@ -48,11 +44,13 @@ namespace Flow.Impl {
             }
         }
 
+        public List<TR> ExtractAll() {
+            throw new NotImplementedException();
+        }
+
         public void Flush() {
             lock (_mutex) {
-                while (_values.Count > 0 && _requests.Count > 0) {
-                    _requests.Dequeue().Value = _values.Dequeue();
-                }
+                while (_values.Count > 0 && _requests.Count > 0) _requests.Dequeue().Value = _values.Dequeue();
             }
         }
 
@@ -60,17 +58,16 @@ namespace Flow.Impl {
             lock (_mutex) {
                 Flush();
 
-                foreach (var f in _requests) {
-                    ((IDisposable)f).Dispose();
-                }
+                foreach (var f in _requests) ((IDisposable)f).Dispose();
             }
         }
 
         private bool StepChannel(IGenerator self) {
             ++StepNumber;
 
-            if (!Active)
+            if (!Active) {
                 return true;
+            }
 
             Flush();
 

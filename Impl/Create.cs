@@ -1,12 +1,12 @@
 // (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
+using Flow.Impl;
+
 #pragma warning disable 1685
 
 namespace Flow {
-    using Impl;
-
     /// <summary>
-    /// Bootstrapper for the flow library using default implementations.
+    ///     Bootstrapper for the flow library using default implementations.
     /// </summary>
     public static class Create {
         public static IKernel Kernel() {
@@ -30,4 +30,3 @@ namespace Flow {
         }
     }
 }
-

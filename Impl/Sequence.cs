@@ -1,24 +1,26 @@
 // (C) 2012 Christian Schladetsch. See https://github.com/cschladetsch/Flow.
 
-namespace Flow.Impl {
-    using System.Collections.Generic;
-    using System.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
-    /// <inheritdoc cref="ISequence"/>
+namespace Flow.Impl {
+    /// <inheritdoc cref="ISequence" />
     internal class Sequence
         : Node
-        , ISequence {
-        internal Sequence()
-            => _StepOne = true;
+            , ISequence {
+        internal Sequence() {
+            _StepOne = true;
+        }
 
         internal Sequence(IEnumerable<IGenerator> gens)
-            : this()
-            => Add(gens);
+            : this() {
+            Add(gens);
+        }
 
         public override void Post() {
-            if (!Contents.Any())
+            if (!Contents.Any()) {
                 Complete();
+            }
         }
     }
 }
-

@@ -3,7 +3,11 @@ using System;
 namespace Flow.Impl {
     public class Generator
         : Transient
-        , IGenerator {
+            , IGenerator {
+        public Generator() {
+            Completed += tr => Suspend();
+        }
+
         public event GeneratorHandler Suspended;
         public event GeneratorHandler Resumed;
         public event GeneratorHandler Stepped;
@@ -13,9 +17,6 @@ namespace Flow.Impl {
         public bool Running { get; protected set; }
 
         public int StepNumber { get; protected set; }
-
-        public Generator() =>
-            Completed += tr => Suspend();
 
         public new IGenerator AddTo(IGroup group) {
             group?.Add(this);
@@ -28,8 +29,9 @@ namespace Flow.Impl {
         }
 
         public virtual void Step() {
-            if (!Active)
+            if (!Active) {
                 return;
+            }
 
             ++StepNumber;
             Stepped?.Invoke(this);
@@ -42,16 +44,18 @@ namespace Flow.Impl {
         }
 
         public void Suspend() {
-            if (!Running)
+            if (!Running) {
                 return;
+            }
 
             Running = false;
             Suspended?.Invoke(this);
         }
 
         public void Resume() {
-            if (Running || !Active)
+            if (Running || !Active) {
                 return;
+            }
 
             Running = true;
             Resumed?.Invoke(this);
@@ -109,8 +113,9 @@ namespace Flow.Impl {
         }
 
         public IGenerator ResumeAfter(TimeSpan span) {
-            if (!Active)
+            if (!Active) {
                 return this;
+            }
 
             var timer = Factory.OneShotTimer(span);
             timer.Name = $"TimeSpan ({span})";
@@ -119,8 +124,9 @@ namespace Flow.Impl {
         }
 
         public IGenerator SuspendAfter(TimeSpan span) {
-            if (!Active)
+            if (!Active) {
                 return this;
+            }
 
             var timer = Factory.OneShotTimer(span);
             Kernel.Root.Add(timer);
@@ -132,9 +138,8 @@ namespace Flow.Impl {
 
     public class Generator<TResult>
         : Generator
-        , IGenerator<TResult> {
-        public new TResult Value
-        {
+            , IGenerator<TResult> {
+        public new TResult Value {
             get => (TResult)base.Value;
             set => base.Value = value;
         }

@@ -3,8 +3,8 @@
 namespace Flow {
     /// <inheritdoc />
     /// <summary>
-    /// A Barrier is a <see cref="IGroup"/> that Completes itself when all added
-    /// <see cref="ITransient"/>s have been removed from it.
+    ///     A Barrier is a <see cref="IGroup" /> that Completes itself when all added
+    ///     <see cref="ITransient" />s have been removed from it.
     /// </summary>
     public interface IBarrier
         : IGroup {
@@ -12,4 +12,3 @@ namespace Flow {
         new IBarrier Named(string name);
     }
 }
-

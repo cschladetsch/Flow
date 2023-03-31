@@ -10,11 +10,13 @@ namespace Flow.Impl {
 
         public void SpinOnce() {
             // On a single-CPU system, spinning does no good
-            if (isSingleCpu)
+            if (isSingleCpu) {
                 Yield();
+            }
             else {
-                if (Interlocked.Increment(ref ntime) % step == 0)
+                if (Interlocked.Increment(ref ntime) % step == 0) {
                     Yield();
+                }
                 else {
                     // Multi-CPU system might be hyper-threaded, let other thread run
                     Thread.SpinWait(2 * (ntime + 1));
@@ -23,9 +25,7 @@ namespace Flow.Impl {
         }
 
         public void SpinUntil(Func<bool> predicate) {
-            while (!predicate()) {
-                SpinOnce();
-            }
+            while (!predicate()) SpinOnce();
         }
 
         private static void Yield() {
@@ -40,7 +40,7 @@ namespace Flow.Impl {
 
         // The number of step until SpinOnce yield on multicore machine
         private const int step = 20;
-        private static readonly bool isSingleCpu = (Environment.ProcessorCount == 1);
+        private static readonly bool isSingleCpu = Environment.ProcessorCount == 1;
         private int ntime;
     }
 }

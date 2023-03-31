@@ -3,12 +3,11 @@
 namespace Flow {
     /// <inheritdoc />
     /// <summary>
-    /// A buffered input/output stream.
-    ///
-    /// <para>
-    /// If a Channel is created with a Generator, that is used as the
-    /// source for the channel.
-    /// </para>
+    ///     A buffered input/output stream.
+    ///     <para>
+    ///         If a Channel is created with a Generator, that is used as the
+    ///         source for the channel.
+    ///     </para>
     /// </summary>
     public interface IChannel<T>
         : ITransient {
@@ -18,4 +17,3 @@ namespace Flow {
         new IChannel<T> AddTo(IGroup group);
     }
 }
-

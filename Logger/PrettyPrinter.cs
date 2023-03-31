@@ -15,22 +15,25 @@ namespace Flow {
     public class PrettyPrinter {
         private readonly int _indenting = 4;
 
-        public static string ToString(ITransient trans) {
-            return new PrettyPrinter(trans)._sb.ToString();
-        }
+        private readonly StringBuilder _sb = new StringBuilder();
 
         private PrettyPrinter(ITransient trans) {
             _sb.Append("# ");
             Print(trans, 0);
         }
 
+        public static string ToString(ITransient trans) {
+            return new PrettyPrinter(trans)._sb.ToString();
+        }
+
         private int Print(ITransient trans, int level) {
-            if (trans == null)
+            if (trans == null) {
                 return level;
+            }
 
             Lead(level);
             Header(trans);
-            return !(trans is IGroup @group) ? level : Contents(group, level + 1);
+            return !(trans is IGroup group) ? level : Contents(group, level + 1);
         }
 
         private void Lead(int level) {
@@ -39,7 +42,7 @@ namespace Flow {
 
         private static bool ImplementsGenericInterface(Type given, Type iface) {
             return given.GetInterfaces().Any(x => x.IsGenericType &&
-              x.GetGenericTypeDefinition() == iface);
+                x.GetGenericTypeDefinition() == iface);
         }
 
         private StringBuilder Header(ITransient trans) {
@@ -53,17 +56,23 @@ namespace Flow {
                 if (ImplementsGenericInterface(ty, typeof(ITimedFuture<>))) {
                     var avail = (bool)ty.GetProperty("Available")?.GetValue(trans);
                     object val = "<unset>";
-                    if (avail)
+                    if (avail) {
                         val = ty.GetProperty("Value")?.GetValue(trans);
+                    }
+
                     return _sb.AppendFormat($"TimedFuture<{arg.Name}>: {name} Available={avail}, Value={val}\n");
                 }
+
                 if (ImplementsGenericInterface(ty, typeof(IFuture<>))) {
                     var avail = (bool)ty.GetProperty("Available")?.GetValue(trans);
                     object val = "<unset>";
-                    if (avail)
+                    if (avail) {
                         val = ty.GetProperty("Value")?.GetValue(trans);
+                    }
+
                     return _sb.AppendFormat($"Future<{arg.Name}>: {name} Available={avail}, Value={val}\n");
                 }
+
                 if (ImplementsGenericInterface(ty, typeof(IChannel<>))) {
                     return _sb.AppendFormat($"Channel<{arg.Name}>: {name}\n");
                 }
@@ -72,33 +81,43 @@ namespace Flow {
             if (typeof(ITimer).IsAssignableFrom(ty)) {
                 var timer = (ITimer)trans;
                 var ends = timer.TimeEnds;
-                return _sb.AppendFormat($"Timer: {name} ends in {(ends - timer.Kernel.Time.Now).TotalSeconds:N2}s, {GeneratorInfo(trans)}\n");
+                return _sb.AppendFormat(
+                    $"Timer: {name} ends in {(ends - timer.Kernel.Time.Now).TotalSeconds:N2}s, {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(IPeriodic).IsAssignableFrom(ty)) {
                 var p = (IPeriodic)trans;
                 return _sb.AppendFormat(
                     $"Periodic: {name}, started={p.TimeStarted}, interval={p.Interval}, remaining={p.TimeRemaining}: {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(ITrigger).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"Trigger: {name}: {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(IBarrier).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"Barrier: {name}: {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(ISequence).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"Sequence {name}: {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(INode).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"Node {name}: {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(IGroup).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"Group: {name}: {GeneratorInfo(trans)}\n");
             }
+
             if (typeof(ICoroutine).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"Coroutine {name}: {GeneratorInfo(trans)}\n");
             }
-            if (typeof(ITransient).IsAssignableFrom(ty))
+
+            if (typeof(ITransient).IsAssignableFrom(ty)) {
                 return _sb.AppendFormat($"{tyName}={name}:\n");
+            }
 
             return _sb.Append("??");
         }
@@ -108,13 +127,12 @@ namespace Flow {
                 Print(tr, level + 1);
                 _sb.Append('\n');
             }
+
             return level;
         }
 
         private static string GeneratorInfo(ITransient trans) {
             return !(trans is IGenerator gen) ? "" : $"running={gen.Running}, step={gen.StepNumber}";
         }
-
-        private readonly StringBuilder _sb = new StringBuilder();
     }
 }

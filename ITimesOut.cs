@@ -5,8 +5,8 @@ namespace Flow {
 
     /// After a period of time, an instance of ITimesOut will 'time-out' if not already Completed. In this case, it will:
     public interface ITimesOut : ITransient {
-        event TimedOutHandler TimedOut;
         ITimer Timer { get; }
         bool HasTimedOut { get; }
+        event TimedOutHandler TimedOut;
     }
 }

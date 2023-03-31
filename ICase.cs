@@ -1,14 +1,12 @@
 // (C) 2012 christian.schladetsch@gmail.com. See https://github.com/cschladetsch/Flow.
 
-namespace Flow {
-    using System;
+using System;
 
+namespace Flow {
     public interface ICase<in T>
         where T
-            : IComparable<T> {
-        bool Matches(T val);
-
+        : IComparable<T> {
         IGenerator Body { get; }
+        bool Matches(T val);
     }
 }
-

@@ -4,7 +4,7 @@ using System;
 
 namespace Flow {
     /// <summary>
-    /// Stores information about a time step.
+    ///     Stores information about a time step.
     /// </summary>
     public interface ITimeFrame {
         DateTime Last { get; }
