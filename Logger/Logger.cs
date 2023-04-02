@@ -85,13 +85,13 @@ namespace Flow.Impl {
         }
 
         private void OutputLine(string text) {
-            //Console.WriteLine(text);
+            //NetworkConsole.WriteLine(text);
             Trace.WriteLine(text);
             //TestContext.Out.Write(text);
         }
 
         private void Output(string text) {
-            //Console.Write(text);
+            //NetworkConsole.Write(text);
             Trace.Write(text);
             //TestContext.Out.Write(text);
         }

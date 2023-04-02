@@ -15,7 +15,7 @@ namespace Flow.Logger
 
         protected override void AddEntry(DateTime dateTime, ELogEntryType entryType, string message)
         {
-            Console.WriteLine("{0}: {1}: {2}", MakeTimeString(dateTime), entryType, message);
+            NetworkConsole.WriteLine("{0}: {1}: {2}", MakeTimeString(dateTime), entryType, message);
         }
     }
 }
